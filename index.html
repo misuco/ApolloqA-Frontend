@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ApolloqA - Sound Co-Lab</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Babylon.js
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs@6.10.0/babylon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@6.10.0/babylonjs.loaders.min.js"></script>
+    -->
+</head>
+<body style="background:black">
+
+<div class="wrapper" style="width:100%;background:transparent">
+    <section class="main-controls">
+        <div id="menu_header">
+            <output id="display_net_status">◐</output><output id="display_header" style="font-size: 1rem;">ApolloqA</output>
+        </div>
+        <div id="menu_buttons" class="buttons">
+            <button id="menu_main" style="width:10%">|||</button>
+            <button id="menu_session" hidden>Session</button>
+            <button id="menu_mic" hidden>Mic</button>
+            <button id="menu_gen" hidden>Gen</button>
+            <button id="menu_navi" hidden>Navi</button>
+            <button id="menu_autoplay" hidden>Auto</button>
+        </div>
+
+        <div id="config_navi" hidden>
+            speed
+            <input id="range_speed" type="range" min="0" max="4" value="0" step="0.1"></input>
+            camera
+            <input id="range_camera" type="range" min="1" max="100" value="1" step="0.1"></input>
+        </div>
+
+        <div id="config_gen" hidden>
+            <select id="select_instrument_0"></select>
+            <select id="select_quantize_0"></select>
+            <select id="select_density_0"></select>
+            <button id="calcX">Calc X</button>
+            <div id="step_sequencer" class="buttons" hidden>
+                <button id="step_0">1</button>
+                <button id="step_1">2</button>
+                <button id="step_2">3</button>
+                <button id="step_3">4</button>
+                <button id="step_4">5</button>
+                <button id="step_5">6</button>
+                <button id="step_6">7</button>
+                <button id="step_7">8</button>
+            </div>
+        </div>
+
+        <div id="config_session" hidden>
+            <div class="flexbox">
+                <select id="select_chords"></select>
+                <select id="select_len"></select>
+                <output id="display_bpm" style="font-size: 3rem;">140</output> BPM
+            </div>
+            <div class="flexbox">
+                <button id="dec_bpm" class="narrow">-</button>
+                <input id="range_bpm" type="range" min="40" max="240" value="120" step="1"></input>
+                <button id="inc_bpm" class="narrow">+</button>
+            </div>
+        </div>
+
+        <div id="config_mic" hidden>
+            <canvas id="visualizer" style="display:block;height:100px"></canvas>
+            <div class="buttons">
+                <button id="record0">Rec 1</button>
+                <button id="record1">Rec 2</button>
+                <button id="record2">Rec 3</button>
+                <button id="record3">Rec 4</button>
+                <button id="stop">Stop</button>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button id="netSession0" hidden></button>
+            <button id="netSession1" hidden></button>
+            <button id="netSession2" hidden></button>
+            <button id="netSession3" hidden></button>
+            <button id="netSession4" hidden></button>
+        </div>
+
+    </section>
+</div>
+<canvas class="apolloqa"></canvas>
+
+<script src="js/session.js"></script>
+
+<script src="js/lib/babylon.js"></script>
+<script src="js/lib/babylonjs.loaders.min.js"></script>
+<script src="js/lib/babylon.gridMaterial.min.js"></script>
+<script src="js/lib/babylon.gui.js"></script>
+<script src="js/apolloqa.js"></script>
+<script src="js/colors.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/syncTrack.js"></script>
+<script src="js/worldObjects.js"></script>
+<script src="js/starfield.js"></script>
+<script src="js/ground.js"></script>
+<script src="js/multiuser-ws.js"></script>
+<script src="js/audiorec.js"></script>
+<script src="js/htmlGui.js"></script>
+<script src="js/initScene.js"></script>
+
+</body>
+</html>
