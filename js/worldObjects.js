@@ -1,5 +1,5 @@
 function newSoundMesh(x,y,z,trackUrl,presetName) {
-    console.log("newSoundMesh")
+    console.log("newSoundMesh "+trackUrl+" "+presetName);
 
     let worldObject = {};
     worldObject.trackUrl=trackUrl;
@@ -28,10 +28,8 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
             waitTime: waitTime
         });
         worldObject.track=track;
-        //generateNewSound();
     }).catch(err => {
         console.error("cannot play sound:" + trackUrl + " " + err);
-        //generateNewSound();
     });
 
     BABYLON.CreateAudioBusAsync(trackUrl, {
@@ -117,6 +115,8 @@ var generateNewSound = function() {
             let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
             let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
             let soundMesh = newSoundMesh(randX,randY,randZ,trackUrl,presetJson.name);
+            let trackList={"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"name":presetJson.name};
+            sendTrackList(trackList);
         }
     });
 

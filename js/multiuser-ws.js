@@ -62,28 +62,9 @@ function initMultiuser() {
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
             if(m.sessionId!==aqa.sessionId) {
-                let trackListUser = aqa.otherUsers.get(m.sessionId);
-                console.log("get other user tracklist "+trackListUser);
-                if(trackListUser) {
-                  /*
-                    const orbiter=aqa.orbiter.get(m.sessionId);
-                    console.log("other user id "+m.sessionId);
-                    for(let i=0;i<aqa.nTracks;i++) {
-                        const trackUrl=m.trackList[i];
-                        if(trackUrl) {
-                            if(orbiter.trackUrl[i]!==trackUrl) {
-                                orbiter.trackUrl[i]=trackUrl;
-                                playTrack(m.sessionId,trackUrl,i);
-                                console.log("playTrack: "+trackUrl);
-                            } else {
-                                console.log("already playing: "+trackUrl);
-                            }
-                        }
-                    }
-                    */
-                } else {
-                    console.log("ALERT: unknown other user id "+m.sessionId);
-                }
+                let l = m.trackList;
+                console.log("get other user tracklist "+l+" trackUrl "+l.trackUrl);
+                let soundMesh = newSoundMesh(l.x,l.y,l.z,l.trackUrl,l.name);
             }
             sendPosition();
             return;
@@ -107,12 +88,6 @@ function initMultiuser() {
                     otherUser.rotation.x = value.rx;
                     otherUser.rotation.y = value.ry;
                     otherUser.rotation.z = value.rz;
-                    /*
-                    otherUser.pan[0] = value.pan[0];
-                    otherUser.pan[1] = value.pan[1];
-                    otherUser.pan[2] = value.pan[2];
-                    otherUser.pan[3] = value.pan[3];
-                    */
                 }
             } else {
                 aqa.otherUsers.set(key,{});
@@ -132,15 +107,6 @@ function initMultiuser() {
                   newUser.position.y = value.y;
                   newUser.position.z = value.z;
                   newUser.rotation = new BABYLON.Vector3(value.rx,value.ry,value.rz);
-
-                  /*
-                  newUser.pan = [];
-                  newUser.pan[0] = value.pan[0];
-                  newUser.pan[1] = value.pan[1];
-                  newUser.pan[2] = value.pan[2];
-                  newUser.pan[3] = value.pan[3];
-                  initObjects(key,newUser);
-                  */
 
                   aqa.otherUsers.set(key,newUser);
                   aqa.htmlGui.setNetSessionEntry(key,value.nickname);
@@ -195,15 +161,6 @@ function sendPosition() {
             "x":x,"y":y,"z":z,
             "rx":rq.x,"ry":rq.y,"rz":rq.z,
             "avatarId":aqa.avatarId
-            /*,
-            "pan":
-                [
-                    aqa.htmlGui.alignment(0),
-                    aqa.htmlGui.alignment(1),
-                    aqa.htmlGui.alignment(2),
-                    aqa.htmlGui.alignment(3)
-                ]
-            */
             }
         );
         aqa.ws.send(message);
