@@ -4,7 +4,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
     let worldObject = {};
     worldObject.trackUrl=trackUrl;
 
-    let mesh = BABYLON.MeshBuilder.CreateSphere("worldObject", {
+    let mesh = BABYLON.MeshBuilder.CreateSphere("mesh_"+trackUrl, {
         diameter: 0.5
     }, scene);
 
@@ -14,7 +14,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
 
     worldObject.mesh = mesh;
 
-    BABYLON.CreateSoundAsync(trackUrl, trackUrl, {
+    BABYLON.CreateSoundAsync("sound_"+trackUrl, trackUrl, {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
@@ -77,6 +77,11 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         text1.paddingBottom = "5px";
         text1.paddingLeft = "5px";
         text1.paddingRight = "5px";
+
+        worldObject.button = rect1;
+        worldObject.label = text1;
+
+        aqa.worldObjects.set(trackUrl,worldObject);
 }
 
 var generateNewSound = function() {
@@ -115,7 +120,7 @@ var generateNewSound = function() {
             let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
             let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
             let soundMesh = newSoundMesh(randX,randY,randZ,trackUrl,presetJson.name);
-            let trackList={"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"name":presetJson.name};
+            let trackList=[trackUrl,{"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"trackName":presetJson.name,"creator":aqa.nickname}];
             sendTrackList(trackList);
         }
     });

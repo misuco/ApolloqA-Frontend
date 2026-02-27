@@ -59,10 +59,8 @@ aqa.wsUrl = "ws://"+aqa.windowUrl.hostname+":3038/"
 aqa.syncTrackTimer = null;
 aqa.syncTrackRunning = false;
 
-// objects.js
-//aqa.orbiter = new Map();
-//aqa.myOrbiter = null;
-aqa.worldObjects = [];
+// worldObjects.js
+aqa.worldObjects = new Map();
 
 // syncTrack.js
 aqa.readyTrack = new Map();
@@ -93,7 +91,7 @@ aqa.levelBars=[];
 aqa.chanColor=[];
 aqa.baseUrl = aqa.windowUrl.protocol + "//" + aqa.windowUrl.host + "/";
 
-aqa.avatarId=aqa.getRandomInt(9);
+aqa.avatarId=aqa.getRandomInt(4);
 aqa.avatarUrl=function(id) {
     switch(id) {
         case 0:
@@ -104,24 +102,6 @@ aqa.avatarUrl=function(id) {
             break;
         case 2:
             return "obj/Spaceship_BarbaraTheBee.gltf";
-            break;
-        case 3:
-            return "obj/Astronaut_BarbaraTheBee.gltf";
-            break;
-        case 4:
-            return "obj/Astronaut_FernandoTheFlamingo.gltf";
-            break;
-        case 5:
-            return "obj/Astronaut_FinnTheFrog.gltf";
-            break;
-        case 6:
-            return "obj/Astronaut_RaeTheRedPanda.gltf";
-            break;
-        case 7:
-            return "obj/Mech_BarbaraTheBee.gltf";
-            break;
-        case 8:
-            return "obj/Mech_FernandoTheFlamingo.gltf";
             break;
         default:
             return "obj/Spaceship_RaeTheRedPanda.gltf";
