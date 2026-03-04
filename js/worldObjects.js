@@ -1,4 +1,32 @@
 class SoundMesh {
+    constructor(name,parentMesh,objPath) {
+        console.log("new SoundMesh "+name);
+        this.parent = parentMesh;
+        this.importMesh(objPath);
+    }
+    updateFreqs(freqs) {
+        if(this.m) {
+            let scaling=0;
+            for (let i = 0; i < 16; i++) {
+                scaling=Math.max(scaling,freqs[i]);
+            }
+            scaling=scaling/10000;
+            this.m.scaling.x=scaling;
+            this.m.scaling.y=scaling;
+            this.m.scaling.z=scaling;
+        }
+    }
+    async importMesh(objPath) {
+        let result = await BABYLON.ImportMeshAsync(
+            objPath,
+            scene
+        )
+        this.m = result.meshes[0];
+        this.m.parent = this.parent;
+    }
+};
+
+class SoundMesh2 {
     constructor(name,mesh) {
         console.log("new SoundMesh "+name);
         this.m=[];
@@ -18,6 +46,7 @@ class SoundMesh {
     }
 };
 
+let objSelect=1;
 function newSoundMesh(x,y,z,trackUrl,presetName) {
     console.log("newSoundMesh "+trackUrl+" "+presetName);
 
@@ -26,7 +55,9 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
 
 
     let mesh = new BABYLON.TransformNode();
-    let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh);
+    let objPath="obj/Logo-A_00"+objSelect+".obj";
+    objSelect++; if(objSelect>3) {objSelect=1;}
+    let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh,objPath,);
 
     mesh.position.x=x;
     mesh.position.y=y;

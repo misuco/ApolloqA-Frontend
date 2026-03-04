@@ -1,0 +1,5 @@
+# Material with a texture map
+newmtl wood_texture
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+map_Kd textures/wood.jpg

@@ -1,0 +1,6 @@
+newmtl shiny_chrome
+Ka 0.1 0.1 0.1
+Kd 0.5 0.5 0.5
+Ks 1.0 1.0 1.0
+Ns 200.0          # High specular value for shininess
+illum 3           # Often used for metallic surfaces
