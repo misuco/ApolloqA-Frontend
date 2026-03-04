@@ -7,9 +7,13 @@ class aqa_menu {
 
         this.range_speed = document.querySelector("#range_speed");
         this.range_speed.addEventListener("input", () => {aqa.speed=event.target.value;});
+        this.range_speed.value=0.1;
+        aqa.speed=0.1;
 
         this.range_camera = document.querySelector("#range_camera");
         this.range_camera.addEventListener("input", () => {aqa.chaseCameraPosition.position.z=event.target.value*-1;});
+        this.range_camera.value=50;
+        aqa.chaseCameraPosition.position.z=-50;
 
         this.menu_navi_button = document.querySelector("#menu_navi");
         this.div_navi = document.querySelector("#config_navi");
