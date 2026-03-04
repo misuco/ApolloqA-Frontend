@@ -1,5 +1,3 @@
-aqa.SoundMeshes=[];
-
 class SoundMesh {
     constructor(name,parentMesh,objPath) {
         console.log("new SoundMesh "+name);
