@@ -95,42 +95,10 @@ class aqa_menu {
             this.sequencer_step[i].addEventListener("click", () => {this.toggleStep(i)});
         }
 
-        /*
-        this.radius=[];
-        this.yaw=[];
-        this.pitch=[];
-        this.rotate_yaw=[];
-        this.rotate_pitch=[];
-        for(let i=0;i<aqa.nTracks;i++) {
-            this.radius[i] = document.querySelector("#radius_"+i);
-            this.radius[i].value=3.0;
-            this.yaw[i] = document.querySelector("#yaw_"+i);
-            this.yaw[i].value = i*90;
-            this.pitch[i] = document.querySelector("#pitch_"+i);
-            this.pitch[i].value = 180;
-            this.rotate_yaw[i] = document.querySelector("#rotate_yaw_"+i);
-            this.rotate_yaw[i].value = i%2!=0 ? 0 : 50;
-            this.rotate_pitch[i] = document.querySelector("#rotate_pitch_"+i);
-            this.rotate_pitch[i].value = i%2!=0 ? 0 : 50;
-        }
-        */
-
         this.calc_button = [];
         this.calc_button[0] = document.querySelector("#calcX");
-        /*
-        this.calc_button[1] = document.querySelector("#calc0");
-        this.calc_button[2] = document.querySelector("#calc1");
-        this.calc_button[3] = document.querySelector("#calc2");
-        this.calc_button[4] = document.querySelector("#calc3");
-        */
 
         this.calc_button[0].addEventListener("click", () => this.triggerCalcX());
-        /*
-        this.calc_button[1].addEventListener("click", () => this.triggerCalc(0));
-        this.calc_button[2].addEventListener("click", () => this.triggerCalc(1));
-        this.calc_button[3].addEventListener("click", () => this.triggerCalc(2));
-        this.calc_button[4].addEventListener("click", () => this.triggerCalc(3));
-        */
 
         this.netSessionMap = new Map();
         this.netSessionList = [];
@@ -351,10 +319,3 @@ class aqa_menu {
         }
     }
 }
-
-/*
-// Initialize the form when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    aqa.htmlGui=new aqa_menu();
-});
-*/
