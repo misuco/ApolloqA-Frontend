@@ -65,6 +65,7 @@ aqa.syncTrackRunning = false;
 
 // worldObjects.js
 aqa.worldObjects = new Map();
+aqa.SoundMeshes = [];
 
 // syncTrack.js
 aqa.readyTrack = new Map();

@@ -1,3 +1,5 @@
+aqa.SoundMeshes=[];
+
 class SoundMesh {
     constructor(name,parentMesh,objPath) {
         console.log("new SoundMesh "+name);
@@ -25,26 +27,50 @@ class SoundMesh {
         this.m.parent = this.parent;
     }
 };
+aqa.SoundMeshes["SoundMesh"]=SoundMesh;
 
 class SoundMesh2 {
     constructor(name,mesh) {
         console.log("new SoundMesh "+name);
         this.m=[];
-        for(let i=0;i<16;i++) {
+        for(let i=0;i<17;i++) {
             this.m[i] = BABYLON.MeshBuilder.CreateSphere(name, {
               diameter: 0.5
             }, scene);
+            /*
             this.m[i].position.x=i%4-1.5;
             this.m[i].position.z=Math.floor(i/4)-1.5;
             this.m[i].parent=mesh;
+            */
+        }
+        this.m[0].position.x=0;
+        this.m[0].position.z=0
+        this.m[0].parent=mesh;
+        for(let i=0;i<4;i++) {
+            this.m[i*4+1].position.x=i;
+            this.m[i*4+1].position.z=i;
+            this.m[i*4+1].parent=mesh;
+
+            this.m[i*4+2].position.x=-i;
+            this.m[i*4+2].position.z=i;
+            this.m[i*4+2].parent=mesh;
+
+            this.m[i*4+3].position.x=i;
+            this.m[i*4+3].position.z=-i;
+            this.m[i*4+3].parent=mesh;
+
+            this.m[i*4+4].position.x=-i;
+            this.m[i*4+4].position.z=-i;
+            this.m[i*4+4].parent=mesh;
         }
     }
     updateFreqs(freqs) {
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 17; i++) {
             this.m[i].scaling.y=freqs[i]/64;
         }
     }
 };
+aqa.SoundMeshes["SoundMesh2"]=SoundMesh2;
 
 let objSelect=1;
 function newSoundMesh(x,y,z,trackUrl,presetName) {
@@ -57,7 +83,8 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
     let mesh = new BABYLON.TransformNode();
     let objPath="obj/Logo-A_00"+objSelect+".obj";
     objSelect++; if(objSelect>3) {objSelect=1;}
-    let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh,objPath,);
+    //let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh,objPath,);
+    let soundMesh = new aqa.SoundMeshes["SoundMesh2"]("mesh_"+trackUrl,mesh,objPath);
 
     mesh.position.x=x;
     mesh.position.y=y;
@@ -207,7 +234,7 @@ function initWorldObjectAnimation() {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
                 worldObject.mesh.rotation.y=uptimeS;
-                worldObject.mesh.rotation.z=uptimeS;
+                //worldObject.mesh.rotation.z=uptimeS;
             });
         } catch(err) {
             console.log("Analyzer error:" + err);
