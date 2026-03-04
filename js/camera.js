@@ -125,10 +125,12 @@ async function initCamera() {
     // for our spaceship, but really depends on the mesh you loaded
     scene.stopAllAnimations();
     aqa.spaceshipMesh = result.meshes[0];
+    aqa.spaceshipMesh.position.y=2;
+
     console.log("spaceshipMesh size "+result.meshes.length);
     console.log("spaceship animationGroup size "+result.animationGroups.length);
 
-    aqa.spaceshipPosition = new BABYLON.Vector3(0,0,0);
+    //aqa.spaceshipPosition = new BABYLON.Vector3(0,0,0);
     //aqa.spaceshipController = new BABYLON.PhysicsCharacterController(aqa.spaceshipPosition, {capsuleHeight: 1, capsuleRadius: 1}, scene);
     //aqa.spaceshipGravity = new BABYLON.Vector3(0.1,0.1,0.1);
 
@@ -232,7 +234,7 @@ async function initCamera() {
             // Convert Yaw and Pitch to a rotation in quaternion form
             const turn = Quaternion.RotationYawPitchRoll(
                 input.yaw * deltaSecs * TurnSpeed,
-                input.pitch * deltaSecs * TurnSpeed,
+                0, //input.pitch * deltaSecs * TurnSpeed,
                 0
             );
             // Apply the rotation to our current rotation
@@ -250,15 +252,15 @@ async function initCamera() {
             aqa.spaceshipMesh.rotationQuaternion.multiplyInPlace(turn);
         }
         */
-        
+
         // If we have autoplay, constant acceleration
         // If we have input, compute acceleration
         // otherwise it's zero
-        const acceleration = 
+        const acceleration =
         aqa.speed>0 ? aqa.spaceshipMesh.forward.scale(MaxThrust * aqa.speed * deltaSecs) :
         input ? aqa.spaceshipMesh.forward.scale(input.thrust * MaxThrust * deltaSecs)
         : Vector3.Zero();
-        
+
         // Now apply the various physics forces to move the spaceship
 
         // Apply acceleration to velocity
