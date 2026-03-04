@@ -38,9 +38,13 @@ aqa.instruments=[];
 
 // camera.js
 aqa.spaceshipMesh = null;
+
+/*
+physics disabled
 aqa.spaceshipPosition = null;
 aqa.spaceshipController = null;
 aqa.spaceshipGravity = null;
+*/
 aqa.chaseCameraPosition = null;
 aqa.chaseCameraLookAt = null;
 aqa.mouseState = null;
