@@ -1,18 +1,39 @@
+class SoundMesh {
+    constructor(name,mesh) {
+        console.log("new SoundMesh "+name);
+        this.m=[];
+        for(let i=0;i<16;i++) {
+            this.m[i] = BABYLON.MeshBuilder.CreateSphere(name, {
+              diameter: 0.5
+            }, scene);
+            this.m[i].position.x=i%4-1.5;
+            this.m[i].position.z=Math.floor(i/4)-1.5;
+            this.m[i].parent=mesh;
+        }
+    }
+    updateFreqs(freqs) {
+        for (let i = 0; i < 16; i++) {
+            this.m[i].scaling.y=freqs[i]/64;
+        }
+    }
+};
+
 function newSoundMesh(x,y,z,trackUrl,presetName) {
     console.log("newSoundMesh "+trackUrl+" "+presetName);
 
     let worldObject = {};
     worldObject.trackUrl=trackUrl;
 
-    let mesh = BABYLON.MeshBuilder.CreateSphere("mesh_"+trackUrl, {
-        diameter: 0.5
-    }, scene);
+
+    let mesh = new BABYLON.TransformNode();
+    let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh);
 
     mesh.position.x=x;
     mesh.position.y=y;
     mesh.position.z=z;
 
     worldObject.mesh = mesh;
+    worldObject.soundMesh = soundMesh;
 
     BABYLON.CreateSoundAsync("sound_"+trackUrl, trackUrl, {
         spatialEnabled: true,
@@ -28,19 +49,24 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
             waitTime: waitTime
         });
         worldObject.track=track;
+
+        BABYLON.CreateAudioBusAsync("analyzer_" + trackUrl, {
+            analyzerEnabled: true
+        }).then(bus => {
+            bus.analyzer.fftSize=64;
+            worldObject.bus = bus;
+            worldObject.track.outBus=worldObject.bus;
+            console.log("analyzer bus ready: " + trackUrl);
+
+            aqa.worldObjects.set(trackUrl,worldObject);
+        }).catch(err => {
+            console.error("cannot analyze sound:" + trackUrl + " " + err);
+        });
+
     }).catch(err => {
         console.error("cannot play sound:" + trackUrl + " " + err);
     });
 
-    BABYLON.CreateAudioBusAsync(trackUrl, {
-        analyzerEnabled: true
-    }).then(bus => {
-        bus.analyzer.fftSize=128;
-        worldObject.analyzer = bus;
-        console.log("analyzer bus ready: " + trackUrl);
-    }).catch(err => {
-        console.error("cannot analyze sound:" + trackUrl + " " + err);
-    });
 
     if(!aqa.labels) {
         aqa.labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -81,10 +107,9 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         worldObject.button = rect1;
         worldObject.label = text1;
 
-        aqa.worldObjects.set(trackUrl,worldObject);
 }
 
-var generateNewSound = function() {
+function generateNewSound() {
     let quantize_selected = aqa.htmlGui.quantize(0);
     let quantize_real = Math.pow(2,quantize_selected);
 
@@ -141,3 +166,20 @@ var generateNewSound = function() {
 
     oReq.send();
 };
+
+
+function initWorldObjectAnimation() {
+    scene.onBeforeRenderObservable.add(() => {
+        const uptimeS = (Date.now()-aqa.startTime)/1000;
+        try {
+            aqa.worldObjects.forEach((worldObject, i) => {
+                const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
+                worldObject.soundMesh.updateFreqs(frequencies);
+                worldObject.mesh.rotation.y=uptimeS;
+                worldObject.mesh.rotation.z=uptimeS;
+            });
+        } catch(err) {
+            console.log("Analyzer error:" + err);
+        }
+    });
+}

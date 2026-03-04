@@ -35,7 +35,7 @@ function initMultiuser() {
                     if(aqa.worldObjects.has(trackUrl)) {
                         console.log("existing trackUrl "+trackUrl);
                     } else {
-                        console.log("new trackUrl "+track.trackUrl);
+                        console.log("new trackUrl "+trackUrl);
                         let t=track[1];
                         let soundMesh = newSoundMesh(t.x,t.y,t.z,t.trackUrl,t.trackName);
                     }

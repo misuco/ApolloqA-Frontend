@@ -101,6 +101,9 @@ async function boot() {
     console.log("boot: initMultiuser");
     initMultiuser();
 
+    console.log("boot: initWorldObjectAnimation");
+    initWorldObjectAnimation()
+
     console.log("boot: runRenderLoop");
     // Start a render loop
     // - basically, this will instruct BabylonJS to continuously re-render the scene
