@@ -137,8 +137,6 @@ function removeInactiveClients() {
             value.dispose();
             aqa.otherUsers.delete(key);
             aqa.htmlGui.deleteNetSessionEntry(key);
-            aqa.readyTrack.delete(key);
-            aqa.readyAnalyzer.delete(key);
         }
     });
     setTimeout(removeInactiveClients, 1000);

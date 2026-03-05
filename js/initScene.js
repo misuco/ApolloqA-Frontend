@@ -65,6 +65,9 @@ async function createScene() {
     });
     console.log("audioEngine ready")
 
+    aqa.startTime = Date.now();
+    aqa.audioContext = aqa.audioEngine._audioContext;
+
     return scene;
 }
 
@@ -110,6 +113,8 @@ async function boot() {
     engine.runRenderLoop(() => {
         scene.render();
     });
+
+    aqa.syncTrackTimer();
 
 }
 

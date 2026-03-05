@@ -33,7 +33,7 @@ aqa.sessionId = aqa.uuidv4();
 aqa.labels=null;
 
 // initScene.js, syncTrack.js
-aqa.audioEngine;
+aqa.audioEngine = null;
 aqa.instruments=[];
 
 // camera.js
@@ -59,20 +59,20 @@ aqa.otherUsers = new Map();
 aqa.wsUrl = "ws://"+aqa.windowUrl.hostname+":3038/"
 //aqa.wsUrl = "wss://ws.apolloqa.net/"
 
-// syncTrack.js
+// syncTrack.js / htmlGui Header
 aqa.syncTrackTimer = null;
 aqa.syncTrackRunning = false;
+aqa.now = 0;
+aqa.engineTime = 0;
+aqa.tJitter = 0;
 
 // worldObjects.js
 aqa.worldObjects = new Map();
 aqa.SoundMeshes = [];
 
 // syncTrack.js
-aqa.readyTrack = new Map();
-aqa.readyAnalyzer = new Map();
-
-// animation.js
-aqa.startTime = Date.now();
+aqa.audioContext = null;
+aqa.startTime = null;
 
 aqa.nickname=nickname;
 aqa.uploadId=0;

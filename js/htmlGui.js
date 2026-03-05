@@ -98,6 +98,8 @@ class aqa_menu {
             this.sequencer_step[i].style.background="gray";
             this.sequencer_step[i].addEventListener("click", () => {this.toggleStep(i)});
         }
+        this.toggleStep(0);
+        this.toggleStep(5);
 
         this.calc_button = [];
         this.calc_button[0] = document.querySelector("#calcX");
@@ -279,7 +281,7 @@ class aqa_menu {
     updateHeader() {
         let bars=Math.floor(aqa.cycleNr/4)+1;
         let quarter=aqa.cycleNr%4+1;
-        this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter;
+        this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " t:" + ((aqa.now-aqa.startTime)/1000).toFixed(2) + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter;
     }
 
     updateNetStatus(messageCount) {
