@@ -45,20 +45,21 @@ class SoundMesh2 {
         this.m[0].position.z=0
         this.m[0].parent=mesh;
         for(let i=0;i<4;i++) {
-            this.m[i*4+1].position.x=i;
-            this.m[i*4+1].position.z=i;
+            let j=i*0.5;
+            this.m[i*4+1].position.x=j;
+            this.m[i*4+1].position.y=j;
             this.m[i*4+1].parent=mesh;
 
-            this.m[i*4+2].position.x=-i;
-            this.m[i*4+2].position.z=i;
+            this.m[i*4+2].position.x=-j;
+            this.m[i*4+2].position.y=j;
             this.m[i*4+2].parent=mesh;
 
-            this.m[i*4+3].position.x=i;
-            this.m[i*4+3].position.z=-i;
+            this.m[i*4+3].position.x=j;
+            this.m[i*4+3].position.y=-j;
             this.m[i*4+3].parent=mesh;
 
-            this.m[i*4+4].position.x=-i;
-            this.m[i*4+4].position.z=-i;
+            this.m[i*4+4].position.x=-j;
+            this.m[i*4+4].position.y=-j;
             this.m[i*4+4].parent=mesh;
         }
     }
@@ -146,7 +147,8 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         rect1.linkWithMesh(worldObject.mesh);
 
     let text1 = new BABYLON.GUI.TextBlock();
-        text1.text = objectCount + " : " + presetName;
+        worldObject.labelBaseText = objectCount + " : " + presetName;
+        text1.text = worldObject.labelBaseText;
         objectCount++
         text1.color = "White";
         text1.fontSize = 14;
@@ -231,11 +233,24 @@ function initWorldObjectAnimation() {
             aqa.worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
-                worldObject.mesh.rotation.y=uptimeS;
-                //worldObject.mesh.rotation.z=uptimeS;
+                //worldObject.mesh.rotation.y=uptimeS;
+                worldObject.mesh.rotation.z=uptimeS;
             });
         } catch(err) {
             console.log("Analyzer error:" + err);
+        }
+    });
+}
+
+function updateLabels() {
+    aqa.worldObjects.forEach((object, i) => {
+        let objectTime = object.track.currentTime.toFixed(2);
+        if(objectTime<0) {
+            object.label.text = object.labelBaseText + "\nstart in " + objectTime + " s";
+            object.label.color = "Orange";
+        } else {
+            object.label.text = object.labelBaseText;
+            object.label.color = "White";
         }
     });
 }
