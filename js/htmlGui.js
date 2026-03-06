@@ -281,7 +281,7 @@ class aqa_menu {
     updateHeader() {
         let bars=Math.floor(aqa.cycleNr/4)+1;
         let quarter=aqa.cycleNr%4+1;
-        this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " t:" + ((aqa.now-aqa.startTime)/1000).toFixed(2) + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter;
+        this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter.toFixed(2);
     }
 
     updateNetStatus(messageCount) {

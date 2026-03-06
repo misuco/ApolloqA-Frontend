@@ -62,7 +62,6 @@ aqa.wsUrl = "ws://"+aqa.windowUrl.hostname+":3038/"
 // syncTrack.js / htmlGui Header
 aqa.syncTrackTimer = null;
 aqa.syncTrackRunning = false;
-aqa.now = 0;
 aqa.engineTime = 0;
 aqa.tJitter = 0;
 
@@ -72,7 +71,6 @@ aqa.SoundMeshes = [];
 
 // syncTrack.js
 aqa.audioContext = null;
-aqa.startTime = null;
 
 aqa.nickname=nickname;
 aqa.uploadId=0;

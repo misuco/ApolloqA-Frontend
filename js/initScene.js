@@ -65,7 +65,6 @@ async function createScene() {
     });
     console.log("audioEngine ready")
 
-    aqa.startTime = Date.now();
     aqa.audioContext = aqa.audioEngine._audioContext;
 
     return scene;
@@ -89,12 +88,6 @@ async function boot() {
     await initCamera();
     aqa.audioEngine.listener.attach(aqa.spaceshipMesh);
 
-    //console.log("boot: initObjects");
-    //initObjects(aqa.sessionId,aqa.spaceshipMesh);
-    //aqa.myOrbiter=aqa.orbiter.get(aqa.sessionId);
-
-    //console.log("boot: initAnimation");
-    //initAnimation();
     console.log("boot: initMediaRecorder");
     initMediaRecorder();
 

@@ -60,10 +60,12 @@ aqa.syncTrackTimer = function() {
         }
     }
 
-    let tCycle=6e4 / aqa.tempo;
+    aqa.engineTime=aqa.audioEngine.currentTime;
+
+    let tCycle=60000 / aqa.tempo;
     if(aqa.syncTrackRunning===false) {
         aqa.syncTrackRunning = true;
-        tTarget=Date.now();
+        tTarget=aqa.engineTime*1000;
     } else {
         aqa.cycleNr++;
         if(aqa.cycleNr>15) {
@@ -74,9 +76,7 @@ aqa.syncTrackTimer = function() {
 
     updateLabels();
 
-    aqa.now=Date.now();
-    aqa.engineTime=aqa.audioEngine.currentTime;
-    let nextSyncInMs = tTarget-aqa.now;
+    let nextSyncInMs = tTarget-aqa.engineTime*1000;
     aqa.tJitter=nextSyncInMs-tCycle;
 
     setTimeout(aqa.syncTrackTimer, nextSyncInMs);

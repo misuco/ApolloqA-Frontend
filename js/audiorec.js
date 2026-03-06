@@ -27,16 +27,15 @@ async function sendData(uploadFile) {
         console.log(await response.json());
 
         const trackUrl=aqa.baseUrl+"loops/"+aqa.sessionId+"/u"+aqa.uploadId+".ogg";
-        //const trackId=aqa.recTrackId;
-        //aqa.myOrbiter.trackUrl[trackId]=trackUrl;
-        //playTrack(aqa.sessionId,trackUrl, trackId);
 
         let randX = aqa.spaceshipMesh.position.x + Math.random() * 20 - 10;
         let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
         let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
-        newSoundMesh(randX,randY,randZ,trackUrl,"Rec"+aqa.uploadId);
+        let trackName = "Rec"+aqa.uploadId;
+        newSoundMesh(randX,randY,randZ,trackUrl,trackName);
 
-        //sendTrackList(aqa.myOrbiter.trackUrl);
+        let trackList=[trackUrl,{"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"trackName":trackName,"creator":aqa.nickname}];
+        sendTrackList(trackList);
 
         aqa.uploadId++;
     } catch (e) {

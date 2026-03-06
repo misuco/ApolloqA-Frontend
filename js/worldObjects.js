@@ -225,16 +225,14 @@ function generateNewSound() {
     oReq.send();
 };
 
-
 function initWorldObjectAnimation() {
     scene.onBeforeRenderObservable.add(() => {
-        const uptimeS = (Date.now()-aqa.startTime)/1000;
         try {
             aqa.worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
-                //worldObject.mesh.rotation.y=uptimeS;
-                worldObject.mesh.rotation.z=uptimeS;
+                //worldObject.mesh.rotation.y=aqa.engineTime;
+                worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
             });
         } catch(err) {
             console.log("Analyzer error:" + err);

@@ -122,7 +122,7 @@ function sendPosition() {
 }
 
 function sendTrackList(list) {
-    let message=JSON.stringify({"sessionId":aqa.sessionId,"trackList":list});
+    let message=JSON.stringify({"sessionId":aqa.sessionId,"trackList":[list]});
     //console.log("sendTrackList "+message);
     aqa.ws.send(message);
 }
