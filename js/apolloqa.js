@@ -82,7 +82,6 @@ aqa.tempo=120;
 aqa.cycleTime=aqa.tempo / 60;
 aqa.cycleNr=0;
 
-aqa.recTrackId=0;
 aqa.recArmed=false;
 aqa.stopArmed=false;
 aqa.recording=false;

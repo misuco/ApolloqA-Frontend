@@ -31,7 +31,7 @@ aqa.syncTrackTimer = function() {
             aqa.recArmed=false;
             aqa.recording=true;
             tRec=0;
-            mic_record_button[aqa.recTrackId].style.background = "red";
+            mic_record_button.style.background = "red";
         }
 
         if(aqa.stopArmed) {
@@ -41,17 +41,15 @@ aqa.syncTrackTimer = function() {
             mic_stop_button.style.background = "";
             aqa.stopArmed=false;
             aqa.recording=false;
-            for(let i=0;i<4;i++) {
-                mic_record_button[i].style.background = "";
-                mic_record_button[i].disabled = false;
-            }
+            mic_record_button.style.background = "";
+            mic_record_button.disabled = false;
         }
 
         // stop after max rec time
         if(aqa.recording && tRec+1>=tRecMax) {
             aqa.stopArmed=true;
-            mic_record_button[aqa.recTrackId].style.background = "";
-            mic_record_button[aqa.recTrackId].disabled = false;
+            mic_record_button.style.background = "";
+            mic_record_button.disabled = false;
             mic_stop_button.disabled = true;
             mic_stop_button.style.background = "orange";
         }

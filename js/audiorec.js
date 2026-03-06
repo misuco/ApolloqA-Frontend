@@ -1,9 +1,5 @@
 // Set up basic variables for app
-const mic_record_button = [];
-mic_record_button[0] = document.querySelector("#record0");
-mic_record_button[1] = document.querySelector("#record1");
-mic_record_button[2] = document.querySelector("#record2");
-mic_record_button[3] = document.querySelector("#record3");
+const mic_record_button = document.querySelector("#record");
 
 const mic_stop_button = document.querySelector("#stop");
 const canvasAudio = document.querySelector("#visualizer");
@@ -31,12 +27,16 @@ async function sendData(uploadFile) {
         console.log(await response.json());
 
         const trackUrl=aqa.baseUrl+"loops/"+aqa.sessionId+"/u"+aqa.uploadId+".ogg";
-        const trackId=aqa.recTrackId;
-        aqa.myOrbiter.trackUrl[trackId]=trackUrl;
-        playTrack(aqa.sessionId,trackUrl, trackId);
-        if(trackId<aqa.nTracks) {
-            sendTrackList(aqa.myOrbiter.trackUrl);
-        }
+        //const trackId=aqa.recTrackId;
+        //aqa.myOrbiter.trackUrl[trackId]=trackUrl;
+        //playTrack(aqa.sessionId,trackUrl, trackId);
+
+        let randX = aqa.spaceshipMesh.position.x + Math.random() * 20 - 10;
+        let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
+        let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
+        newSoundMesh(randX,randY,randZ,trackUrl,"Rec"+aqa.uploadId);
+
+        //sendTrackList(aqa.myOrbiter.trackUrl);
 
         aqa.uploadId++;
     } catch (e) {
@@ -44,17 +44,16 @@ async function sendData(uploadFile) {
     }
 }
 
-function startMicRecording(recTrackId) {
+function startMicRecording() {
     if(aqa.syncTrackRunning===false) {
         aqa.syncTrackTimer();
     }
     console.log(aqa.mediaRecorder.state);
     console.log("Recorder armed.");
-    aqa.recTrackId=recTrackId;
     aqa.recArmed=true;
-    mic_record_button[recTrackId].style.background = "orange";
+    mic_record_button.style.background = "orange";
     for(let i=0;i<4;i++) {
-        mic_record_button[i].disabled = true;
+        mic_record_button.disabled = true;
     }
     mic_stop_button.disabled = false;
 }
@@ -72,16 +71,13 @@ function initMediaRecorder() {
 
             visualize(stream);
 
-            mic_record_button[0].onclick = function () { startMicRecording(0) };
-            mic_record_button[1].onclick = function () { startMicRecording(1) };
-            mic_record_button[2].onclick = function () { startMicRecording(2) };
-            mic_record_button[3].onclick = function () { startMicRecording(3) };
+            mic_record_button.onclick = function () { startMicRecording() };
 
             mic_stop_button.onclick = function () {
                 aqa.stopArmed=true;
                 mic_stop_button.disabled = true;
                 mic_stop_button.style.background = "orange";
-                mic_record_button[aqa.recTrackId].style.background = "orange";
+                mic_record_button.style.background = "orange";
             };
 
             aqa.mediaRecorder.onstop = function (e) {
