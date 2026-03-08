@@ -43,6 +43,9 @@ class aqa_menu {
         this.menu_main_button.addEventListener("click", () => {this.toggleMenu()});
 
         this.chords_select = document.querySelector("#select_chords");
+        this.chords_string = [];
+        this.chords_len = [];
+
         this.display_bpm = document.querySelector("#display_bpm");
         this.range_bpm = document.querySelector("#range_bpm");
         this.range_bpm.addEventListener("input", (event) => this.updateBpmValue(event.target.value));
@@ -54,13 +57,14 @@ class aqa_menu {
         this.dec_bpm.addEventListener("click", (event) => this.decBpmValue());
 
         this.select_len = document.querySelector("#select_len");
-        [ "1","2","4","8","16" ].forEach((label,n) => {
+        [ "1","2","4" ].forEach((label,n) => {
             let opt=document.createElement('option');
             opt.value=n;
             opt.innerHTML=label;
             this.select_len.appendChild(opt);
         });
-        this.select_len.value=3;
+        this.select_len.value=0;
+        this.select_len.addEventListener("input", this.updateLen);
 
         // populate generator config selects
         this.select_instrument = [];
@@ -98,8 +102,15 @@ class aqa_menu {
             this.sequencer_step[i].style.background="gray";
             this.sequencer_step[i].addEventListener("click", () => {this.toggleStep(i)});
         }
+
+        this.toggleStep(0);
+        this.toggleStep(3);
+        this.toggleStep(4);
+        this.toggleStep(6);
+        /*
         this.toggleStep(0);
         this.toggleStep(5);
+        */
 
         this.calc_button = [];
         this.calc_button[0] = document.querySelector("#calcX");
@@ -125,14 +136,18 @@ class aqa_menu {
 
     initChordsSelect() {
         const chords = this.chords_select;
+        const chords_string = this.chords_string;
+        const chords_len = this.chords_len;
         const http_req = new XMLHttpRequest();
         http_req.addEventListener("load", function() {
             if (this.response) {
                 const response_data=JSON.parse(this.response);
-                response_data.forEach((inst,n) => {
+                response_data.forEach((chord,n) => {
                     let opt=document.createElement('option');
                     opt.value=n;
-                    opt.innerHTML=inst.name;
+                    opt.innerHTML=chord.name;
+                    chords_string[n]=chord.chords.trim().split(/\s+/).join("_");
+                    chords_len[n]=chord.chords.trim().split(/\s+/).length;
                     chords.appendChild(opt);
                 });
             } else {
@@ -234,13 +249,24 @@ class aqa_menu {
     }
 
     updateBpmValue(newTempo) {
+        console.log("updateBpmValue " + newTempo);
         aqa.tempo=newTempo;
-        aqa.cycleTime=aqa.tempo / 60;
+        aqa.beatTime=60/aqa.tempo;
         this.display_bpm.textContent=newTempo;
     }
 
+    updateLen(event) {
+        aqa.cycleLen=Math.pow(2,event.target.value)*aqa.htmlGui.chords_len[aqa.htmlGui.chords_select.value];
+        console.log("cycleLen: "+aqa.cycleLen);
+    }
+
     get chords() {
-        return this.chords_select.value;
+        //return this.chords_select.value;
+        return this.chords_string[this.chords_select.value];
+    }
+
+    get chordsLen() {
+        return this.chords_len[this.chords_select.value];
     }
 
     instrument(i) {
@@ -279,11 +305,19 @@ class aqa_menu {
     }
 
     updateHeader() {
-        let bars=Math.floor(aqa.cycleNr/4)+1;
-        let quarter=aqa.cycleNr%4+1;
+        let bars=Math.floor(aqa.beatNr/4)+1;
+        let quarter=aqa.beatNr%4+1;
         // debug header
         // this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter.toFixed(2) + " fps: " + engine.getFps().toFixed(2);
-        this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " fps: " + engine.getFps().toFixed(2);
+        this.display_header.innerHTML =
+        aqa.nickname + " " +
+        bars + ":" + quarter +
+        " clips: " + aqa.worldObjects.size +
+        " fps: " + engine.getFps().toFixed(2) +
+        //" tempo: " + aqa.tempo.toFixed(2) +
+        " beatTime: " + aqa.beatTime.toFixed(2) +
+        " jitter: " + aqa.tJitter.toFixed(2)
+        ;
     }
 
     updateNetStatus(messageCount) {

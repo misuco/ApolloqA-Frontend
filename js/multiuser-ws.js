@@ -27,7 +27,7 @@ function initMultiuser() {
 
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
-            if(m.sessionId!==aqa.sessionId) {
+            if(m.worldId!==aqa.worldId) {
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {
@@ -122,7 +122,7 @@ function sendPosition() {
 }
 
 function sendTrackList(list) {
-    let message=JSON.stringify({"sessionId":aqa.sessionId,"trackList":[list]});
+    let message=JSON.stringify({"worldId":aqa.worldId,"sessionId":aqa.sessionId,"trackList":[list]});
     //console.log("sendTrackList "+message);
     aqa.ws.send(message);
 }

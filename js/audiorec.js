@@ -14,7 +14,7 @@ const canvasCtx = canvasAudio.getContext("2d");
 async function sendData(uploadFile) {
     console.log("sendData "+aqa.uploadId);
     var formData = new FormData();
-    formData.append('sessionId', aqa.sessionId);
+    formData.append('worldId', aqa.worldId);
     formData.append('uploadId', aqa.uploadId);
     formData.append('nickname', aqa.nickname);
     formData.append('file', uploadFile);
@@ -26,12 +26,12 @@ async function sendData(uploadFile) {
         });
         console.log(await response.json());
 
-        const trackUrl=aqa.baseUrl+"loops/"+aqa.sessionId+"/u"+aqa.uploadId+".ogg";
+        const trackUrl="loops/"+aqa.worldId+"/u"+aqa.uploadId+".ogg";
 
         let randX = aqa.spaceshipMesh.position.x + Math.random() * 20 - 10;
         let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
         let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
-        let trackName = "Rec"+aqa.uploadId;
+        let trackName = aqa.nickname+" "+aqa.uploadId;
         newSoundMesh(randX,randY,randZ,trackUrl,trackName);
 
         let trackList=[trackUrl,{"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"trackName":trackName,"creator":aqa.nickname}];

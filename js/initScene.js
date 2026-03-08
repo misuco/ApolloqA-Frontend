@@ -106,9 +106,6 @@ async function boot() {
     engine.runRenderLoop(() => {
         scene.render();
     });
-
-    aqa.syncTrackTimer();
-
 }
 
 boot();

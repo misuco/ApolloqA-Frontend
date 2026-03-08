@@ -82,8 +82,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
     let mesh = new BABYLON.TransformNode();
     let objPath="obj/Logo-A_00"+objSelect+".obj";
     objSelect++; if(objSelect>3) {objSelect=1;}
-    //let soundMesh = new SoundMesh("mesh_"+trackUrl,mesh,objPath,);
-    let soundMesh = new aqa.SoundMeshes["SoundMesh2"]("mesh_"+trackUrl,mesh,objPath);
+    let soundMesh = new aqa.SoundMeshes["SoundMesh"]("mesh_"+trackUrl,mesh,objPath);
 
     mesh.position.x=x;
     mesh.position.y=y;
@@ -96,8 +95,13 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
-        const currentTime = track.engine.currentTime;
-        const nextCycleTime = (Math.floor(currentTime / (aqa.cycleTime * 8)) + 1)*aqa.cycleTime*8
+        if(aqa.syncTrackRunning===false) {
+            aqa.syncTrackTimer();
+        }
+        const currentTime = track.engine.currentTime; // s
+        const cycleLenS = aqa.beatTime * aqa.cycleLen * aqa.htmlGui.chordsLen;
+        const currentCycleNumber = Math.floor(currentTime / cycleLenS);
+        const nextCycleTime = (currentCycleNumber + 1) * cycleLenS;
         const waitTime = nextCycleTime - currentTime;
         console.log("track ready "+ trackUrl + " at " + currentTime + " next cycle " + nextCycleTime + " wait " + waitTime );
         track.spatial.attach(worldObject.mesh);
@@ -171,9 +175,6 @@ function generateNewSound() {
     let quantize_selected = aqa.htmlGui.quantize(0);
     let quantize_real = Math.pow(2,quantize_selected);
 
-    let len_selected = aqa.htmlGui.len();
-    let len_real = Math.pow(2,len_selected);
-
     let trackId=0;
 
     const sf2Nr = aqa.htmlGui.instrument(0);
@@ -216,11 +217,11 @@ function generateNewSound() {
     + "&presetNr=" + encodeURIComponent(presetJson.nr)
     + "&presetName=" + encodeURIComponent(presetJson.name)
     + "&presetBank=" + encodeURIComponent(presetJson.bank)
-    + "&len=" + len_real
+    + "&len=" + aqa.cycleLen
     + "&quantize=" + quantize_real
     + "&density=" + aqa.htmlGui.density(0)
     + "&steps=" + aqa.htmlGui.steps()
-    + "&sessionId=" + aqa.sessionId);
+    + "&worldId=" + aqa.worldId);
 
     oReq.send();
 };
@@ -231,7 +232,7 @@ function initWorldObjectAnimation() {
             aqa.worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
-                //worldObject.mesh.rotation.y=aqa.engineTime;
+                worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
                 worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
             });
         } catch(err) {

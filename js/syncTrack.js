@@ -18,8 +18,9 @@ let tRecMax=4;
 let nextAutoTriger=0;
 
 aqa.syncTrackTimer = function() {
+    aqa.syncTrackRunning=true;
     aqa.htmlGui.updateHeader();
-    if(aqa.cycleNr===0) {
+    if(aqa.beatNr===0) {
 
         if(aqa.recording) {
             tRec++;
@@ -62,14 +63,14 @@ aqa.syncTrackTimer = function() {
 
     aqa.engineTime=aqa.audioEngine.currentTime;
 
-    let tCycle=60000 / aqa.tempo;
+    let tCycle = aqa.beatTime*1000;
     if(aqa.syncTrackRunning===false) {
         aqa.syncTrackRunning = true;
         tTarget=aqa.engineTime*1000;
     } else {
-        aqa.cycleNr++;
-        if(aqa.cycleNr>15) {
-            aqa.cycleNr=0;
+        aqa.beatNr++;
+        if(aqa.beatNr>=aqa.cycleLen*aqa.htmlGui.chordsLen) {
+            aqa.beatNr=0;
         }
         tTarget+=tCycle;
     }

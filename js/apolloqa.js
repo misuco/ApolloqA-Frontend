@@ -28,6 +28,7 @@ aqa.getRandomInt = function(max) {
 
 aqa.htmlGui={};     // guiHtml.js
 aqa.sessionId = aqa.uuidv4();
+aqa.worldId = aqa.uuidv4();
 
 // syncTrack.js
 aqa.labels=null;
@@ -77,8 +78,9 @@ aqa.uploadId=0;
 aqa.nTracks=4;
 
 aqa.tempo=120;
-aqa.cycleTime=aqa.tempo / 60;
-aqa.cycleNr=0;
+aqa.beatTime=60/aqa.tempo;
+aqa.beatNr=0;
+aqa.cycleLen=4;
 
 aqa.recArmed=false;
 aqa.stopArmed=false;
