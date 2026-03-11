@@ -27,7 +27,7 @@ function initMultiuser() {
 
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
-            if( m.worldId===aqa.worldId) {
+            if( m.worldId===aqa.worldId ) {
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {
@@ -65,27 +65,31 @@ function initMultiuser() {
                     otherUser.rotation.z = value.rz;
                 }
             } else {
-                aqa.otherUsers.set(key,{});
+                if(value.worldId==aqa.worldId) {
+                    aqa.otherUsers.set(key,{});
 
-                let spaceshipUrl=aqa.avatarUrl(value.avatarId);
+                    let spaceshipUrl=aqa.avatarUrl(value.avatarId);
 
-                SceneLoader.ImportMeshAsync(
-                  null,
-                  spaceshipUrl,
-                  null,
-                  scene
-                ).then(({ meshes }) => {
-                  console.log("New user created "+value.nickname+" "+key);
-                  scene.stopAllAnimations();
-                  const newUser = meshes[0];
-                  newUser.position.x = value.x;
-                  newUser.position.y = value.y;
-                  newUser.position.z = value.z;
-                  newUser.rotation = new BABYLON.Vector3(value.rx,value.ry,value.rz);
+                    SceneLoader.ImportMeshAsync(
+                      null,
+                      spaceshipUrl,
+                      null,
+                      scene
+                    ).then(({ meshes }) => {
+                      console.log("New user created "+value.nickname+" "+key);
+                      scene.stopAllAnimations();
+                      const newUser = meshes[0];
+                      newUser.position.x = value.x;
+                      newUser.position.y = value.y;
+                      newUser.position.z = value.z;
+                      newUser.rotation = new BABYLON.Vector3(value.rx,value.ry,value.rz);
 
-                  aqa.otherUsers.set(key,newUser);
-                  aqa.htmlGui.setNetSessionEntry(key,value.nickname);
-                });
+                      aqa.otherUsers.set(key,newUser);
+                      aqa.htmlGui.setNetSessionEntry(key,value.nickname);
+                    });
+                } else {
+                    //console.log("ship from another world "+value.worldId);
+                }
             }
         });
         sendPosition();
