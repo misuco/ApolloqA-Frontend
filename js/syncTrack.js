@@ -1,16 +1,6 @@
 //// OBJECTS
 let objectCount = 1;
 
-const autoplayButton = document.querySelector("#menu_autoplay");
-autoplayButton.onclick = function () {
-    aqa.autoplay=!aqa.autoplay;
-    if(aqa.autoplay===true) {
-        autoplayButton.style.background = "orange";
-    } else {
-        autoplayButton.style.background = "gray";
-    }
-}
-
 let tTarget=0;
 let tJitter=0;
 let tRec=0;
@@ -69,7 +59,7 @@ aqa.syncTrackTimer = function() {
         tTarget=aqa.engineTime*1000;
     } else {
         aqa.beatNr++;
-        if(aqa.beatNr>=aqa.cycleLen*aqa.htmlGui.chordsLen) {
+        if(aqa.beatNr>=aqa.cycleLen*aqa.htmlGuiStart.chordsLen) {
             aqa.beatNr=0;
         }
         tTarget+=tCycle;

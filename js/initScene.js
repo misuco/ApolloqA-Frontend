@@ -93,6 +93,7 @@ async function boot() {
 
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGui.updateHeader();
+    aqa.htmlGuiStart=new aqa_menu_start();
 
     console.log("boot: initMultiuser");
     initMultiuser();

@@ -31,13 +31,17 @@ function initMultiuser() {
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {
-                    let trackUrl=track.url;
-                    if(aqa.worldObjects.has(trackUrl)) {
-                        console.log("existing trackUrl "+trackUrl);
+                    if(track) {
+                        let trackUrl=track.url;
+                        if(aqa.worldObjects.has(trackUrl)) {
+                            console.log("existing trackUrl "+trackUrl);
+                        } else {
+                            console.log("new trackUrl "+trackUrl);
+                            let t=track;
+                            let soundMesh = newSoundMesh(t.x,t.y,t.z,t.url,t.name);
+                        }
                     } else {
-                        console.log("new trackUrl "+trackUrl);
-                        let t=track;
-                        let soundMesh = newSoundMesh(t.x,t.y,t.z,t.url,t.name);
+                        console.log("NULL track in list");
                     }
                 });
             }

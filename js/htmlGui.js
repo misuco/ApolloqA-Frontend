@@ -18,7 +18,9 @@ class aqa_menu {
         this.menu_navi_button = document.querySelector("#menu_navi");
         this.div_navi = document.querySelector("#config_navi");
         this.menu_navi_button.addEventListener("click", () => {
-          this.div_navi.hidden=!this.div_navi.hidden
+            this.setDivsHidden(true);
+            this.div_navi.hidden=false;
+            this.menu_navi_button.style.background = "orange";
         });
 
 
@@ -26,45 +28,40 @@ class aqa_menu {
         this.div_step_sequencer = document.querySelector("#step_sequencer");
         this.div_gen = document.querySelector("#config_gen");
         this.menu_gen_button.addEventListener("click", () => {
-          this.div_gen.hidden=!this.div_gen.hidden
+            this.setDivsHidden(true);
+            this.div_gen.hidden=false;
+            this.div_step_sequencer.hidden=false;
+            this.menu_gen_button.style.background = "orange";
         });
 
         this.menu_session_button = document.querySelector("#menu_session");
         this.div_session = document.querySelector("#config_session");
-        this.menu_session_button.addEventListener("click", () => {this.div_session.hidden=!this.div_session.hidden});
+        this.menu_session_button.addEventListener("click", () => {
+            this.setDivsHidden(true);
+            this.div_session.hidden=false;
+            this.menu_session_button.style.background = "orange";
+        });
 
         this.menu_mic_button = document.querySelector("#menu_mic");
         this.div_mic = document.querySelector("#config_mic");
-        this.menu_mic_button.addEventListener("click", () => {this.div_mic.hidden=!this.div_mic.hidden});
+        this.menu_mic_button.addEventListener("click", () => {
+            this.setDivsHidden(true);
+            this.div_mic.hidden=false;
+            this.menu_mic_button.style.background = "orange";
+        });
 
         this.menu_autoplay_button = document.querySelector("#menu_autoplay");
+        this.menu_autoplay_button.onclick = function () {
+            aqa.autoplay=!aqa.autoplay;
+            if(aqa.autoplay===true) {
+                this.style.background = "orange";
+            } else {
+                this.style.background = "gray";
+            }
+        }
 
         this.menu_main_button = document.querySelector("#menu_main");
         this.menu_main_button.addEventListener("click", () => {this.toggleMenu()});
-
-        this.chords_select = document.querySelector("#select_chords");
-        this.chords_string = [];
-        this.chords_len = [];
-
-        this.display_bpm = document.querySelector("#display_bpm");
-        this.range_bpm = document.querySelector("#range_bpm");
-        this.range_bpm.addEventListener("input", (event) => this.updateBpmValue(event.target.value));
-
-        this.inc_bpm = document.querySelector("#inc_bpm");
-        this.inc_bpm.addEventListener("click", (event) => this.incBpmValue());
-
-        this.dec_bpm = document.querySelector("#dec_bpm");
-        this.dec_bpm.addEventListener("click", (event) => this.decBpmValue());
-
-        this.select_len = document.querySelector("#select_len");
-        [ "1","2","4" ].forEach((label,n) => {
-            let opt=document.createElement('option');
-            opt.value=n;
-            opt.innerHTML=label;
-            this.select_len.appendChild(opt);
-        });
-        this.select_len.value=0;
-        this.select_len.addEventListener("input", this.updateLen);
 
         // populate generator config selects
         this.select_instrument = [];
@@ -94,7 +91,6 @@ class aqa_menu {
         }
 
         this.initIntrumentSelect();
-        this.initChordsSelect();
 
         this.sequencer_step = [];
         for(let i=0;i<8;i++) {
@@ -132,31 +128,6 @@ class aqa_menu {
         } else {
             this.sequencer_step[i].style.background="gray";
         }
-    }
-
-    initChordsSelect() {
-        const chords = this.chords_select;
-        const chords_string = this.chords_string;
-        const chords_len = this.chords_len;
-        const http_req = new XMLHttpRequest();
-        http_req.addEventListener("load", function() {
-            if (this.response) {
-                const response_data=JSON.parse(this.response);
-                response_data.forEach((chord,n) => {
-                    let opt=document.createElement('option');
-                    opt.value=n;
-                    opt.innerHTML=chord.name;
-                    chords_string[n]=chord.chords.trim().split(/\s+/).join("_");
-                    chords_len[n]=chord.chords.trim().split(/\s+/).length;
-                    chords.appendChild(opt);
-                });
-            } else {
-                console.log("initChordsSelect server error!!!");
-            }
-        });
-        console.log("initChordsSelect()");
-        http_req.open("GET", aqa.baseUrl + "/data/chords.json");
-        http_req.send();
     }
 
     initIntrumentSelect() {
@@ -211,6 +182,19 @@ class aqa_menu {
         http_req.send();
     }
 
+    setDivsHidden(v) {
+        this.div_gen.hidden=v;
+        this.div_mic.hidden=v;
+        this.div_navi.hidden=v;
+        this.div_session.hidden=v;
+        this.div_step_sequencer.hidden=v;
+
+        this.menu_navi_button.style.background = "gray";
+        this.menu_gen_button.style.background = "gray";
+        this.menu_session_button.style.background = "gray";
+        this.menu_mic_button.style.background = "gray";
+    }
+
     toggleMenu() {
         this.menu_hidden=!this.menu_hidden;
         this.menu_session_button.hidden=this.menu_hidden;
@@ -218,6 +202,7 @@ class aqa_menu {
         this.menu_gen_button.hidden=this.menu_hidden;
         this.menu_navi_button.hidden=this.menu_hidden;
         this.menu_autoplay_button.hidden=this.menu_hidden;
+        this.setDivsHidden(true)
     }
 
     setCalcButtonColor(i,c) {
@@ -234,47 +219,8 @@ class aqa_menu {
         generateNewSound();
     }
 
-    incBpmValue() {
-        const currentBpm=Number(this.display_bpm.textContent);
-        if(currentBpm<240) {
-            this.updateBpmValue(currentBpm+1);
-        }
-    }
-
-    decBpmValue() {
-        const currentBpm=Number(this.display_bpm.textContent);
-        if(currentBpm>40) {
-            this.updateBpmValue(currentBpm-1);
-        }
-    }
-
-    updateBpmValue(newTempo) {
-        console.log("updateBpmValue " + newTempo);
-        aqa.tempo=newTempo;
-        aqa.beatTime=60/aqa.tempo;
-        this.display_bpm.textContent=newTempo;
-    }
-
-    updateLen(event) {
-        aqa.cycleLen=Math.pow(2,event.target.value)*aqa.htmlGui.chords_len[aqa.htmlGui.chords_select.value];
-        console.log("cycleLen: "+aqa.cycleLen);
-    }
-
-    get chords() {
-        //return this.chords_select.value;
-        return this.chords_string[this.chords_select.value];
-    }
-
-    get chordsLen() {
-        return this.chords_len[this.chords_select.value];
-    }
-
     instrument(i) {
         return this.select_instrument[i].value;
-    }
-
-    len() {
-        return this.select_len.value;
     }
 
     quantize(i) {
@@ -293,6 +239,7 @@ class aqa_menu {
         return steps;
     }
 
+    /*
     alignment(i) {
         let a={
             radius:this.radius[i].value,
@@ -303,6 +250,7 @@ class aqa_menu {
         };
         return a;
     }
+    */
 
     updateHeader() {
         let bars=Math.floor(aqa.beatNr/4)+1;
