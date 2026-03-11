@@ -76,7 +76,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
     console.log("newSoundMesh "+trackUrl+" "+presetName);
 
     let worldObject = {};
-    worldObject.trackUrl=trackUrl;
+    worldObject.url=trackUrl;
 
 
     let mesh = new BABYLON.TransformNode();
@@ -204,8 +204,18 @@ function generateNewSound() {
             let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
             let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
             let soundMesh = newSoundMesh(randX,randY,randZ,trackUrl,presetJson.name);
-            let trackList=[trackUrl,{"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"trackName":presetJson.name,"creator":aqa.nickname}];
-            sendTrackList(trackList);
+
+            let worldObject={"url":trackUrl,"name":presetJson.name,"creator":aqa.nickname,"x":randX,"y":randY,"z":randZ};
+            sendTrackList(worldObject);
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.addEventListener("load", function() {
+                console.log("sendTrackList response " + this.response);
+            });
+
+            xmlhttp.open("POST", aqa.baseUrl + "api/worldObjects");
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify(worldObject));
         }
     });
 

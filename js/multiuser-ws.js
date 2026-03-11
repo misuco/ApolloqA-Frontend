@@ -27,17 +27,17 @@ function initMultiuser() {
 
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
-            if(m.worldId!==aqa.worldId) {
+            if( m.worldId===aqa.worldId) {
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {
-                    let trackUrl=track[0];
+                    let trackUrl=track.url;
                     if(aqa.worldObjects.has(trackUrl)) {
                         console.log("existing trackUrl "+trackUrl);
                     } else {
                         console.log("new trackUrl "+trackUrl);
-                        let t=track[1];
-                        let soundMesh = newSoundMesh(t.x,t.y,t.z,t.trackUrl,t.trackName);
+                        let t=track;
+                        let soundMesh = newSoundMesh(t.x,t.y,t.z,t.url,t.name);
                     }
                 });
             }
@@ -108,11 +108,13 @@ function sendPosition() {
         let y = aqa.spaceshipMesh.position.y;
         let z = aqa.spaceshipMesh.position.z;
         let message=JSON.stringify(
-            {"sessionId":aqa.sessionId,
-            "nickname":aqa.nickname,
-            "x":x,"y":y,"z":z,
-            "rx":rq.x,"ry":rq.y,"rz":rq.z,
-            "avatarId":aqa.avatarId
+            {
+                "sessionId":aqa.sessionId,
+                "worldId":aqa.worldId,
+                "nickname":aqa.nickname,
+                "x":x,"y":y,"z":z,
+                "rx":rq.x,"ry":rq.y,"rz":rq.z,
+                "avatarId":aqa.avatarId
             }
         );
         aqa.ws.send(message);

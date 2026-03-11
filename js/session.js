@@ -15,7 +15,9 @@ function getCookie(cname) {
     return "";
 }
 
+const worldIdHash = window.location.hash;
 const nickname = getCookie("nickname");
-if (!nickname) {
+
+if (!nickname && !worldIdHash) {
     window.location.href = 'checkin';
 }

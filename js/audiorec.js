@@ -34,7 +34,7 @@ async function sendData(uploadFile) {
         let trackName = aqa.nickname+" "+aqa.uploadId;
         newSoundMesh(randX,randY,randZ,trackUrl,trackName);
 
-        let trackList=[trackUrl,{"x":randX,"y":randY,"z":randZ,"trackUrl":trackUrl,"trackName":trackName,"creator":aqa.nickname}];
+        let trackList={"url":trackUrl,"name":trackName,"creator":aqa.nickname,"x":randX,"y":randY,"z":randZ};
         sendTrackList(trackList);
 
         aqa.uploadId++;

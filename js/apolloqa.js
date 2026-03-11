@@ -26,9 +26,19 @@ aqa.getRandomInt = function(max) {
     return Math.floor(Math.random() * max);
 }
 
+// url
+aqa.windowUrl = window.location;
+
 aqa.htmlGui={};     // guiHtml.js
 aqa.sessionId = aqa.uuidv4();
-aqa.worldId = aqa.uuidv4();
+
+if(worldIdHash) {
+    aqa.worldId = worldIdHash.replace("#","");
+} else {
+    aqa.worldId = aqa.uuidv4();
+    aqa.windowUrl.hash = aqa.worldId;
+    window.location.href = aqa.windowUrl;
+}
 
 // syncTrack.js
 aqa.labels=null;
@@ -50,9 +60,6 @@ aqa.chaseCameraPosition = null;
 aqa.chaseCameraLookAt = null;
 aqa.mouseState = null;
 aqa.speed = 0;
-
-// url
-aqa.windowUrl = window.location;
 
 // multiuser-ws.js
 aqa.ws = null;
