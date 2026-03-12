@@ -71,6 +71,28 @@ class SoundMesh2 {
 };
 aqa.SoundMeshes["SoundMesh2"]=SoundMesh2;
 
+
+class BarSpectrum {
+    constructor(name,mesh) {
+        console.log("new SoundMesh "+name);
+        this.m=[];
+        for(let i=0;i<16;i++) {
+            this.m[i] = BABYLON.MeshBuilder.CreateBox(name, {
+              height: 0.3, width: 0.3, depth: 0.3
+            }, scene);
+
+            this.m[i].position.x=i*0.5-4;
+            this.m[i].parent=mesh;
+        }
+    }
+    updateFreqs(freqs) {
+        for (let i = 0; i < 16; i++) {
+            this.m[i].scaling.y=freqs[i]/64;
+        }
+    }
+};
+aqa.SoundMeshes["BarSpectrum"]=BarSpectrum;
+
 let objSelect=1;
 function newSoundMesh(x,y,z,trackUrl,presetName) {
     console.log("newSoundMesh "+trackUrl+" "+presetName);
@@ -80,9 +102,15 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
 
 
     let mesh = new BABYLON.TransformNode();
+
+    /*
     let objPath="obj/Logo-A_00"+objSelect+".obj";
     objSelect++; if(objSelect>3) {objSelect=1;}
     let soundMesh = new aqa.SoundMeshes["SoundMesh"]("mesh_"+trackUrl,mesh,objPath);
+    */
+
+    let soundMesh = new aqa.SoundMeshes["BarSpectrum"]("mesh_"+trackUrl,mesh);
+
 
     mesh.position.x=x;
     mesh.position.y=y;
@@ -243,7 +271,7 @@ function initWorldObjectAnimation() {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
                 worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
-                worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
+                //worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
             });
         } catch(err) {
             console.log("Analyzer error:" + err);
