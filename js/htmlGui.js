@@ -56,7 +56,7 @@ class aqa_menu {
             if(aqa.autoplay===true) {
                 this.style.background = "orange";
             } else {
-                this.style.background = "gray";
+                this.style.background = "#0088cc";
             }
         }
 
@@ -95,7 +95,7 @@ class aqa_menu {
         this.sequencer_step = [];
         for(let i=0;i<8;i++) {
             this.sequencer_step[i] = document.querySelector("#step_"+i);
-            this.sequencer_step[i].style.background="gray";
+            this.sequencer_step[i].style.background="#0088cc";
             this.sequencer_step[i].addEventListener("click", () => {this.toggleStep(i)});
         }
 
@@ -123,10 +123,10 @@ class aqa_menu {
     }
 
     toggleStep(i) {
-        if(this.sequencer_step[i].style.background=="gray") {
+        if(this.sequencer_step[i].style.background=="#0088cc") {
             this.sequencer_step[i].style.background="orange";
         } else {
-            this.sequencer_step[i].style.background="gray";
+            this.sequencer_step[i].style.background="#0088cc";
         }
     }
 
@@ -189,10 +189,10 @@ class aqa_menu {
         this.div_session.hidden=v;
         this.div_step_sequencer.hidden=v;
 
-        this.menu_navi_button.style.background = "gray";
-        this.menu_gen_button.style.background = "gray";
-        this.menu_session_button.style.background = "gray";
-        this.menu_mic_button.style.background = "gray";
+        this.menu_navi_button.style.background = "#0088cc";
+        this.menu_gen_button.style.background = "#0088cc";
+        this.menu_session_button.style.background = "#0088cc";
+        this.menu_mic_button.style.background = "#0088cc";
     }
 
     toggleMenu() {
@@ -234,7 +234,7 @@ class aqa_menu {
     steps() {
         let steps = "";
         for(let i=0;i<8;i++) {
-            steps += this.sequencer_step[i].style.background=="gray" ? "0" : "1";
+            steps += this.sequencer_step[i].style.background=="#0088cc" ? "0" : "1";
         }
         return steps;
     }
