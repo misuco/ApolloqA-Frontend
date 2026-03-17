@@ -123,6 +123,7 @@ class aqa_menu {
     }
 
     toggleStep(i) {
+        console.log("toggleStep "+i);
         if(this.sequencer_step[i].style.background=="#0088cc") {
             this.sequencer_step[i].style.background="orange";
         } else {
@@ -264,7 +265,11 @@ class aqa_menu {
         " fps: " + engine.getFps().toFixed(2) +
         //" tempo: " + aqa.tempo.toFixed(2) +
         " beatTime: " + aqa.beatTime.toFixed(2) +
-        " jitter: " + aqa.tJitter.toFixed(2)
+        " jitter: " + aqa.tJitter.toFixed(2) +
+        "<br>" +
+        " chords: " + aqa.chords +
+        " cycle len: " + aqa.cycleLen +
+        " tempo: " + aqa.tempo
         ;
     }
 

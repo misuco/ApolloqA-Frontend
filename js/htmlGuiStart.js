@@ -15,6 +15,8 @@ class aqa_menu_start {
         this.dec_bpm = document.querySelector("#dec_bpm");
         this.dec_bpm.addEventListener("click", (event) => this.decBpmValue());
 
+        this.tempo = 120;
+
         this.select_len = document.querySelector("#select_len");
         [ "1","2","4" ].forEach((label,n) => {
             let opt=document.createElement('option');
@@ -23,9 +25,11 @@ class aqa_menu_start {
             this.select_len.appendChild(opt);
         });
         this.select_len.value=0;
-        this.select_len.addEventListener("input", this.updateLen);
 
         this.initChordsSelect();
+
+        this.new_session_button = document.querySelector("#new_session");
+        this.new_session_button.addEventListener("click", (event) => this.newSession());
 
     }
 
@@ -70,16 +74,29 @@ class aqa_menu_start {
 
     updateBpmValue(newTempo) {
         console.log("updateBpmValue " + newTempo);
-        aqa.tempo=newTempo;
+        this.tempo=newTempo;
         aqa.beatTime=60/aqa.tempo;
         this.display_bpm.textContent=newTempo;
     }
 
-    updateLen(event) {
-        aqa.cycleLen=Math.pow(2,event.target.value)*aqa.htmlGui.chords_len[aqa.htmlGui.chords_select.value];
-        console.log("cycleLen: "+aqa.cycleLen);
+    newSession() {
+        aqa.worldId = aqa.uuidv4();
+
+        let worldConfig={
+            "worldId":aqa.worldId,
+            "tempo":this.tempo,
+            "cycleLen":Math.pow(2,this.select_len.value),
+            "chords":this.chords_string[this.chords_select.value],
+            "chordsLen":this.chords_len[this.chords_select.value],
+            "creator":aqa.nickname
+        };
+        sendWorldConfig(worldConfig);
+
+        aqa.windowUrl.hash = aqa.worldId;
+        window.location.reload();
     }
 
+    /*
     get chords() {
         //return this.chords_select.value;
         return this.chords_string[this.chords_select.value];
@@ -89,8 +106,10 @@ class aqa_menu_start {
         return this.chords_len[this.chords_select.value];
     }
 
-    len() {
-        return this.select_len.value;
+    get len() {
+        Math.pow(2,this.select_len.value)*this.chords_len[this.chords_select.value]
+        //return this.select_len.value;
     }
+    */
 
 }

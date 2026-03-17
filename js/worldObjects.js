@@ -127,7 +127,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
             aqa.syncTrackTimer();
         }
         const currentTime = track.engine.currentTime; // s
-        const cycleLenS = aqa.beatTime * aqa.cycleLen * aqa.htmlGuiStart.chordsLen;
+        const cycleLenS = aqa.beatTime * aqa.cycleLen * aqa.chordsLen;
         const currentCycleNumber = Math.floor(currentTime / cycleLenS);
         const nextCycleTime = (currentCycleNumber + 1) * cycleLenS;
         const waitTime = nextCycleTime - currentTime;
@@ -250,7 +250,7 @@ function generateNewSound() {
     oReq.open("GET", aqa.baseUrl + "clipgen"
     + "?id=" + queryId
     + "&tempo=" + aqa.tempo
-    + "&chords=" + aqa.htmlGuiStart.chords
+    + "&chords=" + aqa.chords
     + "&sf2file=" + encodeURIComponent(sf2File)
     + "&presetNr=" + encodeURIComponent(presetJson.nr)
     + "&presetName=" + encodeURIComponent(presetJson.name)

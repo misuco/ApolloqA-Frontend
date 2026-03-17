@@ -88,6 +88,8 @@ aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;
 aqa.beatNr=0;
 aqa.cycleLen=4;
+aqa.chords="C_D_E_F";
+aqa.chordsLen=4;
 
 aqa.recArmed=false;
 aqa.stopArmed=false;

@@ -59,7 +59,7 @@ aqa.syncTrackTimer = function() {
         tTarget=aqa.engineTime*1000;
     } else {
         aqa.beatNr++;
-        if(aqa.beatNr>=aqa.cycleLen*aqa.htmlGuiStart.chordsLen) {
+        if(aqa.beatNr >= aqa.cycleLen * aqa.chordsLen) {
             aqa.beatNr=0;
         }
         tTarget+=tCycle;

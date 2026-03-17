@@ -45,7 +45,17 @@ function initMultiuser() {
                     }
                 });
             }
-            sendPosition();
+            return;
+        }
+
+        if(m.chords) {
+            console.log("onmessage: chords "+m.chords);
+            aqa.chords=m.chords;
+            aqa.cycleLen=m.cycleLen;
+            aqa.chordsLen=m.chordsLen;
+            aqa.tempo=m.tempo;
+            aqa.beatTime=60/aqa.tempo;
+            aqa.htmlGui.updateHeader();
             return;
         }
 
@@ -134,6 +144,11 @@ function sendPosition() {
 function sendTrackList(list) {
     let message=JSON.stringify({"worldId":aqa.worldId,"sessionId":aqa.sessionId,"trackList":[list]});
     //console.log("sendTrackList "+message);
+    aqa.ws.send(message);
+}
+
+function sendWorldConfig(obj) {
+    let message=JSON.stringify(obj);
     aqa.ws.send(message);
 }
 
