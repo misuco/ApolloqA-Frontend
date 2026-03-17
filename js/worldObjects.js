@@ -71,15 +71,24 @@ class SoundMesh2 {
 };
 aqa.SoundMeshes["SoundMesh2"]=SoundMesh2;
 
-
 class BarSpectrum {
     constructor(name,mesh) {
         console.log("new SoundMesh "+name);
+
+        const myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+        myMaterial.specularColor = new BABYLON.Color3(0.6, 1.0, 0.6);
+        myMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2);
+
+        mesh.material = myMaterial;
+
         this.m=[];
         for(let i=0;i<16;i++) {
             this.m[i] = BABYLON.MeshBuilder.CreateBox(name, {
               height: 0.3, width: 0.3, depth: 0.3
             }, scene);
+
+            this.m[i].material = myMaterial;
 
             this.m[i].position.x=i*0.5-4;
             this.m[i].parent=mesh;
@@ -87,7 +96,7 @@ class BarSpectrum {
     }
     updateFreqs(freqs) {
         for (let i = 0; i < 16; i++) {
-            this.m[i].scaling.y=freqs[i]/64;
+            this.m[i].scaling.y=freqs[i]/8;
         }
     }
 };
@@ -270,7 +279,7 @@ function initWorldObjectAnimation() {
             aqa.worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
-                worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
+                //worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
                 //worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
             });
         } catch(err) {
