@@ -4,6 +4,7 @@ class aqa_menu {
 
         this.display_header = document.querySelector("#display_header");
         this.display_net_status = document.querySelector("#display_net_status");
+        this.display_progress = document.querySelector("#display_progress");
 
         this.range_speed = document.querySelector("#range_speed");
         this.range_speed.addEventListener("input", () => {aqa.speed=event.target.value;});
@@ -240,19 +241,6 @@ class aqa_menu {
         return steps;
     }
 
-    /*
-    alignment(i) {
-        let a={
-            radius:this.radius[i].value,
-            yaw:this.yaw[i].value,
-            pitch:this.pitch[i].value,
-            rotate_yaw:this.rotate_yaw[i].value,
-            rotate_pitch:this.rotate_pitch[i].value
-        };
-        return a;
-    }
-    */
-
     updateHeader() {
         let bars=Math.floor(aqa.beatNr/4)+1;
         let quarter=aqa.beatNr%4+1;
@@ -263,7 +251,6 @@ class aqa_menu {
         bars + ":" + quarter +
         " clips: " + aqa.worldObjects.size +
         " fps: " + engine.getFps().toFixed(2) +
-        //" tempo: " + aqa.tempo.toFixed(2) +
         " beatTime: " + aqa.beatTime.toFixed(2) +
         " jitter: " + aqa.tJitter.toFixed(2) +
         "<br>" +
@@ -271,6 +258,7 @@ class aqa_menu {
         " cycle len: " + aqa.cycleLen +
         " tempo: " + aqa.tempo
         ;
+        this.display_progress.value=aqa.beatNr / (aqa.cycleLen * aqa.chordsLen);
     }
 
     updateNetStatus(messageCount) {
