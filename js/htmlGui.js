@@ -1,4 +1,8 @@
-class aqa_menu {
+import { aqa } from "./apolloqa.js"
+import { tJitter, autoplay, beatNr } from "./syncTrack.js"
+import { generateNewSound } from "./worldObjects.js"
+
+export class aqa_menu {
     constructor() {
         this.menu_hidden=true;
 
@@ -53,8 +57,8 @@ class aqa_menu {
 
         this.menu_autoplay_button = document.querySelector("#menu_autoplay");
         this.menu_autoplay_button.onclick = function () {
-            aqa.autoplay=!aqa.autoplay;
-            if(aqa.autoplay===true) {
+            autoplay=!autoplay;
+            if(autoplay===true) {
                 this.style.background = "orange";
             } else {
                 this.style.background = "#0088cc";
@@ -242,23 +246,23 @@ class aqa_menu {
     }
 
     updateHeader() {
-        let bars=Math.floor(aqa.beatNr/4)+1;
-        let quarter=aqa.beatNr%4+1;
+        let bars=Math.floor(beatNr/4)+1;
+        let quarter=beatNr%4+1;
         // debug header
         // this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter.toFixed(2) + " fps: " + engine.getFps().toFixed(2);
         this.display_header.innerHTML =
         aqa.nickname + " " +
         bars + ":" + quarter +
         " clips: " + aqa.worldObjects.size +
-        " fps: " + engine.getFps().toFixed(2) +
+        " fps: " + aqa.engine.getFps().toFixed(2) +
         " beatTime: " + aqa.beatTime.toFixed(2) +
-        " jitter: " + aqa.tJitter.toFixed(2) +
+        " jitter: " + tJitter.toFixed(2) +
         "<br>" +
         " chords: " + aqa.chords +
         " cycle len: " + aqa.cycleLen +
         " tempo: " + aqa.tempo
         ;
-        this.display_progress.value=aqa.beatNr / (aqa.cycleLen * aqa.chordsLen);
+        this.display_progress.value = beatNr / (aqa.cycleLen * aqa.chordsLen);
     }
 
     updateNetStatus(messageCount) {

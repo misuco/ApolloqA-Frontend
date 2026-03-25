@@ -1,3 +1,7 @@
+import { aqa } from "./apolloqa.js"
+import { startSyncTrack } from "./syncTrack.js"
+import { sendTrackList } from "./multiuser-ws.js"
+
 class SoundMesh {
     constructor(name,parentMesh,objPath) {
         console.log("new SoundMesh "+name);
@@ -19,7 +23,7 @@ class SoundMesh {
     async importMesh(objPath) {
         let result = await BABYLON.ImportMeshAsync(
             objPath,
-            scene
+            aqa.scene
         )
         this.m = result.meshes[0];
         this.m.parent = this.parent;
@@ -34,7 +38,7 @@ class SoundMesh2 {
         for(let i=0;i<17;i++) {
             this.m[i] = BABYLON.MeshBuilder.CreateSphere(name, {
               diameter: 0.5
-            }, scene);
+          }, aqa.scene);
             /*
             this.m[i].position.x=i%4-1.5;
             this.m[i].position.z=Math.floor(i/4)-1.5;
@@ -75,7 +79,7 @@ class BarSpectrum {
     constructor(name,mesh) {
         console.log("new SoundMesh "+name);
 
-        const myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        const myMaterial = new BABYLON.StandardMaterial("myMaterial", aqa.scene);
 
         myMaterial.specularColor = new BABYLON.Color3(0.6, 1.0, 0.6);
         myMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2);
@@ -86,7 +90,7 @@ class BarSpectrum {
         for(let i=0;i<16;i++) {
             this.m[i] = BABYLON.MeshBuilder.CreateBox(name, {
               height: 0.3, width: 0.3, depth: 0.3
-            }, scene);
+          }, aqa.scene);
 
             this.m[i].material = myMaterial;
 
@@ -103,7 +107,9 @@ class BarSpectrum {
 aqa.SoundMeshes["BarSpectrum"]=BarSpectrum;
 
 let objSelect=1;
-function newSoundMesh(x,y,z,trackUrl,presetName) {
+let objectCount=0;
+
+export function newSoundMesh(x,y,z,trackUrl,presetName) {
     console.log("newSoundMesh "+trackUrl+" "+presetName);
 
     let worldObject = {};
@@ -120,7 +126,6 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
 
     let soundMesh = new aqa.SoundMeshes["BarSpectrum"]("mesh_"+trackUrl,mesh);
 
-
     mesh.position.x=x;
     mesh.position.y=y;
     mesh.position.z=z;
@@ -132,9 +137,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
-        if(aqa.syncTrackRunning===false) {
-            aqa.syncTrackTimer();
-        }
+        startSyncTrack();
         const currentTime = track.engine.currentTime; // s
         const cycleLenS = aqa.beatTime * aqa.cycleLen * aqa.chordsLen;
         const currentCycleNumber = Math.floor(currentTime / cycleLenS);
@@ -188,9 +191,9 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
         rect1.linkWithMesh(worldObject.mesh);
 
     let text1 = new BABYLON.GUI.TextBlock();
+        objectCount++
         worldObject.labelBaseText = objectCount + " : " + presetName;
         text1.text = worldObject.labelBaseText;
-        objectCount++
         text1.color = "White";
         text1.fontSize = 14;
         text1.textWrapping = true;
@@ -208,7 +211,7 @@ function newSoundMesh(x,y,z,trackUrl,presetName) {
 
 }
 
-function generateNewSound() {
+export function generateNewSound() {
     let quantize_selected = aqa.htmlGui.quantize(0);
     let quantize_real = Math.pow(2,quantize_selected);
 
@@ -273,8 +276,8 @@ function generateNewSound() {
     oReq.send();
 };
 
-function initWorldObjectAnimation() {
-    scene.onBeforeRenderObservable.add(() => {
+export function initWorldObjectAnimation() {
+    aqa.scene.onBeforeRenderObservable.add(() => {
         try {
             aqa.worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
@@ -288,7 +291,7 @@ function initWorldObjectAnimation() {
     });
 }
 
-function updateLabels() {
+export function updateLabels() {
     aqa.worldObjects.forEach((object, i) => {
         let objectTime = object.track.currentTime.toFixed(2);
         if(objectTime<0) {

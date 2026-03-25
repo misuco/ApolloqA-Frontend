@@ -8,26 +8,42 @@ by c1Audio
 3D World:
 Based on series of articles at https://medium.com/@joelmalone
 and GFX by https://quaternius.com/packs/ultimatespacekit.html
+
 */
+import { aqa } from "./apolloqa.js"
+import { initStarfield } from "./starfield.js"
+import { initGround } from "./ground.js"
+import { initCamera } from "./camera.js"
+import { initMediaRecorder } from "./audiorec.js"
+import { aqa_menu } from "./htmlGui.js"
+import { aqa_menu_start } from "./htmlGuiStart.js"
+import { initMultiuser } from "./multiuser-ws.js"
+import { initWorldObjectAnimation } from "./worldObjects.js"
+
+const {
+  DirectionalLight,
+  Engine,
+  Scene,
+  Vector3
+} = BABYLON;
 
 // Get a reference to the <canvas>
-const canvas = document.querySelector(".apolloqa");
+aqa.canvas = document.querySelector(".apolloqa");
 // Bind to the window's resize DOM event, so that we can update the <canvas> dimensions to match;
 // this is needed because the <canvas> render context doesn't automaticaly update itself
 const onWindowResize = () => {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  aqa.canvas.width = canvas.clientWidth;
+  aqa.canvas.height = canvas.clientHeight;
 };
 // You can see the problem if you disable this next line, and then resize the window - the scene will become pixelated
 window.addEventListener("resize", onWindowResize);
 
-const engine = new Engine(canvas, true);
-
 async function createScene() {
     // Create a BabylonJS engine
+    aqa.engine = new Engine(aqa.canvas, true);
 
     // Create a BabylonJS scene
-    const scene = new Scene(engine);
+    let scene = new Scene(aqa.engine);
     // And also, let's set the scene's "clear colour" to black
     scene.clearColor = "green";
 
@@ -44,14 +60,6 @@ async function createScene() {
     sunLight.intensity = 5;
 
     /*
-    const havokInstance = await HavokPhysics();
-    const hk = new BABYLON.HavokPlugin(true, havokInstance);
-    var gravityVector = new BABYLON.Vector3(0, 0, 0);
-    scene.enablePhysics(gravityVector, hk);
-    console.log("physics created");
-    */
-
-    /*
     scene.debugLayer.show({
       embedMode: true,
     });
@@ -65,18 +73,14 @@ async function createScene() {
     });
     console.log("audioEngine ready")
 
-    aqa.audioContext = aqa.audioEngine._audioContext;
-
     return scene;
 }
 
-let scene = null;
-
 async function boot() {
     console.log("boot: createScene");
-    scene = await createScene();
-    console.log("boot: initColors");
-    initColors();
+    aqa.scene = await createScene();
+    //console.log("boot: initColors");
+    //initColors();
     console.log("boot: initCamera");
 
     console.log("boot: initStarfield");
@@ -104,8 +108,8 @@ async function boot() {
     console.log("boot: runRenderLoop");
     // Start a render loop
     // - basically, this will instruct BabylonJS to continuously re-render the scene
-    engine.runRenderLoop(() => {
-        scene.render();
+    aqa.engine.runRenderLoop(() => {
+        aqa.scene.render();
     });
 }
 

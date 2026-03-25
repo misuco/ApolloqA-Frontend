@@ -1,8 +1,11 @@
 /// Multiuser Websocket Feature
+import { aqa } from "./apolloqa.js"
+import { newSoundMesh } from "./worldObjects.js"
+
 var allUsers;
 let messageCount=0;
 
-function initMultiuser() {
+export function initMultiuser() {
     console.log("Connecting ws to "+aqa.wsUrl)
     aqa.ws = new WebSocket(aqa.wsUrl);
 
@@ -84,14 +87,14 @@ function initMultiuser() {
 
                     let spaceshipUrl=aqa.avatarUrl(value.avatarId);
 
-                    SceneLoader.ImportMeshAsync(
+                    BABYLON.SceneLoader.ImportMeshAsync(
                       null,
                       spaceshipUrl,
                       null,
-                      scene
+                      aqa.scene
                     ).then(({ meshes }) => {
                       console.log("New user created "+value.nickname+" "+key);
-                      scene.stopAllAnimations();
+                      aqa.scene.stopAllAnimations();
                       const newUser = meshes[0];
                       newUser.position.x = value.x;
                       newUser.position.y = value.y;
@@ -141,13 +144,13 @@ function sendPosition() {
     }
 }
 
-function sendTrackList(list) {
+export function sendTrackList(list) {
     let message=JSON.stringify({"worldId":aqa.worldId,"sessionId":aqa.sessionId,"trackList":[list]});
     //console.log("sendTrackList "+message);
     aqa.ws.send(message);
 }
 
-function sendWorldConfig(obj) {
+export function sendWorldConfig(obj) {
     let message=JSON.stringify(obj);
     aqa.ws.send(message);
 }

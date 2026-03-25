@@ -1,20 +1,4 @@
-const {
-  Color4,
-  DirectionalLight,
-  Engine,
-  ParticleSystem,
-  PointerEventTypes,
-  Quaternion,
-  Scalar,
-  Scene,
-  SceneLoader,
-  Texture,
-  TransformNode,
-  UniversalCamera,
-  Vector3
-} = BABYLON;
-
-const aqa={};
+export const aqa={};
 
 aqa.uuidv4 = function() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -47,15 +31,12 @@ aqa.labels=null;
 aqa.audioEngine = null;
 aqa.instruments=[];
 
+aqa.canvas = null;
+aqa.engine = null;
+aqa.scene = null;
+
 // camera.js
 aqa.spaceshipMesh = null;
-
-/*
-physics disabled
-aqa.spaceshipPosition = null;
-aqa.spaceshipController = null;
-aqa.spaceshipGravity = null;
-*/
 aqa.chaseCameraPosition = null;
 aqa.chaseCameraLookAt = null;
 aqa.mouseState = null;
@@ -68,40 +49,21 @@ aqa.wsUrl = "ws://"+aqa.windowUrl.hostname+":3038/"
 //aqa.wsUrl = "wss://ws.apolloqa.net/"
 
 // syncTrack.js / htmlGui Header
-aqa.syncTrackTimer = null;
 aqa.syncTrackRunning = false;
 aqa.engineTime = 0;
-aqa.tJitter = 0;
 
 // worldObjects.js
 aqa.worldObjects = new Map();
 aqa.SoundMeshes = [];
 
-// syncTrack.js
-aqa.audioContext = null;
-
 aqa.nickname=nickname;
-aqa.uploadId=0;
-aqa.nTracks=4;
 
 aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;
-aqa.beatNr=0;
 aqa.cycleLen=4;
 aqa.chords="C_D_E_F";
 aqa.chordsLen=4;
 
-aqa.recArmed=false;
-aqa.stopArmed=false;
-aqa.recording=false;
-aqa.mediaRecorder={};
-aqa.autoplay=false;
-aqa.basenote=0;
-aqa.scale=0;
-aqa.sampleRate=48000;
-aqa.calcButton=[];
-aqa.levelBars=[];
-aqa.chanColor=[];
 aqa.baseUrl = aqa.windowUrl.protocol + "//" + aqa.windowUrl.host + "/";
 
 aqa.avatarId=aqa.getRandomInt(4);

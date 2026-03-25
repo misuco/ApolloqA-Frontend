@@ -1,4 +1,7 @@
-class aqa_menu_start {
+import { aqa } from "./apolloqa.js"
+import { sendWorldConfig } from "./multiuser-ws.js"
+
+export class aqa_menu_start {
     constructor() {
 
         this.chords_select = document.querySelector("#select_chords");
@@ -95,21 +98,4 @@ class aqa_menu_start {
         aqa.windowUrl.hash = aqa.worldId;
         window.location.reload();
     }
-
-    /*
-    get chords() {
-        //return this.chords_select.value;
-        return this.chords_string[this.chords_select.value];
-    }
-
-    get chordsLen() {
-        return this.chords_len[this.chords_select.value];
-    }
-
-    get len() {
-        Math.pow(2,this.select_len.value)*this.chords_len[this.chords_select.value]
-        //return this.select_len.value;
-    }
-    */
-
 }

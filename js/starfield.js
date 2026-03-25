@@ -1,7 +1,9 @@
-function initStarfield() {
+import { aqa } from "./apolloqa.js"
+
+export function initStarfield() {
     try {
         // The starfield is a BabylonJS ParticleSystem, with a particle limit of 10000
-        const starfield = new ParticleSystem("starfield", 10000, scene);
+        const starfield = new ParticleSystem("starfield", 10000, aqa.scene);
         // We want to emit the particles on the surface of a sphere 10000 in radius
         starfield.createSphereEmitter(10000, 0);
         // We want to emit all of the particles at once, to immiediately fill the scene
@@ -24,7 +26,7 @@ function initStarfield() {
         // https://jpillora.com/base64-encoder/
         starfield.particleTexture = new Texture(
           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADNJREFUOE9jZKAQMFKon2HUAAYah8H/////g2KJkZERZ2DjjQWKDSAmjYymA1qnA2JiAQB3SAgRq6BZyAAAAABJRU5ErkJggg==",
-          scene
+          aqa.scene
         );
         // Finally, we need to start emitting particles
         starfield.start();
