@@ -10,51 +10,24 @@ aqa.getRandomInt = function(max) {
     return Math.floor(Math.random() * max);
 }
 
-// url
-aqa.windowUrl = window.location;
-
-aqa.htmlGui={};     // guiHtml.js
+aqa.htmlGui={};
 aqa.sessionId = aqa.uuidv4();
 
 if(worldIdHash) {
     aqa.worldId = worldIdHash.replace("#","");
 } else {
     aqa.worldId = aqa.uuidv4();
-    aqa.windowUrl.hash = aqa.worldId;
-    window.location.href = aqa.windowUrl;
+    window.location.hash = aqa.worldId;
 }
-
-// syncTrack.js
-aqa.labels=null;
 
 // initScene.js, syncTrack.js
 aqa.audioEngine = null;
-aqa.instruments=[];
+aqa.instruments = [];
 
-aqa.canvas = null;
+// Get a reference to the <canvas>
+aqa.canvas = document.querySelector(".apolloqa");
 aqa.engine = null;
 aqa.scene = null;
-
-// camera.js
-aqa.spaceshipMesh = null;
-aqa.chaseCameraPosition = null;
-aqa.chaseCameraLookAt = null;
-aqa.mouseState = null;
-aqa.speed = 0;
-
-// multiuser-ws.js
-aqa.ws = null;
-aqa.otherUsers = new Map();
-aqa.wsUrl = "ws://"+aqa.windowUrl.hostname+":3038/"
-//aqa.wsUrl = "wss://ws.apolloqa.net/"
-
-// syncTrack.js / htmlGui Header
-aqa.syncTrackRunning = false;
-aqa.engineTime = 0;
-
-// worldObjects.js
-aqa.worldObjects = new Map();
-aqa.SoundMeshes = [];
 
 aqa.nickname=nickname;
 
@@ -64,7 +37,7 @@ aqa.cycleLen=4;
 aqa.chords="C_D_E_F";
 aqa.chordsLen=4;
 
-aqa.baseUrl = aqa.windowUrl.protocol + "//" + aqa.windowUrl.host + "/";
+aqa.baseUrl = window.location.protocol + "//" + window.location.host + "/";
 
 aqa.avatarId=aqa.getRandomInt(4);
 aqa.avatarUrl=function(id) {

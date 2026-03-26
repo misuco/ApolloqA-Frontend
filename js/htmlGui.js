@@ -1,6 +1,7 @@
 import { aqa } from "./apolloqa.js"
 import { tJitter, autoplay, beatNr } from "./syncTrack.js"
-import { generateNewSound } from "./worldObjects.js"
+import { worldObjects, generateNewSound } from "./worldObjects.js"
+import { chaseCameraPosition, setSpeed } from "./camera.js"
 
 export class aqa_menu {
     constructor() {
@@ -11,14 +12,14 @@ export class aqa_menu {
         this.display_progress = document.querySelector("#display_progress");
 
         this.range_speed = document.querySelector("#range_speed");
-        this.range_speed.addEventListener("input", () => {aqa.speed=event.target.value;});
+        this.range_speed.addEventListener("input", () => { setSpeed(event.target.value); });
         this.range_speed.value=0.1;
-        aqa.speed=0.1;
+        setSpeed(0.1);
 
         this.range_camera = document.querySelector("#range_camera");
-        this.range_camera.addEventListener("input", () => {aqa.chaseCameraPosition.position.z=event.target.value*-1;});
+        this.range_camera.addEventListener("input", () => { chaseCameraPosition.position.z=event.target.value*-1;} );
         this.range_camera.value=50;
-        aqa.chaseCameraPosition.position.z=-50;
+        chaseCameraPosition.position.z=-50;
 
         this.menu_navi_button = document.querySelector("#menu_navi");
         this.div_navi = document.querySelector("#config_navi");
@@ -27,7 +28,6 @@ export class aqa_menu {
             this.div_navi.hidden=false;
             this.menu_navi_button.style.background = "orange";
         });
-
 
         this.menu_gen_button = document.querySelector("#menu_gen");
         this.div_step_sequencer = document.querySelector("#step_sequencer");
@@ -248,12 +248,11 @@ export class aqa_menu {
     updateHeader() {
         let bars=Math.floor(beatNr/4)+1;
         let quarter=beatNr%4+1;
-        // debug header
-        // this.display_header.innerHTML = aqa.nickname + " " + bars + ":" + quarter + " tEng: " + aqa.engineTime.toFixed(2) + " jitter: " + aqa.tJitter.toFixed(2) + " fps: " + engine.getFps().toFixed(2);
+
         this.display_header.innerHTML =
         aqa.nickname + " " +
         bars + ":" + quarter +
-        " clips: " + aqa.worldObjects.size +
+        " clips: " + worldObjects.size +
         " fps: " + aqa.engine.getFps().toFixed(2) +
         " beatTime: " + aqa.beatTime.toFixed(2) +
         " jitter: " + tJitter.toFixed(2) +

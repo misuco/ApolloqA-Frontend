@@ -1,26 +1,32 @@
 /// Multiuser Websocket Feature
 import { aqa } from "./apolloqa.js"
-import { newSoundMesh } from "./worldObjects.js"
+import { worldObjects, newSoundMesh } from "./worldObjects.js"
+import { spaceshipMesh } from "./camera.js"
 
 var allUsers;
 let messageCount=0;
+let otherUsers = new Map();
+let ws = null;
+let wsUrl = window.location==="apolloqa.net" ?
+            "wss://ws.apolloqa.net/" :
+            "ws://"+window.location.hostname+":3038/"
 
 export function initMultiuser() {
-    console.log("Connecting ws to "+aqa.wsUrl)
-    aqa.ws = new WebSocket(aqa.wsUrl);
+    console.log("Connecting ws to "+wsUrl)
+    ws = new WebSocket(wsUrl);
 
     // Handle errors
-    aqa.ws.onerror = (error) => {
+    ws.onerror = (error) => {
         console.log("WS Error "+error);
     };
 
     // Connection opened
-    aqa.ws.onopen = () => {
+    ws.onopen = () => {
         console.log("Connected to server");
     };
 
     // Listen for messages
-    aqa.ws.onmessage = (event) => {
+    ws.onmessage = (event) => {
 
         //console.log("onmessage");
         messageCount++;
@@ -36,7 +42,7 @@ export function initMultiuser() {
                 list.forEach((track, i) => {
                     if(track) {
                         let trackUrl=track.url;
-                        if(aqa.worldObjects.has(trackUrl)) {
+                        if(worldObjects.has(trackUrl)) {
                             console.log("existing trackUrl "+trackUrl);
                         } else {
                             console.log("new trackUrl "+trackUrl);
@@ -70,7 +76,7 @@ export function initMultiuser() {
                 return;
             }
 
-            let otherUser=aqa.otherUsers.get(key);
+            let otherUser=otherUsers.get(key);
 
             if(otherUser) {
                 if(otherUser.position) {
@@ -83,7 +89,7 @@ export function initMultiuser() {
                 }
             } else {
                 if(value.worldId==aqa.worldId) {
-                    aqa.otherUsers.set(key,{});
+                    otherUsers.set(key,{});
 
                     let spaceshipUrl=aqa.avatarUrl(value.avatarId);
 
@@ -101,7 +107,7 @@ export function initMultiuser() {
                       newUser.position.z = value.z;
                       newUser.rotation = new BABYLON.Vector3(value.rx,value.ry,value.rz);
 
-                      aqa.otherUsers.set(key,newUser);
+                      otherUsers.set(key,newUser);
                       aqa.htmlGui.setNetSessionEntry(key,value.nickname);
                     });
                 } else {
@@ -113,7 +119,7 @@ export function initMultiuser() {
     };
 
     // Handle connection close
-    aqa.ws.onclose = () => {
+    ws.onclose = () => {
         console.log("DISConnected from server");
     };
 
@@ -123,11 +129,11 @@ export function initMultiuser() {
 
 // Send own position to web socket server
 function sendPosition() {
-    if(aqa.spaceshipMesh) {
-        let rq=aqa.spaceshipMesh.rotationQuaternion.toEulerAngles();
-        let x = aqa.spaceshipMesh.position.x;
-        let y = aqa.spaceshipMesh.position.y;
-        let z = aqa.spaceshipMesh.position.z;
+    if(spaceshipMesh) {
+        let rq = spaceshipMesh.rotationQuaternion.toEulerAngles();
+        let x = spaceshipMesh.position.x;
+        let y = spaceshipMesh.position.y;
+        let z = spaceshipMesh.position.z;
         let message=JSON.stringify(
             {
                 "sessionId":aqa.sessionId,
@@ -138,32 +144,32 @@ function sendPosition() {
                 "avatarId":aqa.avatarId
             }
         );
-        aqa.ws.send(message);
+        ws.send(message);
     } else {
-        aqa.ws.send("{}");
+        ws.send("{}");
     }
 }
 
 export function sendTrackList(list) {
     let message=JSON.stringify({"worldId":aqa.worldId,"sessionId":aqa.sessionId,"trackList":[list]});
     //console.log("sendTrackList "+message);
-    aqa.ws.send(message);
+    ws.send(message);
 }
 
 export function sendWorldConfig(obj) {
     let message=JSON.stringify(obj);
-    aqa.ws.send(message);
+    ws.send(message);
 }
 
 function removeInactiveClients() {
     //console.log("removeInactiveClients")
-    aqa.otherUsers.forEach((value, key) => {
+    otherUsers.forEach((value, key) => {
         //console.log("- "+key);
         let otherUser=allUsers.get(key);
         if(!otherUser) {
             console.log("-> removeInactiveClient "+key);
             value.dispose();
-            aqa.otherUsers.delete(key);
+            otherUsers.delete(key);
             aqa.htmlGui.deleteNetSessionEntry(key);
         }
     });

@@ -1,6 +1,12 @@
 import { aqa } from "./apolloqa.js"
 import { startSyncTrack } from "./syncTrack.js"
 import { sendTrackList } from "./multiuser-ws.js"
+import { initCamera, spaceshipMesh } from "./camera.js"
+
+export let worldObjects = new Map();
+
+let labels = null;
+let soundMeshes = [];
 
 class SoundMesh {
     constructor(name,parentMesh,objPath) {
@@ -29,7 +35,7 @@ class SoundMesh {
         this.m.parent = this.parent;
     }
 };
-aqa.SoundMeshes["SoundMesh"]=SoundMesh;
+soundMeshes["SoundMesh"]=SoundMesh;
 
 class SoundMesh2 {
     constructor(name,mesh) {
@@ -73,7 +79,7 @@ class SoundMesh2 {
         }
     }
 };
-aqa.SoundMeshes["SoundMesh2"]=SoundMesh2;
+soundMeshes["SoundMesh2"]=SoundMesh2;
 
 class BarSpectrum {
     constructor(name,mesh) {
@@ -104,7 +110,7 @@ class BarSpectrum {
         }
     }
 };
-aqa.SoundMeshes["BarSpectrum"]=BarSpectrum;
+soundMeshes["BarSpectrum"]=BarSpectrum;
 
 let objSelect=1;
 let objectCount=0;
@@ -121,10 +127,10 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
     /*
     let objPath="obj/Logo-A_00"+objSelect+".obj";
     objSelect++; if(objSelect>3) {objSelect=1;}
-    let soundMesh = new aqa.SoundMeshes["SoundMesh"]("mesh_"+trackUrl,mesh,objPath);
+    let soundMesh = new soundMeshes["SoundMesh"]("mesh_"+trackUrl,mesh,objPath);
     */
 
-    let soundMesh = new aqa.SoundMeshes["BarSpectrum"]("mesh_"+trackUrl,mesh);
+    let soundMesh = new soundMeshes["BarSpectrum"]("mesh_"+trackUrl,mesh);
 
     mesh.position.x=x;
     mesh.position.y=y;
@@ -159,7 +165,7 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
             worldObject.track.outBus=worldObject.bus;
             console.log("analyzer bus ready: " + trackUrl);
 
-            aqa.worldObjects.set(trackUrl,worldObject);
+            worldObjects.set(trackUrl,worldObject);
         }).catch(err => {
             console.error("cannot analyze sound:" + trackUrl + " " + err);
         });
@@ -169,13 +175,13 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
     });
 
 
-    if(!aqa.labels) {
-        aqa.labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        aqa.labels.useInvalidateRectOptimization = false;
+    if(!labels) {
+        labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        labels.useInvalidateRectOptimization = false;
     }
 
     let rect1 = new BABYLON.GUI.Button();
-        aqa.labels.addControl(rect1);
+        labels.addControl(rect1);
         rect1.width = "200px";
         rect1.height ="50px";
         rect1.thickness = 2;
@@ -240,9 +246,9 @@ export function generateNewSound() {
             console.log("server error!!!");
         } else {
             const trackUrl=this.response + ".ogg";
-            let randX = aqa.spaceshipMesh.position.x + Math.random() * 20 - 10;
-            let randY = aqa.spaceshipMesh.position.y + Math.random() * 10;
-            let randZ = aqa.spaceshipMesh.position.z + Math.random() * 10;
+            let randX = spaceshipMesh.position.x + Math.random() * 20 - 10;
+            let randY = spaceshipMesh.position.y + Math.random() * 10;
+            let randZ = spaceshipMesh.position.z + Math.random() * 10;
             let soundMesh = newSoundMesh(randX,randY,randZ,trackUrl,presetJson.name);
 
             let worldObject={"url":trackUrl,"name":presetJson.name,"creator":aqa.nickname,"x":randX,"y":randY,"z":randZ};
@@ -279,7 +285,7 @@ export function generateNewSound() {
 export function initWorldObjectAnimation() {
     aqa.scene.onBeforeRenderObservable.add(() => {
         try {
-            aqa.worldObjects.forEach((worldObject, i) => {
+            worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
                 //worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
@@ -292,7 +298,7 @@ export function initWorldObjectAnimation() {
 }
 
 export function updateLabels() {
-    aqa.worldObjects.forEach((object, i) => {
+    worldObjects.forEach((object, i) => {
         let objectTime = object.track.currentTime.toFixed(2);
         if(objectTime<0) {
             object.label.text = object.labelBaseText + "\nstart in " + objectTime + " s";

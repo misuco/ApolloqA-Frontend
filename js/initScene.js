@@ -13,7 +13,7 @@ and GFX by https://quaternius.com/packs/ultimatespacekit.html
 import { aqa } from "./apolloqa.js"
 import { initStarfield } from "./starfield.js"
 import { initGround } from "./ground.js"
-import { initCamera } from "./camera.js"
+import { initCamera, spaceshipMesh } from "./camera.js"
 import { initMediaRecorder } from "./audiorec.js"
 import { aqa_menu } from "./htmlGui.js"
 import { aqa_menu_start } from "./htmlGuiStart.js"
@@ -27,13 +27,11 @@ const {
   Vector3
 } = BABYLON;
 
-// Get a reference to the <canvas>
-aqa.canvas = document.querySelector(".apolloqa");
 // Bind to the window's resize DOM event, so that we can update the <canvas> dimensions to match;
 // this is needed because the <canvas> render context doesn't automaticaly update itself
 const onWindowResize = () => {
-  aqa.canvas.width = canvas.clientWidth;
-  aqa.canvas.height = canvas.clientHeight;
+  aqa.canvas.width = aqa.canvas.clientWidth;
+  aqa.canvas.height = aqa.canvas.clientHeight;
 };
 // You can see the problem if you disable this next line, and then resize the window - the scene will become pixelated
 window.addEventListener("resize", onWindowResize);
@@ -90,7 +88,7 @@ async function boot() {
     initGround();
 
     await initCamera();
-    aqa.audioEngine.listener.attach(aqa.spaceshipMesh);
+    aqa.audioEngine.listener.attach(spaceshipMesh);
 
     console.log("boot: initMediaRecorder");
     initMediaRecorder();

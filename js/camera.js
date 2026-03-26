@@ -1,16 +1,26 @@
 import { aqa } from "./apolloqa.js"
 
+export let spaceshipMesh = null;
+export let chaseCameraPosition = null;
+
+export  function setSpeed(s) {
+    speed = s;
+}
+
 // From aiming direction and state, compute a desired velocity
 // That velocity depends on current state (in air, on ground, jumping, ...) and surface properties
-var forwardLocalSpace = new BABYLON.Vector3(0, 0, 1);
-var inputDirection = new BABYLON.Vector3(0,0,0);
-var onGroundSpeed = 10.0;
+let forwardLocalSpace = new BABYLON.Vector3(0, 0, 1);
+let inputDirection = new BABYLON.Vector3(0,0,0);
+let onGroundSpeed = 10.0;
+let chaseCameraLookAt = null;
+let mouseState = null;
+let speed = 0;
 
 // Read the current values of mouseState and use it to compute the
 // steering input for the ship, in terms of thrust, yaw and pitch.
 function getSpaceshipInputFromMouse() {
     // If the mouse isn't being pressed, return null, which means "no input"
-    if (!aqa.mouseState) {
+    if (!mouseState) {
         return null;
     }
 
@@ -26,9 +36,9 @@ function getSpaceshipInputFromMouse() {
     const dragSize = 0.25 * screenSize;
 
     // Compute the drag difference from the starting position of the drag
-    const dragX = aqa.mouseState.last.clientX - aqa.mouseState.down.clientX;
+    const dragX = mouseState.last.clientX - mouseState.down.clientX;
     // Note: +X maps to +Yaw, but +Y maps to -Pitch, so invert Y:
-    const dragY = aqa.mouseState.down.clientY - aqa.mouseState.last.clientY;
+    const dragY = mouseState.down.clientY - mouseState.last.clientY;
 
     // Normalised the values to [-1, 1] and map them like this:
     // * X maps to yaw (turn left/right)
@@ -90,29 +100,29 @@ export async function initCamera() {
     // Set spaceshipMesh to the first mesh in the array: this is correct
     // for our spaceship, but really depends on the mesh you loaded
     aqa.scene.stopAllAnimations();
-    aqa.spaceshipMesh = result.meshes[0];
-    aqa.spaceshipMesh.position.y=2;
+    spaceshipMesh = result.meshes[0];
+    spaceshipMesh.position.y=2;
 
     console.log("spaceshipMesh size "+result.meshes.length);
     console.log("spaceship animationGroup size "+result.animationGroups.length);
 
     // To allow working with rotationQuaternion, which is
     // null by default, we need to give it a value
-    // aqa.spaceshipMesh.rotationQuaternion = Quaternion.Identity();
+    // spaceshipMesh.rotationQuaternion = Quaternion.Identity();
 
     // Attach some "chase camera rig points" to the spaceship
     // mesh. These are invisible in-scene objects that are
     // parented to the spaceship, meaning they will always
     // "follow along" with it
-    aqa.chaseCameraPosition = new BABYLON.TransformNode("aqa.chaseCameraPosition", aqa.scene);
-    aqa.chaseCameraPosition.parent = aqa.spaceshipMesh;
+    chaseCameraPosition = new BABYLON.TransformNode("chaseCameraPosition", aqa.scene);
+    chaseCameraPosition.parent = spaceshipMesh;
     // Position this one behind and up a bit; the XYZ are in local coords
-    aqa.chaseCameraPosition.position = new BABYLON.Vector3(0, 4, -15);
-    aqa.chaseCameraLookAt = new BABYLON.TransformNode("aqa.chaseCameraLookAt", aqa.scene);
-    aqa.chaseCameraLookAt.parent = aqa.spaceshipMesh;
+    chaseCameraPosition.position = new BABYLON.Vector3(0, 4, -15);
+    chaseCameraLookAt = new BABYLON.TransformNode("chaseCameraLookAt", aqa.scene);
+    chaseCameraLookAt.parent = spaceshipMesh;
     // Position this one in front and up a bit; the XYZ are in local coords
-    aqa.chaseCameraLookAt.position = new BABYLON.Vector3(0, 2, 10);
-    // Now that aqa.chaseCameraPosition and aqa.chaseCameraLookAt are set, the
+    chaseCameraLookAt.position = new BABYLON.Vector3(0, 2, 10);
+    // Now that chaseCameraPosition and chaseCameraLookAt are set, the
     // chase camera code can will it's thing (see code above)
 
     // We use the onPointerObservable event to capture mouse drag info into
@@ -123,21 +133,21 @@ export async function initCamera() {
             case BABYLON.PointerEventTypes.POINTERDOWN:
             // POINTERDOWN: capture the current mouse position as the `down` property
             // Also capture it as the `last` property (effectively a drag of 0 pixels)
-            aqa.mouseState = { down: pointerInfo.event, last: pointerInfo.event };
+            mouseState = { down: pointerInfo.event, last: pointerInfo.event };
             inputDirection.z = -1;
             break;
 
             case BABYLON.PointerEventTypes.POINTERUP:
             // POINTERUP: drag has finished, so clear the mouse state
-            aqa.mouseState = null;
+            mouseState = null;
             inputDirection.z = 0;
             break;
 
             case BABYLON.PointerEventTypes.POINTERMOVE:
             // POINTERMOVE: while dragging, keep the `down` drag position
             // but continuously update the `last` drag position
-            if (aqa.mouseState) {
-                aqa.mouseState.last = pointerInfo.event;
+            if (mouseState) {
+                mouseState.last = pointerInfo.event;
             }
             break;
         }
@@ -147,7 +157,7 @@ export async function initCamera() {
     aqa.scene.onBeforeRenderObservable.add(() => {
 
         // If the ship hasn't been loaded yet, we can't do anything
-        if (!aqa.spaceshipMesh) {
+        if (!spaceshipMesh) {
             return;
         }
 
@@ -172,14 +182,14 @@ export async function initCamera() {
                 0
             );
             // Apply the rotation to our current rotation
-            aqa.spaceshipMesh.rotationQuaternion.multiplyInPlace(turn);
+            spaceshipMesh.rotationQuaternion.multiplyInPlace(turn);
         }
 
         // If we have input, compute acceleration
         // otherwise it's zero
         const acceleration =
-        aqa.speed>0 ? aqa.spaceshipMesh.forward.scale(MaxThrust * aqa.speed * deltaSecs) :
-        input ? aqa.spaceshipMesh.forward.scale(input.thrust * MaxThrust * deltaSecs)
+        speed>0 ? spaceshipMesh.forward.scale(MaxThrust * speed * deltaSecs) :
+        input ? spaceshipMesh.forward.scale(input.thrust * MaxThrust * deltaSecs)
         : BABYLON.Vector3.Zero();
 
         // Apply acceleration to velocity
@@ -188,18 +198,18 @@ export async function initCamera() {
         velocity.scaleInPlace(1 - DragCoefficient * deltaSecs);
 
         // Apply velocity to position
-        aqa.spaceshipMesh.position.addInPlace(velocity.scale(deltaSecs));
+        spaceshipMesh.position.addInPlace(velocity.scale(deltaSecs));
 
     });
 
     // Use the onBeforeRenderObservable event to move the
     // camera into position and face the correct way
     aqa.scene.onBeforeRenderObservable.add(() => {
-        if (aqa.chaseCameraPosition) {
+        if (chaseCameraPosition) {
             // Smoothly interpolate the camera's current position towards the calculated camera position
             camera.position = BABYLON.Vector3.Lerp(
                 camera.position,
-                aqa.chaseCameraPosition.getAbsolutePosition(),
+                chaseCameraPosition.getAbsolutePosition(),
                 (aqa.scene.deltaTime / 1000) * 3
             );
             // Note: you can tweak the 3 above to get a snappier
@@ -207,12 +217,12 @@ export async function initCamera() {
 
             // We always want to align the camera's "up" with the spaceship's
             // "up." this gives us a nice fully-3d space feel
-            camera.upVector = aqa.chaseCameraPosition.up;
+            camera.upVector = chaseCameraPosition.up;
         }
 
         // Turn the camera to always face the look-at position
-        if (aqa.chaseCameraLookAt) {
-            camera.target = aqa.chaseCameraLookAt.getAbsolutePosition();
+        if (chaseCameraLookAt) {
+            camera.target = chaseCameraLookAt.getAbsolutePosition();
         }
     });
 }
