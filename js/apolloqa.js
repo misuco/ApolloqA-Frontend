@@ -14,7 +14,12 @@ and GFX by https://quaternius.com/packs/ultimatespacekit.html
 // global application object to share common properties
 export const aqa={};
 
-aqa.uuidv4 = function() {
+function aquid() {
+    let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return Array.from([0,0,0,0], () => charset[Math.floor(Math.random() * charset.length)]).join('');
+}
+
+function uuidv4() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
@@ -25,14 +30,17 @@ aqa.getRandomInt = function(max) {
 }
 
 aqa.htmlGui={};
-aqa.sessionId = aqa.uuidv4();
+aqa.sessionId = uuidv4();
 
 if(worldIdHash) {
     aqa.worldId = worldIdHash.replace("#","");
+    console.log("Existing worldId: " + aqa.worldId);
 } else {
-    aqa.worldId = aqa.uuidv4();
+    aqa.worldId = aquid();
     window.location.hash = aqa.worldId;
+    console.log("New worldId: " + aqa.worldId);
 }
+
 
 // initScene.js, syncTrack.js
 aqa.audioEngine = null;
