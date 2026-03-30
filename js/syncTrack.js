@@ -1,6 +1,6 @@
 import { aqa } from "./apolloqa.js"
 import { mediaRecorder, mic_record_button, mic_stop_button } from "./audiorec.js"
-import { updateLabels } from "./worldObjects.js"
+import { updateLabels, generateNewSound } from "./worldObjects.js"
 
 export let autoplay=false;
 export let tJitter=0;
@@ -28,6 +28,10 @@ export function armRec() {
 
 export function armStop() {
     stopArmed=true;
+}
+
+export function toggleAutoPlay() {
+    autoplay=!autoplay;
 }
 
 let tTarget=0;

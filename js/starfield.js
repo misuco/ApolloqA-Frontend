@@ -3,7 +3,7 @@ import { aqa } from "./apolloqa.js"
 export function initStarfield() {
     try {
         // The starfield is a BabylonJS ParticleSystem, with a particle limit of 10000
-        const starfield = new ParticleSystem("starfield", 10000, aqa.scene);
+        const starfield = new BABYLON.ParticleSystem("starfield", 10000, aqa.scene);
         // We want to emit the particles on the surface of a sphere 10000 in radius
         starfield.createSphereEmitter(10000, 0);
         // We want to emit all of the particles at once, to immiediately fill the scene
@@ -17,14 +17,14 @@ export function initStarfield() {
         // We don't want the stars to move
         starfield.minEmitPower = 0;
         starfield.maxEmitPower = 0;
-        starfield.gravity = new Vector3(0, 0, 0);
+        starfield.gravity = new BABYLON.Vector3(0, 0, 0);
         // Star colours will pick from somewhere between these two colours
-        starfield.color1 = new Color4(1, 0.8, 0.8, 1.0);
-        starfield.color2 = new Color4(1, 1, 1, 1.0);
+        starfield.color1 = new BABYLON.Color4(1, 0.8, 0.8, 1.0);
+        starfield.color2 = new BABYLON.Color4(1, 1, 1, 1.0);
         // Load a star texture; the image is tiny, so let's just use a data URL.
         // I used this online service to convert from a star.png image to a data URL:
         // https://jpillora.com/base64-encoder/
-        starfield.particleTexture = new Texture(
+        starfield.particleTexture = new BABYLON.Texture(
           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADNJREFUOE9jZKAQMFKon2HUAAYah8H/////g2KJkZERZ2DjjQWKDSAmjYymA1qnA2JiAQB3SAgRq6BZyAAAAABJRU5ErkJggg==",
           aqa.scene
         );
