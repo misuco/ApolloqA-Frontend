@@ -7,7 +7,7 @@ var allUsers;
 let messageCount=0;
 let otherUsers = new Map();
 let ws = null;
-let wsUrl = window.location==="apolloqa.net" ?
+let wsUrl = window.location.hostname==="apolloqa.net" ?
             "wss://ws.apolloqa.net/" :
             "ws://"+window.location.hostname+":3038/"
 
