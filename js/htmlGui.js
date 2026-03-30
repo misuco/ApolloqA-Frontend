@@ -1,5 +1,5 @@
 import { aqa } from "./apolloqa.js"
-import { tJitter, autoplay, beatNr } from "./syncTrack.js"
+import { tJitter, autoplay, beatNr, toggleAutoPlay } from "./syncTrack.js"
 import { worldObjects, generateNewSound } from "./worldObjects.js"
 import { chaseCameraPosition, setSpeed } from "./camera.js"
 
@@ -57,7 +57,7 @@ export class aqa_menu {
 
         this.menu_autoplay_button = document.querySelector("#menu_autoplay");
         this.menu_autoplay_button.onclick = function () {
-            autoplay=!autoplay;
+            toggleAutoPlay();
             if(autoplay===true) {
                 this.style.background = "orange";
             } else {
