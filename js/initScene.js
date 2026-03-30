@@ -1,15 +1,3 @@
-/*
-
-ApolloqA - Sound Co-Lab
-
-Sound generator:
-by c1Audio
-
-3D World:
-Based on series of articles at https://medium.com/@joelmalone
-and GFX by https://quaternius.com/packs/ultimatespacekit.html
-
-*/
 import { aqa } from "./apolloqa.js"
 import { initStarfield } from "./starfield.js"
 import { initGround } from "./ground.js"
@@ -19,13 +7,6 @@ import { aqa_menu } from "./htmlGui.js"
 import { aqa_menu_start } from "./htmlGuiStart.js"
 import { initMultiuser } from "./multiuser-ws.js"
 import { initWorldObjectAnimation } from "./worldObjects.js"
-
-const {
-  DirectionalLight,
-  Engine,
-  Scene,
-  Vector3
-} = BABYLON;
 
 // Bind to the window's resize DOM event, so that we can update the <canvas> dimensions to match;
 // this is needed because the <canvas> render context doesn't automaticaly update itself
@@ -38,10 +19,10 @@ window.addEventListener("resize", onWindowResize);
 
 async function createScene() {
     // Create a BabylonJS engine
-    aqa.engine = new Engine(aqa.canvas, true);
+    aqa.engine = new BABYLON.Engine(aqa.canvas, true);
 
     // Create a BabylonJS scene
-    let scene = new Scene(aqa.engine);
+    let scene = new BABYLON.Scene(aqa.engine);
     // And also, let's set the scene's "clear colour" to black
     scene.clearColor = "green";
 
@@ -54,7 +35,7 @@ async function createScene() {
     ambientLight.intensity = 0.25;
 
     // Create a light to simulate the sun's light
-    const sunLight = new DirectionalLight("sun light", new Vector3(1, -1, -1));
+    const sunLight = new BABYLON.DirectionalLight("sun light", new BABYLON.Vector3(1, -1, -1));
     sunLight.intensity = 5;
 
     /*

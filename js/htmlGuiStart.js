@@ -20,14 +20,14 @@ export class aqa_menu_start {
 
         this.tempo = 120;
 
-        this.select_len = document.querySelector("#select_len");
-        [ "1","2","4" ].forEach((label,n) => {
+        this.select_beats_per_chord = document.querySelector("#select_beats_per_chord");
+        [ "1","2","4","8","16" ].forEach((label,n) => {
             let opt=document.createElement('option');
             opt.value=n;
             opt.innerHTML=label;
-            this.select_len.appendChild(opt);
+            this.select_beats_per_chord.appendChild(opt);
         });
-        this.select_len.value=0;
+        this.select_beats_per_chord.value=0;
 
         this.initChordsSelect();
 
@@ -78,6 +78,7 @@ export class aqa_menu_start {
     updateBpmValue(newTempo) {
         console.log("updateBpmValue " + newTempo);
         this.tempo=newTempo;
+        aqa.tempo=newTempo;
         aqa.beatTime=60/aqa.tempo;
         this.display_bpm.textContent=newTempo;
     }
@@ -88,7 +89,7 @@ export class aqa_menu_start {
         let worldConfig={
             "worldId":aqa.worldId,
             "tempo":this.tempo,
-            "cycleLen":Math.pow(2,this.select_len.value),
+            "beatsPerChord":Math.pow(2,this.select_beats_per_chord.value),
             "chords":this.chords_string[this.chords_select.value],
             "chordsLen":this.chords_len[this.chords_select.value],
             "creator":aqa.nickname

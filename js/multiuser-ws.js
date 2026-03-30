@@ -60,7 +60,7 @@ export function initMultiuser() {
         if(m.chords) {
             console.log("onmessage: chords "+m.chords);
             aqa.chords=m.chords;
-            aqa.cycleLen=m.cycleLen;
+            aqa.beatsPerChord=m.beatsPerChord;
             aqa.chordsLen=m.chordsLen;
             aqa.tempo=m.tempo;
             aqa.beatTime=60/aqa.tempo;

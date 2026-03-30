@@ -1,3 +1,17 @@
+/*
+
+ApolloqA - Sound Co-Lab
+
+Sound generator:
+by c1Audio
+
+3D World:
+Based on series of articles at https://medium.com/@joelmalone
+and GFX by https://quaternius.com/packs/ultimatespacekit.html
+
+*/
+
+// global application object to share common properties
 export const aqa={};
 
 aqa.uuidv4 = function() {
@@ -33,7 +47,7 @@ aqa.nickname=nickname;
 
 aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;
-aqa.cycleLen=4;
+aqa.beatsPerChord=4;
 aqa.chords="C_D_E_F";
 aqa.chordsLen=4;
 

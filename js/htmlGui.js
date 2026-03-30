@@ -71,7 +71,6 @@ export class aqa_menu {
         // populate generator config selects
         this.select_instrument = [];
         this.select_quantize = [];
-        this.select_density = [];
 
         for(let i=0;i<1;i++) {
             this.select_instrument[i] = document.querySelector("#select_instrument_"+i);
@@ -84,24 +83,17 @@ export class aqa_menu {
                 this.select_quantize[i].appendChild(opt);
             });
             this.select_quantize[i].value=4;
-
-            this.select_density[i] = document.querySelector("#select_density_"+i);
-            [ "10%","20%","30%","40%","50%","60%","70%","80%","90%","100%" ].forEach((label,n) => {
-                let opt=document.createElement('option');
-                opt.value=n+1;
-                opt.innerHTML=label;
-                this.select_density[i].appendChild(opt);
-            });
-            this.select_density[i].value=10;
         }
 
         this.initIntrumentSelect();
 
+        this.sequencer_button = [];
         this.sequencer_step = [];
         for(let i=0;i<8;i++) {
-            this.sequencer_step[i] = document.querySelector("#step_"+i);
-            this.sequencer_step[i].style.background="#0088cc";
-            this.sequencer_step[i].addEventListener("click", () => {this.toggleStep(i)});
+            this.sequencer_step[i] = false;
+            this.sequencer_button[i] = document.querySelector("#step_"+i);
+            this.sequencer_button[i].style.background="#0088cc";
+            this.sequencer_button[i].addEventListener("click", () => {this.toggleStep(i)});
         }
 
         this.toggleStep(0);
@@ -129,10 +121,11 @@ export class aqa_menu {
 
     toggleStep(i) {
         console.log("toggleStep "+i);
-        if(this.sequencer_step[i].style.background=="#0088cc") {
-            this.sequencer_step[i].style.background="orange";
+        this.sequencer_step[i]=!this.sequencer_step[i];
+        if(this.sequencer_step[i]===true) {
+            this.sequencer_button[i].style.background="orange";
         } else {
-            this.sequencer_step[i].style.background="#0088cc";
+            this.sequencer_button[i].style.background="#0088cc";
         }
     }
 
@@ -233,14 +226,10 @@ export class aqa_menu {
         return this.select_quantize[i].value;
     }
 
-    density(i) {
-        return this.select_density[i].value;
-    }
-
     steps() {
         let steps = "";
         for(let i=0;i<8;i++) {
-            steps += this.sequencer_step[i].style.background=="#0088cc" ? "0" : "1";
+            steps += this.sequencer_step[i]===true ? "1" : "0";
         }
         return steps;
     }
@@ -258,10 +247,10 @@ export class aqa_menu {
         " jitter: " + tJitter.toFixed(2) +
         "<br>" +
         " chords: " + aqa.chords +
-        " cycle len: " + aqa.cycleLen +
+        " beats/chord: " + aqa.beatsPerChord +
         " tempo: " + aqa.tempo
         ;
-        this.display_progress.value = beatNr / (aqa.cycleLen * aqa.chordsLen);
+        this.display_progress.value = beatNr / (aqa.beatsPerChord * aqa.chordsLen);
     }
 
     updateNetStatus(messageCount) {

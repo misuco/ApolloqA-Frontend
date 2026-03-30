@@ -84,18 +84,18 @@ function syncTrackTimer() {
 
     engineTime=aqa.audioEngine.currentTime;
 
-    let tCycle = aqa.beatTime*1000;
+    let tBeat = aqa.beatTime*1000;
 
     beatNr++;
-    if(beatNr >= aqa.cycleLen * aqa.chordsLen) {
+    if(beatNr >= aqa.beatsPerChord * aqa.chordsLen) {
         beatNr=0;
     }
-    tTarget+=tCycle;
+    tTarget+=tBeat;
 
     updateLabels();
 
     let nextSyncInMs = tTarget-engineTime*1000;
-    tJitter=nextSyncInMs-tCycle;
+    tJitter=nextSyncInMs-tBeat;
 
     setTimeout(syncTrackTimer, nextSyncInMs);
 };

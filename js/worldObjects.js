@@ -145,11 +145,11 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
     }).then(track => {
         startSyncTrack();
         const currentTime = track.engine.currentTime; // s
-        const cycleLenS = aqa.beatTime * aqa.cycleLen * aqa.chordsLen;
-        const currentCycleNumber = Math.floor(currentTime / cycleLenS);
-        const nextCycleTime = (currentCycleNumber + 1) * cycleLenS;
-        const waitTime = nextCycleTime - currentTime;
-        console.log("track ready "+ trackUrl + " at " + currentTime + " next cycle " + nextCycleTime + " wait " + waitTime );
+        const loopLen = aqa.beatTime * aqa.beatsPerChord * aqa.chordsLen;
+        const loopNumber = Math.floor(currentTime / loopLen);
+        const nextLoopTime = (loopNumber + 1) * loopLen;
+        const waitTime = nextLoopTime - currentTime;
+        console.log("track ready "+ trackUrl + " at " + currentTime + " next loop " + nextLoopTime + " wait " + waitTime );
         track.spatial.attach(worldObject.mesh);
         track.play({
             loop: true,
@@ -273,9 +273,8 @@ export function generateNewSound() {
     + "&presetNr=" + encodeURIComponent(presetJson.nr)
     + "&presetName=" + encodeURIComponent(presetJson.name)
     + "&presetBank=" + encodeURIComponent(presetJson.bank)
-    + "&len=" + aqa.cycleLen
+    + "&beatsPerChord=" + aqa.beatsPerChord
     + "&quantize=" + quantize_real
-    + "&density=" + aqa.htmlGui.density(0)
     + "&steps=" + aqa.htmlGui.steps()
     + "&worldId=" + aqa.worldId);
 

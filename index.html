@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@6.10.0/babylonjs.loaders.min.js"></script>
     <script src="https://cdn.babylonjs.com/materialsLibrary/babylon.gridMaterial.min.js></script>
     -->
-    
+
 </head>
 <body style="background:black">
 
@@ -24,7 +24,7 @@
         </div>
         <div id="menu_buttons" class="buttons">
             <button id="menu_main" style="width:10%">|||</button>
-            <button id="menu_session" hidden>Session</button>
+            <button id="menu_session" hidden>World</button>
             <button id="menu_navi" hidden>Navi</button>
             <button id="menu_gen" hidden>Gen</button>
             <button id="menu_mic" hidden>Mic</button>
@@ -42,7 +42,6 @@
             <h3>1. Set generator parameters</h3>
             <select id="select_instrument_0"></select>
             <select id="select_quantize_0"></select>
-            <select id="select_density_0"></select>
             <div id="step_sequencer" class="buttons">
                 <button id="step_0">1</button>
                 <button id="step_1">2</button>
@@ -61,7 +60,7 @@
             <h3>1. Select chords and tempo</h3>
             <div class="flexbox">
                 <select id="select_chords"></select>
-                <select id="select_len"></select>beats per chord
+                <select id="select_beats_per_chord"></select>beats per chord
             </div>
             <div class="flexbox">
                 <button id="dec_bpm" class="narrow">-</button>
