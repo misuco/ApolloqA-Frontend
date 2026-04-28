@@ -84,7 +84,7 @@ export class aqa_menu_start {
     }
 
     newSession() {
-        aqa.worldId = aqa.uuidv4();
+        aqa.worldId = aqa.aquid();
 
         let worldConfig={
             "worldId":aqa.worldId,

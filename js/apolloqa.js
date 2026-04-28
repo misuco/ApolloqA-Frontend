@@ -14,7 +14,7 @@ and GFX by https://quaternius.com/packs/ultimatespacekit.html
 // global application object to share common properties
 export const aqa={};
 
-function aquid() {
+aqa.aquid = function() {
     let charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     return Array.from([0,0,0,0], () => charset[Math.floor(Math.random() * charset.length)]).join('');
 }
@@ -36,7 +36,7 @@ if(worldIdHash) {
     aqa.worldId = worldIdHash.replace("#","");
     console.log("Existing worldId: " + aqa.worldId);
 } else {
-    aqa.worldId = aquid();
+    aqa.worldId = aqa.aquid();
     window.location.hash = aqa.worldId;
     console.log("New worldId: " + aqa.worldId);
 }
