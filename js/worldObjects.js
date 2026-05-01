@@ -8,7 +8,30 @@ export let worldObjects = new Map();
 let labels = null;
 let soundMeshes = [];
 
-class SoundMesh {
+class SphereSoundMesh {
+    constructor(name,parentMesh,objPath) {
+        console.log("new SphereSoundMesh "+name);
+        this.sphere = BABYLON.MeshBuilder.CreateSphere(name, {
+          diameter: 0.2
+        }, aqa.scene);
+        this.sphere.parent=parentMesh;
+    }
+
+    updateFreqs(freqs) {
+        let scaling=0;
+        for (let i = 0; i < 16; i++) {
+            scaling=Math.max(scaling,freqs[i]);
+        }
+        scaling=scaling/9;
+        this.sphere.scaling.x=scaling;
+        this.sphere.scaling.y=scaling;
+        this.sphere.scaling.z=scaling;
+    }
+};
+
+soundMeshes["SphereSoundMesh"]=SphereSoundMesh;
+
+class ObjSoundMesh {
     constructor(name,parentMesh,objPath) {
         console.log("new SoundMesh "+name);
         this.parent = parentMesh;
@@ -35,7 +58,20 @@ class SoundMesh {
         this.m.parent = this.parent;
     }
 };
-soundMeshes["SoundMesh"]=SoundMesh;
+
+class SoundMeshObj1 extends ObjSoundMesh {
+    constructor(name,parentMesh) {
+        super(name,parentMesh,"obj/Logo-A_001.obj");
+    }
+}
+
+class SoundMeshObj2 extends ObjSoundMesh {
+    constructor(name,parentMesh) {
+        super(name,parentMesh,"obj/Logo-A_002.obj");
+    }
+}
+
+soundMeshes["SoundMesh"]=SoundMeshObj1;
 
 class SoundMesh2 {
     constructor(name,mesh) {
@@ -55,7 +91,8 @@ class SoundMesh2 {
         this.m[0].position.z=0
         this.m[0].parent=mesh;
         for(let i=0;i<4;i++) {
-            let j=i*0.5;
+            let j=i*1;
+
             this.m[i*4+1].position.x=j;
             this.m[i*4+1].position.y=j;
             this.m[i*4+1].parent=mesh;
@@ -75,7 +112,9 @@ class SoundMesh2 {
     }
     updateFreqs(freqs) {
         for (let i = 0; i < 17; i++) {
-            this.m[i].scaling.y=freqs[i]/64;
+            this.m[i].scaling.x=freqs[i]/32;
+            this.m[i].scaling.y=freqs[i]/32;
+            this.m[i].scaling.z=freqs[i]/32;
         }
     }
 };
@@ -115,31 +154,27 @@ soundMeshes["BarSpectrum"]=BarSpectrum;
 let objSelect=1;
 let objectCount=0;
 
-export function newSoundMesh(x,y,z,trackUrl,presetName) {
-    console.log("newSoundMesh "+trackUrl+" "+presetName);
+//export function newSoundMesh(x,y,z,trackUrl,presetName,follow,angle,radius,rotate) {
+export function newSoundMesh(t) {
+    console.log("newSoundMesh "+t.url+" "+t.name);
 
-    let worldObject = {};
-    worldObject.url=trackUrl;
+    let worldObject = t;
 
-
+    let rootMesh = new BABYLON.TransformNode();
     let mesh = new BABYLON.TransformNode();
+    mesh.parent = rootMesh;
 
-    /*
-    let objPath="obj/Logo-A_00"+objSelect+".obj";
-    objSelect++; if(objSelect>3) {objSelect=1;}
-    let soundMesh = new soundMeshes["SoundMesh"]("mesh_"+trackUrl,mesh,objPath);
-    */
+    let soundMesh = new soundMeshes[t.mesh]("mesh_"+t.url,mesh);
 
-    let soundMesh = new soundMeshes["BarSpectrum"]("mesh_"+trackUrl,mesh);
-
-    mesh.position.x=x;
-    mesh.position.y=y;
-    mesh.position.z=z;
+    rootMesh.position.x=t.x;
+    rootMesh.position.y=t.y;
+    rootMesh.position.z=t.z;
 
     worldObject.mesh = mesh;
+    worldObject.rootMesh = rootMesh;
     worldObject.soundMesh = soundMesh;
 
-    BABYLON.CreateSoundAsync("sound_"+trackUrl, trackUrl, {
+    BABYLON.CreateSoundAsync("sound_"+t.url, t.url, {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
@@ -149,7 +184,7 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
         const loopNumber = Math.floor(currentTime / loopLen);
         const nextLoopTime = (loopNumber + 1) * loopLen;
         const waitTime = nextLoopTime - currentTime;
-        console.log("track ready "+ trackUrl + " at " + currentTime + " next loop " + nextLoopTime + " wait " + waitTime );
+        console.log("track ready "+ t.url + " at " + currentTime + " next loop " + nextLoopTime + " wait " + waitTime );
         track.spatial.attach(worldObject.mesh);
         track.play({
             loop: true,
@@ -157,21 +192,21 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
         });
         worldObject.track=track;
 
-        BABYLON.CreateAudioBusAsync("analyzer_" + trackUrl, {
+        BABYLON.CreateAudioBusAsync("analyzer_" + t.url, {
             analyzerEnabled: true
         }).then(bus => {
             bus.analyzer.fftSize=64;
             worldObject.bus = bus;
             worldObject.track.outBus=worldObject.bus;
-            console.log("analyzer bus ready: " + trackUrl);
+            console.log("analyzer bus ready: " + t.url);
 
-            worldObjects.set(trackUrl,worldObject);
+            worldObjects.set(t.url,worldObject);
         }).catch(err => {
-            console.error("cannot analyze sound:" + trackUrl + " " + err);
+            console.error("cannot analyze sound:" + t.url + " " + err);
         });
 
     }).catch(err => {
-        console.error("cannot play sound:" + trackUrl + " " + err);
+        console.error("cannot play sound:" + t.url + " " + err);
     });
 
 
@@ -198,7 +233,7 @@ export function newSoundMesh(x,y,z,trackUrl,presetName) {
 
     let text1 = new BABYLON.GUI.TextBlock();
         objectCount++
-        worldObject.labelBaseText = objectCount + " : " + presetName;
+        worldObject.labelBaseText = objectCount + " : " + t.name;
         text1.text = worldObject.labelBaseText;
         text1.color = "White";
         text1.fontSize = 14;
@@ -249,9 +284,28 @@ export function generateNewSound() {
             let randX = spaceshipMesh.position.x + Math.random() * 20 - 10;
             let randY = spaceshipMesh.position.y + Math.random() * 10;
             let randZ = spaceshipMesh.position.z + Math.random() * 10;
-            let soundMesh = newSoundMesh(randX,randY,randZ,trackUrl,presetJson.name);
 
-            let worldObject={"url":trackUrl,"name":presetJson.name,"creator":aqa.nickname,"x":randX,"y":randY,"z":randZ};
+            let worldObject={
+                "url":trackUrl,
+                "name":presetJson.name,
+                "creator":aqa.nickname,
+                "mesh":"SphereSoundMesh",
+                "x":randX,
+                "y":randY,
+                "z":randZ,
+                "follow": false,
+                "angleX": 0,
+                "angleY": 0,
+                "angleZ": 0,
+                "radiusL": 0,
+                "radiusF": 0,
+                "radiusR": 0,
+                "radiusB": 0,
+                "rotate": 0 };
+
+            // a copy of worldObject is passed to the newSoundMesh function
+            let soundMesh = newSoundMesh(Object.create(worldObject));
+
             sendTrackList(worldObject);
 
             var xmlhttp = new XMLHttpRequest();
@@ -262,6 +316,7 @@ export function generateNewSound() {
             xmlhttp.open("POST", aqa.baseUrl + "api/worldObjects");
             xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xmlhttp.send(JSON.stringify(worldObject));
+
         }
     });
 
@@ -287,8 +342,18 @@ export function initWorldObjectAnimation() {
             worldObjects.forEach((worldObject, i) => {
                 const frequencies = worldObject.bus.analyzer.getByteFrequencyData();
                 worldObject.soundMesh.updateFreqs(frequencies);
-                //worldObject.mesh.rotation.y=aqa.audioEngine.currentTime;
-                //worldObject.mesh.rotation.z=aqa.audioEngine.currentTime;
+
+                if(worldObject.follow===true) {
+                    worldObject.rootMesh.position.x=spaceshipMesh.position.x;
+                    worldObject.rootMesh.position.y=spaceshipMesh.position.y;
+                    worldObject.rootMesh.position.z=spaceshipMesh.position.z;
+                }
+
+                worldObject.mesh.position.z=worldObject.radiusL;
+                worldObject.rootMesh.rotation.x=worldObject.angleX;
+                worldObject.rootMesh.rotation.y=aqa.audioEngine.currentTime*worldObject.rotate+worldObject.angleY;
+                worldObject.rootMesh.rotation.z=worldObject.angleZ;
+
             });
         } catch(err) {
             console.log("Analyzer error:" + err);

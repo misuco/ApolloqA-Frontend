@@ -47,7 +47,16 @@ export function initMultiuser() {
                         } else {
                             console.log("new trackUrl "+trackUrl);
                             let t=track;
-                            let soundMesh = newSoundMesh(t.x,t.y,t.z,t.url,t.name);
+                            if(t.follow) {
+                                let soundMesh = newSoundMesh(t);
+                            } else {
+                                // support older format of worldObjectConfig
+                                t.follow=false;
+                                t.angleX=0;
+                                t.angleY=0;
+                                t.angleZ=0;
+                                let soundMesh = newSoundMesh(t);
+                            }
                         }
                     } else {
                         console.log("NULL track in list");
