@@ -1,5 +1,6 @@
 import { aqa } from "./apolloqa.js"
 import { sendWorldConfig } from "./multiuser-ws.js"
+import { initAudio } from "./initScene.js"
 
 export class aqa_menu_start {
     constructor() {
@@ -33,6 +34,13 @@ export class aqa_menu_start {
 
         this.new_session_button = document.querySelector("#new_session");
         this.new_session_button.addEventListener("click", (event) => this.newSession());
+
+        this.start_overlay = document.querySelector("#start_overlay");
+        this.start_audio_button = document.querySelector("#startAudioButton");
+        this.start_audio_button.addEventListener("click", (event) => {
+            initAudio()
+            this.start_overlay.hidden=true;}
+        );
 
     }
 

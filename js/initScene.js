@@ -8,6 +8,25 @@ import { aqa_menu_start } from "./htmlGuiStart.js"
 import { initMultiuser } from "./multiuser-ws.js"
 import { initWorldObjectAnimation } from "./worldObjects.js"
 
+export async function initAudio() {
+    aqa.audioEngine = await BABYLON.CreateAudioEngineAsync({
+        volume: 0.9,
+        listenerAutoUpdate: true,
+        listenerEnabled: true,
+        resumeOnInteraction: true
+    });
+
+    aqa.audioEngine.listener.attach(spaceshipMesh);
+
+    console.log("boot: initMultiuser");
+    initMultiuser();
+
+    console.log("boot: initWorldObjectAnimation");
+    initWorldObjectAnimation()
+
+    console.log("audioEngine ready")
+}
+
 // Bind to the window's resize DOM event, so that we can update the <canvas> dimensions to match;
 // this is needed because the <canvas> render context doesn't automaticaly update itself
 const onWindowResize = () => {
@@ -44,14 +63,6 @@ async function createScene() {
     });
     */
 
-    aqa.audioEngine = await BABYLON.CreateAudioEngineAsync({
-        volume: 0.9,
-        listenerAutoUpdate: true,
-        listenerEnabled: true,
-        resumeOnInteraction: true
-    });
-    console.log("audioEngine ready")
-
     return scene;
 }
 
@@ -69,7 +80,6 @@ async function boot() {
     initGround();
 
     await initCamera();
-    aqa.audioEngine.listener.attach(spaceshipMesh);
 
     console.log("boot: initMediaRecorder");
     initMediaRecorder();
@@ -77,12 +87,6 @@ async function boot() {
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGui.updateHeader();
     aqa.htmlGuiStart=new aqa_menu_start();
-
-    console.log("boot: initMultiuser");
-    initMultiuser();
-
-    console.log("boot: initWorldObjectAnimation");
-    initWorldObjectAnimation()
 
     console.log("boot: runRenderLoop");
     // Start a render loop
