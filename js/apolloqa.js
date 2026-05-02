@@ -32,12 +32,12 @@ aqa.getRandomInt = function(max) {
 aqa.htmlGui={};
 aqa.sessionId = uuidv4();
 
-if(worldIdHash) {
-    aqa.worldId = worldIdHash.replace("#","");
-    console.log("Existing worldId: " + aqa.worldId);
+if(worldIdUrl) {
+    aqa.worldId = worldIdUrl;
+    console.log("Url has worldId: " + aqa.worldId);
 } else {
     aqa.worldId = aqa.aquid();
-    window.location.hash = aqa.worldId;
+    window.location.search = "?" + aqa.worldId;
     console.log("New worldId: " + aqa.worldId);
 }
 

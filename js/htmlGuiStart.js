@@ -96,7 +96,6 @@ export class aqa_menu_start {
         };
         sendWorldConfig(worldConfig);
 
-        window.location.hash = aqa.worldId;
-        window.location.reload();
+        window.location.search = "?" + aqa.worldId;
     }
 }
