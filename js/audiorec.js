@@ -1,5 +1,6 @@
 import { aqa } from "./apolloqa.js"
 import { startSyncTrack, armRec, armStop } from "./syncTrack.js"
+import { randomMesh } from "./worldObjectsMeshes.js"
 import { sendTrackList } from "./multiuser-ws.js"
 import { newSoundMesh } from "./worldObjects.js"
 import { spaceshipMesh } from "./camera.js"
@@ -41,10 +42,28 @@ async function sendData(uploadFile) {
         let randY = spaceshipMesh.position.y + Math.random() * 10;
         let randZ = spaceshipMesh.position.z + Math.random() * 10;
         let trackName = aqa.nickname+" "+uploadId;
-        newSoundMesh(randX,randY,randZ,trackUrl,trackName);
 
-        let trackList={"url":trackUrl,"name":trackName,"creator":aqa.nickname,"x":randX,"y":randY,"z":randZ};
+        let trackList={
+            "url":trackUrl,
+            "name":trackName,
+            "creator":aqa.nickname,
+            "mesh":randomMesh(),
+            "x":randX,
+            "y":randY,
+            "z":randZ,
+            "follow": false,
+            "angleX": 0,
+            "angleY": 0,
+            "angleZ": 0,
+            "radiusL": 0,
+            "radiusF": 0,
+            "radiusR": 0,
+            "radiusB": 0,
+            "rotate": 0
+        };
+
         sendTrackList(trackList);
+        newSoundMesh(trackList);
 
         uploadId++;
     } catch (e) {

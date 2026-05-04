@@ -2,7 +2,6 @@ import { aqa } from "./apolloqa.js"
 import { initStarfield } from "./starfield.js"
 import { initGround } from "./ground.js"
 import { initCamera, spaceshipMesh } from "./camera.js"
-import { initMediaRecorder } from "./audiorec.js"
 import { aqa_menu } from "./htmlGui.js"
 import { aqa_menu_start } from "./htmlGuiStart.js"
 import { initMultiuser } from "./multiuser-ws.js"
@@ -80,9 +79,6 @@ async function boot() {
     initGround();
 
     await initCamera();
-
-    console.log("boot: initMediaRecorder");
-    initMediaRecorder();
 
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGui.updateHeader();

@@ -16,6 +16,8 @@
 
 <script src="js/session.js"></script>
 
+<canvas class="apolloqa"></canvas>
+
 <div class="wrapper" style="width:100%;background:transparent">
     <section class="main_controls">
         <div id="menu_header">
@@ -24,11 +26,11 @@
         </div>
         <div id="menu_buttons" class="buttons">
             <button id="menu_main" style="width:10%">|||</button>
-            <button id="menu_session" hidden>World</button>
-            <button id="menu_navi" hidden>Navi</button>
-            <button id="menu_gen" hidden>Gen</button>
-            <button id="menu_mic" hidden>Mic</button>
-            <button id="menu_autoplay" hidden>Auto</button>
+            <button id="menu_session">World</button>
+            <button id="menu_navi">Navi</button>
+            <button id="menu_gen">Gen</button>
+            <button id="menu_mic">Mic</button>
+            <button id="menu_autoplay">Auto</button>
         </div>
 
         <div id="config_navi" hidden>
@@ -93,8 +95,6 @@
     </section>
 </div>
 
-<canvas class="apolloqa"></canvas>
-
 <div id="start_overlay">
     <button id="startAudioButton">START AUDIO!</button>
 </div>
@@ -103,6 +103,10 @@
 <script src="js/lib/babylonjs.loaders.min.js"></script>
 <script src="js/lib/babylon.gridMaterial.min.js"></script>
 <script src="js/lib/babylon.gui.js"></script>
+
+<script type="module" src="js/initScene.js"></script>
+
+<!---
 <script type="module" src="js/apolloqa.js"></script>
 <script type="module" src="js/camera.js"></script>
 <script type="module" src="js/syncTrack.js"></script>
@@ -113,7 +117,7 @@
 <script type="module" src="js/audiorec.js"></script>
 <script type="module" src="js/htmlGui.js"></script>
 <script type="module" src="js/htmlGuiStart.js"></script>
-<script type="module" src="js/initScene.js"></script>
+--->
 
 </body>
 </html>

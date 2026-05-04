@@ -55,6 +55,11 @@ export function initMultiuser() {
                                 t.angleX=0;
                                 t.angleY=0;
                                 t.angleZ=0;
+                                t.radiusL=0;
+                                t.radiusF=0;
+                                t.radiusR=0;
+                                t.radiusB=0;
+                                t.rotate=0;
                                 let soundMesh = newSoundMesh(t);
                             }
                         }

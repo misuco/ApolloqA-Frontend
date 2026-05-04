@@ -32,6 +32,9 @@ export function armStop() {
 
 export function toggleAutoPlay() {
     autoplay=!autoplay;
+    if(autoplay===true) {
+        startSyncTrack();        
+    }
 }
 
 let tTarget=0;

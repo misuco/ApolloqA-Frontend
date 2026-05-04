@@ -2,6 +2,7 @@ import { aqa } from "./apolloqa.js"
 import { tJitter, autoplay, beatNr, toggleAutoPlay } from "./syncTrack.js"
 import { worldObjects, generateNewSound } from "./worldObjects.js"
 import { chaseCameraPosition, setSpeed } from "./camera.js"
+import { mediaRecorder, initMediaRecorder } from "./audiorec.js"
 
 export class aqa_menu {
     constructor() {
@@ -53,6 +54,10 @@ export class aqa_menu {
             this.setDivsHidden(true);
             this.div_mic.hidden=false;
             this.menu_mic_button.style.background = "orange";
+            if(mediaRecorder===null) {
+                console.log("boot: initMediaRecorder");
+                initMediaRecorder();
+            }
         });
 
         this.menu_autoplay_button = document.querySelector("#menu_autoplay");
