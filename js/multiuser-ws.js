@@ -47,21 +47,7 @@ export function initMultiuser() {
                         } else {
                             console.log("new trackUrl "+trackUrl);
                             let t=track;
-                            if(t.follow) {
-                                let soundMesh = newSoundMesh(t);
-                            } else {
-                                // support older format of worldObjectConfig
-                                t.follow=false;
-                                t.angleX=0;
-                                t.angleY=0;
-                                t.angleZ=0;
-                                t.radiusL=0;
-                                t.radiusF=0;
-                                t.radiusR=0;
-                                t.radiusB=0;
-                                t.rotate=0;
-                                let soundMesh = newSoundMesh(t);
-                            }
+                            let soundMesh = newSoundMesh(t);
                         }
                     } else {
                         console.log("NULL track in list");

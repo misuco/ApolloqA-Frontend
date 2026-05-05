@@ -141,6 +141,8 @@ export function generateNewSound() {
             let randX = spaceshipMesh.position.x + Math.random() * 20 - 10;
             let randY = spaceshipMesh.position.y + Math.random() * 10;
             let randZ = spaceshipMesh.position.z + Math.random() * 10;
+            let randRadius = Math.random() * 10;
+            let randRotate = 1.5 - Math.random() * 3;
 
             let worldObject={
                 "url":trackUrl,
@@ -154,11 +156,11 @@ export function generateNewSound() {
                 "angleX": 0,
                 "angleY": 0,
                 "angleZ": 0,
-                "radiusL": 0,
-                "radiusF": 0,
-                "radiusR": 0,
-                "radiusB": 0,
-                "rotate": 0 };
+                "radiusL": randRadius,
+                "radiusF": randRadius,
+                "radiusR": randRadius,
+                "radiusB": randRadius,
+                "rotate": randRotate };
 
             // a copy of worldObject is passed to the newSoundMesh function
             let soundMesh = newSoundMesh(Object.create(worldObject));
