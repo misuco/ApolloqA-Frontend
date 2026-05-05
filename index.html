@@ -20,30 +20,35 @@
 
 <div class="wrapper" style="width:100%;background:transparent">
     <section class="main_controls">
+
         <div id="menu_header">
             <output id="display_net_status">◐</output><output id="display_header" style="font-size: 1rem;">ApolloqA</output>
             <progress id="display_progress"  style="width:100%;height:5%;" max="1" value="0"></progress>
         </div>
+
         <div id="menu_buttons" class="buttons">
             <button id="menu_main" style="width:10%">|||</button>
-            <button id="menu_session">World</button>
+            <button id="menu_session">Space</button>
             <button id="menu_navi">Navi</button>
             <button id="menu_gen">Gen</button>
             <button id="menu_mic">Mic</button>
             <button id="menu_autoplay">Auto</button>
         </div>
 
-        <div id="config_navi" hidden>
+        <div id="config_navi" class="config_div" hidden>
             speed<br/>
             <input id="range_speed" type="range" min="0" max="4" value="0" step="0.1"></input><br/>
             camera<br/>
             <input id="range_camera" type="range" min="1" max="100" value="1" step="0.1"></input>
         </div>
 
-        <div id="config_gen" hidden>
+        <div id="config_gen" class="config_div" hidden>
             <h3>1. Set generator parameters</h3>
-            <select id="select_instrument_0"></select>
-            <select id="select_quantize_0"></select>
+            soundset<br/>
+            <select id="select_instrument_0"></select><br/>
+            quantize<br/>
+            <select id="select_quantize_0"></select><br/>
+            rhythmic structure<br/>
             <div id="step_sequencer" class="buttons">
                 <button id="step_0">1</button>
                 <button id="step_1">2</button>
@@ -58,25 +63,30 @@
             <button id="calcX">Generate New Sound</button>
         </div>
 
-        <div id="config_session" hidden>
+        <div id="config_session" class="config_div" hidden>
             <h3>1. Select chords and tempo</h3>
-            <div class="flexbox">
-                <select id="select_chords"></select>
-                <select id="select_beats_per_chord"></select>beats per chord
-            </div>
+
+            chord progression<br/>
+            <select id="select_chords"></select><br/>
+            beats per chord<br/>
+            <select id="select_beats_per_chord"></select><br/>
+            tempo<br/>
             <div class="flexbox">
                 <button id="dec_bpm" class="narrow">-</button>
                 <input id="range_bpm" type="range" min="40" max="240" value="120" step="1"></input>
                 <button id="inc_bpm" class="narrow">+</button>
-                <output id="display_bpm" style="font-size: 3rem;">120</output> BPM
             </div>
+            <output id="display_bpm" style="font-size: 3rem;">120</output> BPM
             <h3>2. Tune in</h3>
-            <div class="buttons">
-                <button id="new_session">Start New World</button>
-            </div>
+            <button id="new_session">Start New World</button>
+            <br/>
+            <br/>
+            Developers only
+            <br/>
+            <button id="debug_layer_button">debug layer</button>
         </div>
 
-        <div id="config_mic" hidden>
+        <div id="config_mic" class="config_div" hidden>
             <canvas id="audiorec_visualizer"></canvas>
             <div class="buttons">
                 <button id="record">Rec</button>
@@ -96,7 +106,7 @@
 </div>
 
 <div id="start_overlay">
-    <button id="startAudioButton">START AUDIO!</button>
+    <button id="startAudioButton">Booting</button>
 </div>
 
 <script src="js/lib/babylon.js"></script>

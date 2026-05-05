@@ -35,6 +35,10 @@ export class aqa_menu_start {
         this.new_session_button = document.querySelector("#new_session");
         this.new_session_button.addEventListener("click", (event) => this.newSession());
 
+        this.show_debug_layer=false;
+        this.debug_layer_button = document.querySelector("#debug_layer_button");
+        this.debug_layer_button.addEventListener("click", (event) => this.toggleDebugLayer());
+
         this.start_overlay = document.querySelector("#start_overlay");
         this.start_audio_button = document.querySelector("#startAudioButton");
         this.start_audio_button.addEventListener("click", (event) => {
@@ -105,5 +109,20 @@ export class aqa_menu_start {
         sendWorldConfig(worldConfig);
 
         window.location.search = "?" + aqa.worldId;
+    }
+
+    toggleDebugLayer() {
+        console.log("toggleDebugLayer");
+        this.show_debug_layer=!this.show_debug_layer;
+        if(this.show_debug_layer===true) {
+            this.debug_layer_button.style.background="orange";
+            aqa.scene.debugLayer.show({
+              embedMode: true,
+            });
+        } else {
+            this.debug_layer_button.style.background="#0088cc";
+            aqa.scene.debugLayer.hide();
+        }
+
     }
 }

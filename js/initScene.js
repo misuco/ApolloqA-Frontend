@@ -66,30 +66,32 @@ async function createScene() {
 }
 
 async function boot() {
-    console.log("boot: createScene");
-    aqa.scene = await createScene();
-    //console.log("boot: initColors");
-    //initColors();
-    console.log("boot: initCamera");
+    let display_boot_status = document.querySelector("#startAudioButton");
 
-    console.log("boot: initStarfield");
+    display_boot_status.innerHTML="boot: create scene";
+    aqa.scene = await createScene();
+
+    display_boot_status.innerHTML="boot: init Starfield";
     initStarfield();
 
-    console.log("boot: initGround");
+    display_boot_status.innerHTML="boot: init Ground";
     initGround();
 
+    display_boot_status.innerHTML="boot: init Camera";
     await initCamera();
 
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGui.updateHeader();
     aqa.htmlGuiStart=new aqa_menu_start();
 
-    console.log("boot: runRenderLoop");
+    display_boot_status.innerHTML="boot: start Render Loop";
     // Start a render loop
     // - basically, this will instruct BabylonJS to continuously re-render the scene
     aqa.engine.runRenderLoop(() => {
         aqa.scene.render();
     });
+
+    display_boot_status.innerHTML="system ready:<br/>click to connect";
 }
 
 boot();
