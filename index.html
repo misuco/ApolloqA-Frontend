@@ -16,7 +16,7 @@
 
 <script src="js/session.js"></script>
 
-<canvas class="apolloqa"></canvas>
+<canvas id="apolloqa_canvas"></canvas>
 
 <div class="wrapper" style="width:100%;background:transparent">
     <section class="main_controls">
@@ -77,7 +77,7 @@
         </div>
 
         <div id="config_mic" hidden>
-            <canvas id="visualizer" style="display:block;height:100px"></canvas>
+            <canvas id="audiorec_visualizer"></canvas>
             <div class="buttons">
                 <button id="record">Rec</button>
                 <button id="stop">Stop</button>
@@ -105,19 +105,6 @@
 <script src="js/lib/babylon.gui.js"></script>
 
 <script type="module" src="js/initScene.js"></script>
-
-<!---
-<script type="module" src="js/apolloqa.js"></script>
-<script type="module" src="js/camera.js"></script>
-<script type="module" src="js/syncTrack.js"></script>
-<script type="module" src="js/worldObjects.js"></script>
-<script type="module" src="js/starfield.js"></script>
-<script type="module" src="js/ground.js"></script>
-<script type="module" src="js/multiuser-ws.js"></script>
-<script type="module" src="js/audiorec.js"></script>
-<script type="module" src="js/htmlGui.js"></script>
-<script type="module" src="js/htmlGuiStart.js"></script>
---->
 
 </body>
 </html>

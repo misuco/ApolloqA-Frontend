@@ -47,7 +47,7 @@ aqa.audioEngine = null;
 aqa.instruments = [];
 
 // Get a reference to the <canvas>
-aqa.canvas = document.querySelector(".apolloqa");
+aqa.canvas = document.querySelector("#apolloqa_canvas");
 aqa.engine = null;
 aqa.scene = null;
 

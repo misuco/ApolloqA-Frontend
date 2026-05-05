@@ -11,7 +11,7 @@ export let mediaRecorder = null;
 export const mic_record_button = document.querySelector("#record");
 export const mic_stop_button = document.querySelector("#stop");
 
-const canvasAudio = document.querySelector("#visualizer");
+const canvasAudio = document.querySelector("#audiorec_visualizer");
 
 // Disable stop button while not recording
 mic_stop_button.disabled = true;
