@@ -56,12 +56,6 @@ async function createScene() {
     const sunLight = new BABYLON.DirectionalLight("sun light", new BABYLON.Vector3(1, -1, -1));
     sunLight.intensity = 5;
 
-    /*
-    scene.debugLayer.show({
-      embedMode: true,
-    });
-    */
-
     return scene;
 }
 
