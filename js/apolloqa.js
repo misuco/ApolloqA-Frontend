@@ -32,15 +32,7 @@ aqa.getRandomInt = function(max) {
 aqa.htmlGui={};
 aqa.sessionId = uuidv4();
 
-if(worldIdUrl) {
-    aqa.worldId = worldIdUrl;
-    console.log("Url has worldId: " + aqa.worldId);
-} else {
-    aqa.worldId = aqa.aquid();
-    window.location.search = "?" + aqa.worldId;
-    console.log("New worldId: " + aqa.worldId);
-}
-
+aqa.worldId = worldIdUrl;
 
 // initScene.js, syncTrack.js
 aqa.audioEngine = null;
@@ -56,7 +48,7 @@ aqa.nickname=nickname;
 aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;
 aqa.beatsPerChord=4;
-aqa.chords="C_D_E_F";
+aqa.chords="-";
 aqa.chordsLen=4;
 
 aqa.baseUrl = window.location.protocol + "//" + window.location.host + "/";

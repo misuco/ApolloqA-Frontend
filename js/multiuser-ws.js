@@ -37,6 +37,7 @@ export function initMultiuser() {
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
             if( m.worldId===aqa.worldId ) {
+                
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {

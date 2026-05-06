@@ -62,30 +62,38 @@ async function createScene() {
 async function boot() {
     let display_boot_status = document.querySelector("#startAudioButton");
 
-    display_boot_status.innerHTML="boot: create scene";
-    aqa.scene = await createScene();
-
-    display_boot_status.innerHTML="boot: init Starfield";
-    initStarfield();
-
-    display_boot_status.innerHTML="boot: init Ground";
-    initGround();
-
-    display_boot_status.innerHTML="boot: init Camera";
-    await initCamera();
-
     aqa.htmlGui=new aqa_menu();
-    aqa.htmlGui.updateHeader();
     aqa.htmlGuiStart=new aqa_menu_start();
 
-    display_boot_status.innerHTML="boot: start Render Loop";
-    // Start a render loop
-    // - basically, this will instruct BabylonJS to continuously re-render the scene
-    aqa.engine.runRenderLoop(() => {
-        aqa.scene.render();
-    });
+    if(aqa.worldId==="") {
+        initMultiuser();
+        aqa.htmlGuiStart.start_overlay.hidden=true;
+        aqa.htmlGui.div_session.hidden=false;
+    } else {
+        display_boot_status.innerHTML="Loading scene";
+        aqa.scene = await createScene();
 
-    display_boot_status.innerHTML="system ready:<br/>click to connect";
+        display_boot_status.innerHTML="Loading starfield";
+        initStarfield();
+
+        display_boot_status.innerHTML="Loading ground";
+        initGround();
+
+        display_boot_status.innerHTML="Loading camera";
+        await initCamera();
+
+        display_boot_status.innerHTML="Start render Loop";
+
+        aqa.htmlGui.updateHeader();
+        aqa.htmlGui.menu_main_button.hidden = false;
+        aqa.htmlGui.toggleMenu();
+
+        aqa.engine.runRenderLoop(() => {
+            aqa.scene.render();
+        });
+
+        display_boot_status.innerHTML="System ready:<br/>click to connect";
+    }
 }
 
 boot();

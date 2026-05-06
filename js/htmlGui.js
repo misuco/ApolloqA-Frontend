@@ -20,7 +20,6 @@ export class aqa_menu {
         this.range_camera = document.querySelector("#range_camera");
         this.range_camera.addEventListener("input", () => { chaseCameraPosition.position.z=event.target.value*-1;} );
         this.range_camera.value=50;
-        chaseCameraPosition.position.z=-50;
 
         this.menu_navi_button = document.querySelector("#menu_navi");
         this.div_navi = document.querySelector("#config_navi");
@@ -40,12 +39,10 @@ export class aqa_menu {
             this.menu_gen_button.style.background = "orange";
         });
 
-        this.menu_session_button = document.querySelector("#menu_session");
+        this.menu_exit_button = document.querySelector("#menu_exit");
         this.div_session = document.querySelector("#config_session");
-        this.menu_session_button.addEventListener("click", () => {
-            this.setDivsHidden(true);
-            this.div_session.hidden=false;
-            this.menu_session_button.style.background = "orange";
+        this.menu_exit_button.addEventListener("click", () => {
+            window.location.search = "";
         });
 
         this.menu_mic_button = document.querySelector("#menu_mic");
@@ -55,7 +52,7 @@ export class aqa_menu {
             this.div_mic.hidden=false;
             this.menu_mic_button.style.background = "orange";
             if(mediaRecorder===null) {
-                console.log("boot: initMediaRecorder");
+                console.log("initMediaRecorder");
                 initMediaRecorder();
             }
         });
@@ -195,13 +192,13 @@ export class aqa_menu {
 
         this.menu_navi_button.style.background = "#0088cc";
         this.menu_gen_button.style.background = "#0088cc";
-        this.menu_session_button.style.background = "#0088cc";
+        this.menu_exit_button.style.background = "#0088cc";
         this.menu_mic_button.style.background = "#0088cc";
     }
 
     toggleMenu() {
         this.menu_hidden=!this.menu_hidden;
-        this.menu_session_button.hidden=this.menu_hidden;
+        this.menu_exit_button.hidden=this.menu_hidden;
         this.menu_mic_button.hidden=this.menu_hidden;
         this.menu_gen_button.hidden=this.menu_hidden;
         this.menu_navi_button.hidden=this.menu_hidden;

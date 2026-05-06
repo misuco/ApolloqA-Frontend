@@ -117,7 +117,7 @@ export async function initCamera() {
     chaseCameraPosition = new BABYLON.TransformNode("chaseCameraPosition", aqa.scene);
     chaseCameraPosition.parent = spaceshipMesh;
     // Position this one behind and up a bit; the XYZ are in local coords
-    chaseCameraPosition.position = new BABYLON.Vector3(0, 4, -15);
+    chaseCameraPosition.position = new BABYLON.Vector3(0, 4, -50);
     chaseCameraLookAt = new BABYLON.TransformNode("chaseCameraLookAt", aqa.scene);
     chaseCameraLookAt.parent = spaceshipMesh;
     // Position this one in front and up a bit; the XYZ are in local coords

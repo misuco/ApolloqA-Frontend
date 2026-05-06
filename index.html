@@ -27,12 +27,12 @@
         </div>
 
         <div id="menu_buttons" class="buttons">
-            <button id="menu_main" style="width:10%">|||</button>
-            <button id="menu_session">Space</button>
-            <button id="menu_navi">Navi</button>
-            <button id="menu_gen">Gen</button>
-            <button id="menu_mic">Mic</button>
-            <button id="menu_autoplay">Auto</button>
+            <button id="menu_main" hidden>|||</button>
+            <button id="menu_exit" hidden>Exit</button>
+            <button id="menu_navi" hidden>Navi</button>
+            <button id="menu_gen" hidden>Gen</button>
+            <button id="menu_mic" hidden>Mic</button>
+            <button id="menu_autoplay" hidden>Auto</button>
         </div>
 
         <div id="config_navi" class="config_div" hidden>
@@ -64,26 +64,26 @@
         </div>
 
         <div id="config_session" class="config_div" hidden>
-            <h3>1. Select chords and tempo</h3>
 
-            chord progression<br/>
-            <select id="select_chords"></select><br/>
-            beats per chord<br/>
-            <select id="select_beats_per_chord"></select><br/>
+            <table width="100%">
+                <tr><td>
+                    chord progression<br/>
+                    <select id="select_chords"></select><br/>
+                </td><td>
+                    beats per chord<br/>
+                    <select id="select_beats_per_chord"></select><br/>
+                </td></tr>
+            </table>
             tempo<br/>
             <div class="flexbox">
                 <button id="dec_bpm" class="narrow">-</button>
                 <input id="range_bpm" type="range" min="40" max="240" value="120" step="1"></input>
                 <button id="inc_bpm" class="narrow">+</button>
+                <output id="display_bpm" style="font-size: 3rem;">120</output> BPM
             </div>
-            <output id="display_bpm" style="font-size: 3rem;">120</output> BPM
-            <h3>2. Tune in</h3>
-            <button id="new_session">Start New World</button>
-            <br/>
-            <br/>
-            Developers only
-            <br/>
-            <button id="debug_layer_button">debug layer</button>
+            <div class="flexbox">
+                    <button id="new_session">ENTER</button>
+            </div>
         </div>
 
         <div id="config_mic" class="config_div" hidden>
@@ -92,6 +92,10 @@
                 <button id="record">Rec</button>
                 <button id="stop">Stop</button>
             </div>
+            <br/>
+            Developers only
+            <br/>
+            <button id="debug_layer_button">debug layer</button>
         </div>
 
         <div class="buttons">
@@ -106,7 +110,7 @@
 </div>
 
 <div id="start_overlay">
-    <button id="startAudioButton">Booting</button>
+    <button id="startAudioButton">Loading</button>
 </div>
 
 <script src="js/lib/babylon.js"></script>

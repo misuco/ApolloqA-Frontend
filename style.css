@@ -26,6 +26,10 @@ canvas#audiorec_visualizer {
     height:100px
 }
 
+#menu_main {
+    width:10%;
+}
+
 #start_overlay {
     position: fixed;
     top: 0;
@@ -41,6 +45,10 @@ canvas#audiorec_visualizer {
     position: absolute;
     top: 25%;
     left: 25%;
+}
+
+#new_session {
+    width: 100%;
 }
 
 .wrapper {

@@ -43,9 +43,8 @@ export class aqa_menu_start {
         this.start_audio_button = document.querySelector("#startAudioButton");
         this.start_audio_button.addEventListener("click", (event) => {
             initAudio()
-            this.start_overlay.hidden=true;}
-        );
-
+            this.start_overlay.hidden=true;
+        });
     }
 
     initChordsSelect() {
@@ -97,17 +96,21 @@ export class aqa_menu_start {
 
     newSession() {
         aqa.worldId = aqa.aquid();
+        aqa.chords=this.chords_string[this.chords_select.value];
+        aqa.chordsLen=this.chords_len[this.chords_select.value];
+        aqa.beatsPerChord=Math.pow(2,this.select_beats_per_chord.value);
 
         let worldConfig={
             "worldId":aqa.worldId,
             "tempo":this.tempo,
-            "beatsPerChord":Math.pow(2,this.select_beats_per_chord.value),
-            "chords":this.chords_string[this.chords_select.value],
-            "chordsLen":this.chords_len[this.chords_select.value],
+            "beatsPerChord":aqa.beatsPerChord,
+            "chords":aqa.chords,
+            "chordsLen":aqa.chordsLen,
             "creator":aqa.nickname
         };
-        sendWorldConfig(worldConfig);
 
+        console.log("newSession "+JSON.stringify(worldConfig));
+        sendWorldConfig(worldConfig);
         window.location.search = "?" + aqa.worldId;
     }
 
@@ -123,6 +126,5 @@ export class aqa_menu_start {
             this.debug_layer_button.style.background="#0088cc";
             aqa.scene.debugLayer.hide();
         }
-
     }
 }
