@@ -1,7 +1,7 @@
 import { aqa } from "./apolloqa.js"
 import { soundMeshes, randomMesh } from "./worldObjectsMeshes.js"
 import { startSyncTrack } from "./syncTrack.js"
-import { sendTrackList } from "./multiuser-ws.js"
+import { sendTrackList, loadingTarget, loadingCount, updateLoadingProgress, resetLoadingProgress, incLoadingTarget } from "./multiuser-ws.js"
 import { initCamera, spaceshipMesh } from "./camera.js"
 
 export let worldObjects = new Map();
@@ -34,7 +34,14 @@ export function newSoundMesh(t) {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
-        startSyncTrack();
+
+        updateLoadingProgress(1);
+
+        if(loadingCount>=loadingTarget) {
+            aqa.htmlGuiDialog.dialog.hidden=true;
+            resetLoadingProgress();
+            startSyncTrack();
+        }
 
         const currentTime = track.engine.currentTime; // s
         const loopLen = aqa.beatTime * aqa.beatsPerChord * aqa.chordsLen;
@@ -193,6 +200,10 @@ export function generateNewSound() {
     + "&worldId=" + aqa.worldId);
 
     oReq.send();
+
+    incLoadingTarget();
+    aqa.htmlGuiDialog.dialog.hidden=false;
+
 };
 
 export function initWorldObjectAnimation() {

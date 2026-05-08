@@ -11,6 +11,29 @@ let wsUrl = window.location.hostname==="apolloqa.net" ?
             "wss://ws.apolloqa.net/" :
             "ws://"+window.location.hostname+":3038/"
 
+export let loadingTarget = 0;
+export let loadingCount = 0;
+
+export function updateLoadingProgress(inc) {
+    loadingCount+=inc;
+    aqa.htmlGuiDialog.setText("Loading " + loadingCount + " / " + loadingTarget);
+    if(loadingTarget>0) {
+        aqa.htmlGuiDialog.setProgress(loadingCount / loadingTarget);
+    } else {
+        console.log("Division by zero!!!");
+    }
+}
+
+export function incLoadingTarget() {
+    loadingTarget++;
+    updateLoadingProgress(0);
+}
+
+export function resetLoadingProgress(inc) {
+    loadingTarget=0;
+    loadingCount=0;
+}
+
 export function initMultiuser() {
     console.log("Connecting ws to "+wsUrl)
     ws = new WebSocket(wsUrl);
@@ -37,7 +60,12 @@ export function initMultiuser() {
         if(m.trackList) {
             console.log("onmessage: tracklist "+m.trackList);
             if( m.worldId===aqa.worldId ) {
-                
+
+                loadingTarget=m.trackList.length;
+                loadingCount=0;
+                aqa.htmlGuiDialog.dialog.hidden=false;
+                updateLoadingProgress(0);
+
                 let list = m.trackList;
                 console.log("get other user tracklist "+list);
                 list.forEach((track, i) => {

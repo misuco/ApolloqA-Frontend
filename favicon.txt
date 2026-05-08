@@ -1,0 +1,13 @@
+
+Source: https://www.creativefabrica.com/de/product/a-letter-logo-design-24/
+Designer: https://www.creativefabrica.com/de/designer/xcoolee/
+		Manikganj, Bangladesh
+
+
+C-64 Colors
+
+BG:
+3e32a2 / 62 50 162
+
+FG:
+7c70e0 / 124 112 224

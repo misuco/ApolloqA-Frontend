@@ -1,9 +1,11 @@
 import { aqa } from "./apolloqa.js"
+import { getCookie } from "./cookies.js"
 import { initStarfield } from "./starfield.js"
 import { initGround } from "./ground.js"
 import { initCamera, spaceshipMesh } from "./camera.js"
 import { aqa_menu } from "./htmlGui.js"
 import { aqa_menu_start } from "./htmlGuiStart.js"
+import { aqa_dialog } from "./htmlGuiDialog.js"
 import { initMultiuser } from "./multiuser-ws.js"
 import { initWorldObjectAnimation } from "./worldObjects.js"
 
@@ -64,6 +66,7 @@ async function boot() {
 
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGuiStart=new aqa_menu_start();
+    aqa.htmlGuiDialog=new aqa_dialog();
 
     if(aqa.worldId==="") {
         initMultiuser();
@@ -94,6 +97,17 @@ async function boot() {
 
         display_boot_status.innerHTML="System ready:<br/>click to connect";
     }
+}
+
+aqa.worldId = window.location.search.substr(1);
+aqa.nickname = getCookie("nickname");
+
+if (!aqa.worldId && !aqa.nickname) {
+    window.location.href = 'menu';
+}
+
+if (!aqa.nickname) {
+    aqa.nickname = "GUEST";
 }
 
 boot();

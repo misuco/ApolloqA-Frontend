@@ -1,5 +1,5 @@
 // First identify user
-function getCookie(cname) {
+export function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
@@ -13,13 +13,4 @@ function getCookie(cname) {
         }
     }
     return "";
-}
-
-const worldIdUrl = window.location.search.substr(1);
-let nickname = getCookie("nickname");
-
-if (!nickname && !worldIdUrl) {
-    window.location.href = 'checkin';
-} else {
-    nickname = "GUEST";
 }

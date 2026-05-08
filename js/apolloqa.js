@@ -30,9 +30,12 @@ aqa.getRandomInt = function(max) {
 }
 
 aqa.htmlGui={};
+aqa.htmlGuiStart={};
+aqa.htmlGuiDialog={};
+
 aqa.sessionId = uuidv4();
 
-aqa.worldId = worldIdUrl;
+aqa.worldId = "";
 
 // initScene.js, syncTrack.js
 aqa.audioEngine = null;
@@ -43,7 +46,7 @@ aqa.canvas = document.querySelector("#apolloqa_canvas");
 aqa.engine = null;
 aqa.scene = null;
 
-aqa.nickname=nickname;
+aqa.nickname="";
 
 aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;

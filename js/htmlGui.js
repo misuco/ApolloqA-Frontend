@@ -42,7 +42,7 @@ export class aqa_menu {
         this.menu_exit_button = document.querySelector("#menu_exit");
         this.div_session = document.querySelector("#config_session");
         this.menu_exit_button.addEventListener("click", () => {
-            window.location.search = "";
+            window.location = "menu";
         });
 
         this.menu_mic_button = document.querySelector("#menu_mic");
@@ -108,9 +108,9 @@ export class aqa_menu {
         */
 
         this.calc_button = [];
-        this.calc_button[0] = document.querySelector("#calcX");
+        this.calc_button[0] = document.querySelector("#calc_button");
 
-        this.calc_button[0].addEventListener("click", () => this.triggerCalcX());
+        this.calc_button[0].addEventListener("click", () => this.triggerCalc());
 
         this.netSessionMap = new Map();
         this.netSessionList = [];
@@ -206,17 +206,7 @@ export class aqa_menu {
         this.setDivsHidden(true)
     }
 
-    setCalcButtonColor(i,c) {
-        this.calc_button[i].style.background=c;
-    }
-
-    triggerCalc(i) {
-        this.setCalcButtonColor(i,"orange");
-        triggerNewSound(i);
-        generateNewSound();
-    }
-
-    triggerCalcX() {
+    triggerCalc() {
         generateNewSound();
     }
 

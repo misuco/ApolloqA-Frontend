@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ApolloqA - Sound Co-Lab</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.svg">
 
     <!-- Babylon.js
     <script src="https://cdn.jsdelivr.net/npm/babylonjs@6.10.0/babylon.min.js"></script>
@@ -14,8 +15,6 @@
 </head>
 <body style="background:black">
 
-<script src="js/session.js"></script>
-
 <canvas id="apolloqa_canvas"></canvas>
 
 <div class="wrapper" style="width:100%;background:transparent">
@@ -23,16 +22,16 @@
 
         <div id="menu_header">
             <output id="display_net_status">◐</output><output id="display_header" style="font-size: 1rem;">ApolloqA</output>
-            <progress id="display_progress"  style="width:100%;height:5%;" max="1" value="0"></progress>
+            <progress id="display_progress"  style="width:100%;height:10%;" max="1" value="0"></progress>
         </div>
 
         <div id="menu_buttons" class="buttons">
             <button id="menu_main" hidden>|||</button>
-            <button id="menu_exit" hidden>Exit</button>
+            <button id="menu_autoplay" hidden>Auto</button>
             <button id="menu_navi" hidden>Navi</button>
             <button id="menu_gen" hidden>Gen</button>
             <button id="menu_mic" hidden>Mic</button>
-            <button id="menu_autoplay" hidden>Auto</button>
+            <button id="menu_exit" hidden>Exit</button>
         </div>
 
         <div id="config_navi" class="config_div" hidden>
@@ -60,11 +59,10 @@
                 <button id="step_7">8</button>
             </div>
             <h3>2. Run generator</h3>
-            <button id="calcX">Generate New Sound</button>
+            <button id="calc_button">Generate New Sound</button>
         </div>
 
         <div id="config_session" class="config_div" hidden>
-
             <table width="100%">
                 <tr><td>
                     chord progression<br/>
@@ -105,8 +103,13 @@
             <button id="netSession3" hidden></button>
             <button id="netSession4" hidden></button>
         </div>
-
     </section>
+
+</div>
+
+<div id="aqa_dialog_loading" hidden>
+    <output id="loading_text">Loading</output>
+    <progress id="loading_progress" max="1" value="0"></progress>
 </div>
 
 <div id="start_overlay">
