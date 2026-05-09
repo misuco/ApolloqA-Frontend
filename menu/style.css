@@ -8,8 +8,12 @@ body {
     height: 100%;
     font-size: 30px;
     font-family: sans-serif;
-    color: white;
-    background: black;
+    color: #7c70e0;
+    background: #3e32a2;
+}
+
+p {
+    margin: 1%;
 }
 
 .bigButton {
@@ -24,19 +28,19 @@ body {
 
 button {
     font-size: 1rem;
-    background: #0088cc;
+    color: #3e32a2;
+    background: #7c70e0;
     text-align: center;
-    color: white;
     border: "5px solid white";
     transition: all 0.2s;
-    padding: 0.5rem;
+    padding: 0.1rem;
     height: 3rem;
 }
 
 button:hover,
 button:focus {
     box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 1);
-    background: #0ae;
+    background: #77e;
 }
 
 button:active {

@@ -64,7 +64,7 @@ export class aqa_menu {
             if(autoplay===true) {
                 this.style.background = "orange";
             } else {
-                this.style.background = "#0088cc";
+                this.style.background = "#7c70e0";
             }
         }
 
@@ -95,7 +95,7 @@ export class aqa_menu {
         for(let i=0;i<8;i++) {
             this.sequencer_step[i] = false;
             this.sequencer_button[i] = document.querySelector("#step_"+i);
-            this.sequencer_button[i].style.background="#0088cc";
+            this.sequencer_button[i].style.background="#7c70e0";
             this.sequencer_button[i].addEventListener("click", () => {this.toggleStep(i)});
         }
 
@@ -128,7 +128,7 @@ export class aqa_menu {
         if(this.sequencer_step[i]===true) {
             this.sequencer_button[i].style.background="orange";
         } else {
-            this.sequencer_button[i].style.background="#0088cc";
+            this.sequencer_button[i].style.background="#7c70e0";
         }
     }
 
@@ -191,10 +191,10 @@ export class aqa_menu {
         this.div_session.hidden=v;
         this.div_step_sequencer.hidden=v;
 
-        this.menu_navi_button.style.background = "#0088cc";
-        this.menu_gen_button.style.background = "#0088cc";
-        this.menu_exit_button.style.background = "#0088cc";
-        this.menu_mic_button.style.background = "#0088cc";
+        this.menu_navi_button.style.background = "#7c70e0";
+        this.menu_gen_button.style.background = "#7c70e0";
+        this.menu_exit_button.style.background = "#7c70e0";
+        this.menu_mic_button.style.background = "#7c70e0";
     }
 
     toggleMenu() {
