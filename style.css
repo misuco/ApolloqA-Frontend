@@ -59,6 +59,17 @@ progress {
     font-size: 3rem;
 }
 
+#display_net_status_loading {
+    font-size: 3rem;
+}
+
+#display_net_status {
+    position: absolute;
+    font-size: 1rem;
+    left: 0;
+    bottom: 0;
+}
+
 #loading_progress {
     width: 80%;
     height: 20%;

@@ -10,6 +10,7 @@ export class aqa_menu {
 
         this.display_header = document.querySelector("#display_header");
         this.display_net_status = document.querySelector("#display_net_status");
+        this.display_net_status_loading = document.querySelector("#display_net_status_loading");
         this.display_progress = document.querySelector("#display_progress");
 
         this.range_speed = document.querySelector("#range_speed");
@@ -235,14 +236,14 @@ export class aqa_menu {
         bars + ":" + quarter +
         " clips: " + worldObjects.size +
         " fps: " + aqa.engine.getFps().toFixed(2) +
-        " beatTime: " + aqa.beatTime.toFixed(2) +
-        " jitter: " + tJitter.toFixed(2) +
-        "<br>" +
-        " chords: " + aqa.chords +
-        " beats/chord: " + aqa.beatsPerChord +
+        //" beatTime: " + aqa.beatTime.toFixed(2) +
+        //" jitter: " + tJitter.toFixed(2) +
+        //"<br>" +
+        //" chords: " + aqa.chords +
+        //" beats/chord: " + aqa.beatsPerChord +
         " tempo: " + aqa.tempo
         ;
-        this.display_progress.value = beatNr / (aqa.beatsPerChord * aqa.chordsLen);
+        this.display_progress.value = (beatNr+1) / (aqa.beatsPerChord * aqa.chordsLen);
     }
 
     updateNetStatus(messageCount) {
@@ -261,6 +262,7 @@ export class aqa_menu {
                 status="◐";
         }
         this.display_net_status.innerHTML = status;
+        this.display_net_status_loading.innerHTML = status;
     }
 
     setNetSessionEntry(key,name) {

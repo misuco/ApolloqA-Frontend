@@ -21,7 +21,7 @@
     <section class="main_controls">
 
         <div id="menu_header">
-            <output id="display_net_status">◐</output><output id="display_header" style="font-size: 1rem;">ApolloqA</output>
+            <output id="display_header" style="font-size: 1rem;">ApolloqA</output>
             <progress id="display_progress"  style="width:100%;height:10%;" max="1" value="0"></progress>
         </div>
 
@@ -108,13 +108,15 @@
 </div>
 
 <div id="aqa_dialog_loading" hidden>
-    <output id="loading_text">Loading</output>
+    <output id="loading_text">Loading</output><output id="display_net_status_loading">◐</output>
     <progress id="loading_progress" max="1" value="0"></progress>
 </div>
 
 <div id="start_overlay">
     <button id="startAudioButton">Loading</button>
 </div>
+
+<output id="display_net_status">◐</output>
 
 <script src="js/lib/babylon.js"></script>
 <script src="js/lib/babylonjs.loaders.min.js"></script>
