@@ -52,6 +52,7 @@ aqa.tempo=120;
 aqa.beatTime=60/aqa.tempo;
 aqa.beatsPerChord=4;
 aqa.chords="-";
+aqa.chordsDisplay="- - - -";
 aqa.chordsLen=4;
 
 aqa.baseUrl = window.location.protocol + "//" + window.location.host + "/";

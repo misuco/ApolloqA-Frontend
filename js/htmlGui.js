@@ -9,6 +9,7 @@ export class aqa_menu {
         this.menu_hidden=true;
 
         this.display_header = document.querySelector("#display_header");
+        this.display_chords = document.querySelector("#display_chords");
         this.display_net_status = document.querySelector("#display_net_status");
         this.display_net_status_loading = document.querySelector("#display_net_status_loading");
         this.display_progress = document.querySelector("#display_progress");
@@ -243,7 +244,8 @@ export class aqa_menu {
         //" beats/chord: " + aqa.beatsPerChord +
         " tempo: " + aqa.tempo
         ;
-        this.display_progress.value = (beatNr+1) / (aqa.beatsPerChord * aqa.chordsLen);
+        this.display_chords.innerHTML = aqa.chordsDisplay;
+        this.display_progress.value = (beatNr+0.5) / (aqa.beatsPerChord * aqa.chordsLen);
     }
 
     updateNetStatus(messageCount) {

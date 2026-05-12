@@ -12,6 +12,16 @@ body {
     background: #3e32a2;
 }
 
+p {
+    margin: 0;
+}
+
+.text-justify {
+    width: 100%;
+    text-align: justify;
+    text-align-last: justify;
+}
+
 canvas#apolloqa_canvas {
     position: fixed;
     top: 0;

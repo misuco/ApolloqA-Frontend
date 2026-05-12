@@ -91,6 +91,7 @@ export function initMultiuser() {
         if(m.chords) {
             console.log("onmessage: chords "+m.chords);
             aqa.chords=m.chords;
+            aqa.chordsDisplay=m.chords.replaceAll("_"," ")+" :";;
             aqa.beatsPerChord=m.beatsPerChord;
             aqa.chordsLen=m.chordsLen;
             aqa.tempo=m.tempo;
