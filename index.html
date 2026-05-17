@@ -49,8 +49,18 @@
             <h3>1. Set generator parameters</h3>
             soundset<br/>
             <select id="select_instrument_0"></select><br/>
-            quantize<br/>
-            <select id="select_quantize_0"></select><br/>
+
+            <table><tr><td style="width:30%">
+                quantize<br/>
+                <select id="select_quantize_0"></select>
+            </td><td style="width:30%">
+                low octave<br/>
+                <select id="select_min_octave"></select>
+            </td><td style="width:30%">
+                high octave<br/>
+                <select id="select_max_octave"></select><br/>
+            </td></tr></table>
+
             rhythmic structure<br/>
             <div id="step_sequencer" class="buttons">
                 <button id="step_0_0">A1</button>

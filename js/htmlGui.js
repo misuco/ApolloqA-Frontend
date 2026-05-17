@@ -89,6 +89,41 @@ export class aqa_menu {
             this.select_quantize[i].value=0;
         }
 
+        // populate octave range selects
+        this.select_min_octave = document.querySelector("#select_min_octave");
+        this.select_max_octave = document.querySelector("#select_max_octave");
+        [ "0","1","2","3","4","5","6","7","8","9" ].forEach((label,n) => {
+            if(n<9) {
+                let opt1=document.createElement('option');
+                opt1.value=n;
+                opt1.innerHTML=label;
+                this.select_min_octave.appendChild(opt1);
+            }
+            if(n>0) {
+                let opt2=document.createElement('option');
+                opt2.value=n;
+                opt2.innerHTML=label;
+                this.select_max_octave.appendChild(opt2);
+            }
+        });
+        
+        this.select_min_octave.value=3;
+        this.select_min_octave.addEventListener("change", (event) => {
+            // shift max value if min value >=
+            if(event.target.value>=this.select_max_octave.value) {
+                this.select_max_octave.value=parseInt(this.select_min_octave.value)+1;
+            }
+        });
+
+        this.select_max_octave.value=5;
+        this.select_max_octave.addEventListener("change", (event) => {
+            // shift min value if max value <=
+            if(event.target.value<=this.select_min_octave.value) {
+                this.select_min_octave.value=parseInt(this.select_max_octave.value)-1;
+            }
+        });
+
+
         this.initIntrumentSelect();
 
         this.sequencer_button = [];

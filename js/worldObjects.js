@@ -190,6 +190,8 @@ export function generateNewSound() {
     + "?id=" + queryId
     + "&tempo=" + aqa.tempo
     + "&chords=" + aqa.chords
+    + "&minOctave=" + aqa.htmlGui.select_min_octave.value
+    + "&maxOctave=" + aqa.htmlGui.select_max_octave.value
     + "&sf2file=" + encodeURIComponent(sf2File)
     + "&presetNr=" + encodeURIComponent(presetJson.nr)
     + "&presetName=" + encodeURIComponent(presetJson.name)
