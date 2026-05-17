@@ -116,10 +116,11 @@ progress::-webkit-progress-value { background: #7c70e0; }
 h1,
 h2,
 h3 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: normal;
-    padding: 0.5rem 0 0 0;
-    margin: 0 0 0 0;
+    margin: 0.3rem 0 0.2rem 0;
+    color: #7c70e0;
+    background: #3e32a2;
 }
 
 .main_controls {
