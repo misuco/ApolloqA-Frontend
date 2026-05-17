@@ -28,7 +28,7 @@ export class aqa_menu_start {
             opt.innerHTML=label;
             this.select_beats_per_chord.appendChild(opt);
         });
-        this.select_beats_per_chord.value=4;
+        this.select_beats_per_chord.value=2;
 
         this.initChordsSelect();
 

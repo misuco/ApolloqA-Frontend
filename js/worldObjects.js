@@ -117,12 +117,12 @@ export function newSoundMesh(t) {
 }
 
 export function generateNewSound() {
-    let quantize_selected = aqa.htmlGui.quantize(0);
+    let quantize_selected = aqa.htmlGui.quantize();
     let quantize_real = Math.pow(2,quantize_selected)*8;
 
     let trackId=0;
 
-    const sf2Nr = aqa.htmlGui.instrument(0);
+    const sf2Nr = aqa.htmlGui.instrument();
     const sf2Json = aqa.instruments[sf2Nr];
     const sf2File = sf2Json.soundfont;
     const instrumentPresCount = sf2Json.presets.length;

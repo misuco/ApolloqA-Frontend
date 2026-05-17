@@ -73,21 +73,19 @@ export class aqa_menu {
         this.menu_main_button.addEventListener("click", () => {this.toggleMenu()});
 
         // populate generator config selects
-        this.select_instrument = [];
-        this.select_quantize = [];
 
-        for(let i=0;i<1;i++) {
-            this.select_instrument[i] = document.querySelector("#select_instrument_"+i);
+        // populate instrument select
+        this.select_instrument = document.querySelector("#select_instrument");
 
-            this.select_quantize[i] = document.querySelector("#select_quantize_"+i);
-            [ "8","16","32","64" ].forEach((label,n) => {
-                let opt=document.createElement('option');
-                opt.value=n;
-                opt.innerHTML=label;
-                this.select_quantize[i].appendChild(opt);
-            });
-            this.select_quantize[i].value=0;
-        }
+        // populate quantize select
+        this.select_quantize = document.querySelector("#select_quantize");
+        [ "8","16","32","64" ].forEach((label,n) => {
+            let opt=document.createElement('option');
+            opt.value=n;
+            opt.innerHTML=label;
+            this.select_quantize.appendChild(opt);
+        });
+        this.select_quantize.value=0;
 
         // populate octave range selects
         this.select_min_octave = document.querySelector("#select_min_octave");
@@ -106,7 +104,7 @@ export class aqa_menu {
                 this.select_max_octave.appendChild(opt2);
             }
         });
-        
+
         this.select_min_octave.value=3;
         this.select_min_octave.addEventListener("change", (event) => {
             // shift max value if min value >=
@@ -122,7 +120,6 @@ export class aqa_menu {
                 this.select_min_octave.value=parseInt(this.select_max_octave.value)-1;
             }
         });
-
 
         this.initIntrumentSelect();
 
@@ -148,11 +145,6 @@ export class aqa_menu {
         this.toggleStep(1,5);
         this.toggleStep(2,6);
         this.toggleStep(3,7);
-
-        /*
-        this.toggleStep(0);
-        this.toggleStep(5);
-        */
 
         this.calc_button = [];
         this.calc_button[0] = document.querySelector("#calc_button");
@@ -186,12 +178,11 @@ export class aqa_menu {
             if (this.response) {
                 aqa.instruments=JSON.parse(this.response);
                 aqa.instruments.forEach((inst,n) => {
-                    for(let i=0;i<1;i++) {
-                        let opt=document.createElement('option');
-                        opt.value=n;
-                        opt.innerHTML=inst.name;
-                        instruments[i].appendChild(opt);
-                    }
+
+                    let opt=document.createElement('option');
+                    opt.value=n;
+                    opt.innerHTML=inst.name;
+                    instruments.appendChild(opt);
 
                     inst.presets.forEach((preset, i) => {
                         preset.name.split(/[^a-zA-Z]+/).forEach((presetPart, i) => {
@@ -257,12 +248,12 @@ export class aqa_menu {
         generateNewSound();
     }
 
-    instrument(i) {
-        return this.select_instrument[i].value;
+    instrument() {
+        return this.select_instrument.value;
     }
 
-    quantize(i) {
-        return this.select_quantize[i].value;
+    quantize() {
+        return this.select_quantize.value;
     }
 
     steps() {
