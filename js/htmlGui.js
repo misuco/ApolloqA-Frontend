@@ -16,8 +16,8 @@ export class aqa_menu {
 
         this.range_speed = document.querySelector("#range_speed");
         this.range_speed.addEventListener("input", () => { setSpeed(event.target.value); });
-        this.range_speed.value=0.1;
-        setSpeed(0.1);
+        this.range_speed.value=0;
+        setSpeed(0);
 
         this.range_camera = document.querySelector("#range_camera");
         this.range_camera.addEventListener("input", () => { chaseCameraPosition.position.z=event.target.value*-1;} );
@@ -80,30 +80,40 @@ export class aqa_menu {
             this.select_instrument[i] = document.querySelector("#select_instrument_"+i);
 
             this.select_quantize[i] = document.querySelector("#select_quantize_"+i);
-            [ "1","2","4","8","16","32" ].forEach((label,n) => {
+            [ "8","16","32","64" ].forEach((label,n) => {
                 let opt=document.createElement('option');
                 opt.value=n;
                 opt.innerHTML=label;
                 this.select_quantize[i].appendChild(opt);
             });
-            this.select_quantize[i].value=4;
+            this.select_quantize[i].value=0;
         }
 
         this.initIntrumentSelect();
 
         this.sequencer_button = [];
         this.sequencer_step = [];
-        for(let i=0;i<8;i++) {
-            this.sequencer_step[i] = false;
-            this.sequencer_button[i] = document.querySelector("#step_"+i);
-            this.sequencer_button[i].style.background="#7c70e0";
-            this.sequencer_button[i].addEventListener("click", () => {this.toggleStep(i)});
+        for(let i=0;i<4;i++) {
+            this.sequencer_step[i]=[];
+            this.sequencer_button[i]=[];
+            for(let j=0;j<8;j++) {
+                this.sequencer_step[i][j] = false;
+                console.log("#step_"+i+"_"+j);
+                this.sequencer_button[i][j] = document.querySelector("#step_"+i+"_"+j);
+                this.sequencer_button[i][j].style.background="#7c70e0";
+                this.sequencer_button[i][j].addEventListener("click", () => {this.toggleStep(i,j)});
+            }
         }
 
-        this.toggleStep(0);
-        this.toggleStep(3);
-        this.toggleStep(4);
-        this.toggleStep(6);
+        this.toggleStep(0,0);
+        this.toggleStep(1,1);
+        this.toggleStep(2,2);
+        this.toggleStep(3,3);
+        this.toggleStep(0,4);
+        this.toggleStep(1,5);
+        this.toggleStep(2,6);
+        this.toggleStep(3,7);
+
         /*
         this.toggleStep(0);
         this.toggleStep(5);
@@ -123,13 +133,13 @@ export class aqa_menu {
         this.netSessionList[4] = document.querySelector("#netSession4");
     }
 
-    toggleStep(i) {
-        console.log("toggleStep "+i);
-        this.sequencer_step[i]=!this.sequencer_step[i];
-        if(this.sequencer_step[i]===true) {
-            this.sequencer_button[i].style.background="orange";
+    toggleStep(i,j) {
+        console.log("toggleStep "+i+" "+j);
+        this.sequencer_step[i][j]=!this.sequencer_step[i][j];
+        if(this.sequencer_step[i][j]===true) {
+            this.sequencer_button[i][j].style.background="orange";
         } else {
-            this.sequencer_button[i].style.background="#7c70e0";
+            this.sequencer_button[i][j].style.background="#7c70e0";
         }
     }
 
@@ -222,8 +232,10 @@ export class aqa_menu {
 
     steps() {
         let steps = "";
-        for(let i=0;i<8;i++) {
-            steps += this.sequencer_step[i]===true ? "1" : "0";
+        for(let i=0;i<4;i++) {
+            for(let j=0;j<8;j++) {
+                steps += this.sequencer_step[i][j]===true ? "1" : "0";
+            }
         }
         return steps;
     }

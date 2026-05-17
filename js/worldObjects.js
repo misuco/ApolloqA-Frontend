@@ -118,7 +118,7 @@ export function newSoundMesh(t) {
 
 export function generateNewSound() {
     let quantize_selected = aqa.htmlGui.quantize(0);
-    let quantize_real = Math.pow(2,quantize_selected);
+    let quantize_real = Math.pow(2,quantize_selected)*8;
 
     let trackId=0;
 
