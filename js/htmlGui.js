@@ -26,19 +26,30 @@ export class aqa_menu {
         this.menu_navi_button = document.querySelector("#menu_navi");
         this.div_navi = document.querySelector("#config_navi");
         this.menu_navi_button.addEventListener("click", () => {
-            this.setDivsHidden(true);
-            this.div_navi.hidden=false;
-            this.menu_navi_button.style.background = "orange";
+            if(this.div_navi.hidden===false) {
+                this.div_navi.hidden=true;
+                this.menu_navi_button.style.background = "#7c70e0";
+            } else {
+                this.setDivsHidden(true);
+                this.div_navi.hidden=false;
+                this.menu_navi_button.style.background = "orange";
+            }
         });
 
         this.menu_gen_button = document.querySelector("#menu_gen");
         this.div_step_sequencer = document.querySelector("#step_sequencer");
         this.div_gen = document.querySelector("#config_gen");
         this.menu_gen_button.addEventListener("click", () => {
-            this.setDivsHidden(true);
-            this.div_gen.hidden=false;
-            this.div_step_sequencer.hidden=false;
-            this.menu_gen_button.style.background = "orange";
+            if(this.div_gen.hidden===false) {
+                this.div_gen.hidden=true;
+                this.div_step_sequencer.hidden=true;
+                this.menu_gen_button.style.background = "#7c70e0";
+            } else {
+                this.setDivsHidden(true);
+                this.div_gen.hidden=false;
+                this.div_step_sequencer.hidden=false;
+                this.menu_gen_button.style.background = "orange";
+            }
         });
 
         this.menu_exit_button = document.querySelector("#menu_exit");
@@ -50,12 +61,17 @@ export class aqa_menu {
         this.menu_mic_button = document.querySelector("#menu_mic");
         this.div_mic = document.querySelector("#config_mic");
         this.menu_mic_button.addEventListener("click", () => {
-            this.setDivsHidden(true);
-            this.div_mic.hidden=false;
-            this.menu_mic_button.style.background = "orange";
-            if(mediaRecorder===null) {
-                console.log("initMediaRecorder");
-                initMediaRecorder();
+            if(this.div_mic.hidden===false) {
+                this.div_mic.hidden=true;
+                this.menu_mic_button.style.background = "#7c70e0";
+            } else {
+                this.setDivsHidden(true);
+                this.div_mic.hidden=false;
+                this.menu_mic_button.style.background = "orange";
+                if(mediaRecorder===null) {
+                    console.log("initMediaRecorder");
+                    initMediaRecorder();
+                }
             }
         });
 
@@ -230,17 +246,15 @@ export class aqa_menu {
 
         this.menu_navi_button.style.background = "#7c70e0";
         this.menu_gen_button.style.background = "#7c70e0";
-        this.menu_exit_button.style.background = "#7c70e0";
         this.menu_mic_button.style.background = "#7c70e0";
     }
 
     toggleMenu() {
         this.menu_hidden=!this.menu_hidden;
-        this.menu_exit_button.hidden=this.menu_hidden;
         this.menu_mic_button.hidden=this.menu_hidden;
         this.menu_gen_button.hidden=this.menu_hidden;
-        this.menu_navi_button.hidden=this.menu_hidden;
-        this.menu_autoplay_button.hidden=this.menu_hidden;
+        //this.menu_navi_button.hidden=this.menu_hidden;
+        //this.menu_autoplay_button.hidden=this.menu_hidden;
         this.setDivsHidden(true)
     }
 
@@ -271,16 +285,11 @@ export class aqa_menu {
         let quarter=beatNr%4+1;
 
         this.display_header.innerHTML =
-        aqa.nickname + " " +
+        aqa.nickname + " | " +
         bars + ":" + quarter +
-        " clips: " + worldObjects.size +
-        " fps: " + aqa.engine.getFps().toFixed(2) +
-        //" beatTime: " + aqa.beatTimeMs.toFixed(2) +
-        //" jitter: " + tJitter.toFixed(2) +
-        //"<br>" +
-        //" chords: " + aqa.chords +
-        //" beats/chord: " + aqa.beatsPerChord +
-        " tempo: " + aqa.tempo
+        " | clips: " + worldObjects.size +
+        " | fps: " + aqa.engine.getFps().toFixed(0) +
+        " | tempo: " + aqa.tempo
         ;
         this.display_chords.innerHTML = aqa.chordsDisplay;
         this.display_progress.value = (beatNr+0.5) / (aqa.beatsPerChord * aqa.chordsLen);

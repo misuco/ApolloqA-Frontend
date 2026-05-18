@@ -17,32 +17,23 @@
 
 <canvas id="apolloqa_canvas"></canvas>
 
-<div class="wrapper" style="width:100%;background:transparent">
+<div class="wrapper" style="width:100%;background:transparent;">
     <section class="main_controls">
 
-        <div id="menu_header">
+        <div id="menu_buttons" class="buttons">
+            <button id="menu_main" hidden><img src="favicon_trans_bg.svg" style="display:block;width:60px;height:60px;" /></button>
+            <button id="menu_autoplay" hidden>Auto</button>
+            <button id="menu_gen" hidden>Generator</button>
+            <button id="menu_mic" hidden>Microphone</button>
+            <button id="menu_exit"><img src="x.svg" style="display:block;width:60px;height:60px;" /></button>
+        </div>
+
+        <div id="menu_header" class="config_div">
             <p>
-                <img src="favicon_trans_bg.svg" width="40" height="40" />
                 <output id="display_header" style="font-size: 1rem;">ApolloqA</output>
             </p>
             <p class="text-justify" id="display_chords" style="font-size: 1rem;"></p>
             <progress id="display_progress"  style="width:100%;height:10%;" max="1" value="0"></progress>
-        </div>
-
-        <div id="menu_buttons" class="buttons">
-            <button id="menu_main" hidden>|||</button>
-            <button id="menu_autoplay" hidden>Auto</button>
-            <button id="menu_navi" hidden>Navi</button>
-            <button id="menu_gen" hidden>Gen</button>
-            <button id="menu_mic" hidden>Mic</button>
-            <button id="menu_exit" hidden>Exit</button>
-        </div>
-
-        <div id="config_navi" class="config_div" hidden>
-            speed<br/>
-            <input id="range_speed" type="range" min="0" max="4" value="0" step="0.1"></input><br/>
-            camera<br/>
-            <input id="range_camera" type="range" min="1" max="100" value="1" step="0.1"></input>
         </div>
 
         <div id="config_gen" class="config_div" hidden>
@@ -102,7 +93,7 @@
                 <button id="step_0_6">A7</button>
                 <button id="step_0_7">A8</button>
             </div>
-            
+
             <h3>2. Run generator</h3>
             <button id="calc_button">Generate New Sound</button>
         </div>
@@ -153,15 +144,26 @@
 </div>
 
 <div id="aqa_dialog_loading" hidden>
-    <output id="loading_text">Loading</output><output id="display_net_status_loading">◐</output>
+    <output id="display_net_status_loading">◐</output>
     <progress id="loading_progress" max="1" value="0"></progress>
+</div>
+
+<div id="footer" style="width:100%" >
+    <output id="display_net_status">◐</output>
+    <output id="loading_text"></output>
+    <button id="menu_navi" style="float:right;" hidden>Navi</button>
+</div>
+
+<div id="config_navi" class="config_div" hidden>
+    speed<br/>
+    <input id="range_speed" type="range" min="0" max="4" value="0" step="0.1"></input><br/>
+    camera<br/>
+    <input id="range_camera" type="range" min="1" max="100" value="1" step="0.1"></input>
 </div>
 
 <div id="start_overlay">
     <button id="startAudioButton">Loading</button>
 </div>
-
-<output id="display_net_status">◐</output>
 
 <script src="js/lib/babylon.js"></script>
 <script src="js/lib/babylonjs.loaders.min.js"></script>

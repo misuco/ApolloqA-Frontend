@@ -43,7 +43,7 @@ export function newSoundMesh(t) {
         const loopLen = aqa.beatTimeMs/1000 * aqa.beatsPerChord * aqa.chordsLen;
         const loopNumber = Math.floor((currentTime-aqa.beatSyncTimeOffsetS) / loopLen);
         const nextLoopTime = aqa.beatSyncTimeOffsetS + (loopNumber + 1) * loopLen;
-        
+
         let waitTime = syncTrackRunning ? nextLoopTime - currentTime : 0;
 
         console.log("track ready "+ t.url + " at " + currentTime + " loopNr " + loopNumber + " next loop " + nextLoopTime + " wait " + waitTime );
@@ -64,6 +64,7 @@ export function newSoundMesh(t) {
 
         if(loadingCount>=loadingTarget) {
             aqa.htmlGuiDialog.dialog.hidden=true;
+            aqa.htmlGuiDialog.setText("");
             resetLoadingProgress();
         }
 

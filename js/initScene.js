@@ -89,6 +89,7 @@ async function boot() {
 
         aqa.htmlGui.updateHeader();
         aqa.htmlGui.menu_main_button.hidden = false;
+        aqa.htmlGui.menu_navi_button.hidden = false;
         aqa.htmlGui.toggleMenu();
 
         aqa.engine.runRenderLoop(() => {
