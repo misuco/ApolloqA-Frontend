@@ -2,19 +2,20 @@ import { aqa } from "./apolloqa.js"
 import { mediaRecorder, mic_record_button, mic_stop_button } from "./audiorec.js"
 import { updateLabels, generateNewSound } from "./worldObjects.js"
 
+export let syncTrackRunning=false;
 export let autoplay=false;
 export let tJitter=0;
 export let recArmed=false;
 export let stopArmed=false;
 
-// current audio engine time in msl
-export let engineTime=0;
+// current audio engine time in milli seconds
+export let engineTimeMs=0;
 export let beatNr=0;
 
 export function startSyncTrack() {
     if(syncTrackRunning===false) {
         syncTrackRunning=true;
-        tTarget=engineTime*1000;
+        tNextBeat=aqa.audioEngine.currentTime*1000;
         syncTrackTimer();
         console.log("startSyncTrack");
     } else {
@@ -33,15 +34,14 @@ export function armStop() {
 export function toggleAutoPlay() {
     autoplay=!autoplay;
     if(autoplay===true) {
-        startSyncTrack();        
+        startSyncTrack();
     }
 }
 
-let tTarget=0;
+let tNextBeat=0;
 let tRec=0;
 let tRecMax=4;
 let nextAutoTriger=0;
-let syncTrackRunning=false;
 
 let recording=false;
 
@@ -89,20 +89,20 @@ function syncTrackTimer() {
         }
     }
 
-    engineTime=aqa.audioEngine.currentTime;
-
-    let tBeat = aqa.beatTime*1000;
+    engineTimeMs=aqa.audioEngine.currentTime*1000;
 
     beatNr++;
     if(beatNr >= aqa.beatsPerChord * aqa.chordsLen) {
         beatNr=0;
     }
-    tTarget+=tBeat;
+    tNextBeat+=aqa.beatTimeMs;
 
     updateLabels();
 
-    let nextSyncInMs = tTarget-engineTime*1000;
-    tJitter=nextSyncInMs-tBeat;
+    let nextSyncInMs = tNextBeat-engineTimeMs;
+    tJitter=nextSyncInMs-aqa.beatTimeMs;
+
+    //console.log("sync beatNr " + beatNr + " engineTimeMs " + engineTimeMs + " tNextBeat " + tNextBeat + " nextSyncInMs " + nextSyncInMs );
 
     setTimeout(syncTrackTimer, nextSyncInMs);
 };

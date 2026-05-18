@@ -49,7 +49,8 @@ aqa.scene = null;
 aqa.nickname="";
 
 aqa.tempo=120;
-aqa.beatTime=60/aqa.tempo;
+aqa.beatTimeMs=60000/aqa.tempo;
+aqa.beatSyncTimeOffsetS=0;
 aqa.beatsPerChord=4;
 aqa.chords="-";
 aqa.chordsDisplay="- - - -";

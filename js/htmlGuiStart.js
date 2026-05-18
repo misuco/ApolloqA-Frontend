@@ -90,7 +90,7 @@ export class aqa_menu_start {
         console.log("updateBpmValue " + newTempo);
         this.tempo=newTempo;
         aqa.tempo=newTempo;
-        aqa.beatTime=60/aqa.tempo;
+        aqa.beatTimeMs=60000/aqa.tempo;
         this.display_bpm.textContent=newTempo;
     }
 

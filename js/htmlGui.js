@@ -275,7 +275,7 @@ export class aqa_menu {
         bars + ":" + quarter +
         " clips: " + worldObjects.size +
         " fps: " + aqa.engine.getFps().toFixed(2) +
-        //" beatTime: " + aqa.beatTime.toFixed(2) +
+        //" beatTime: " + aqa.beatTimeMs.toFixed(2) +
         //" jitter: " + tJitter.toFixed(2) +
         //"<br>" +
         //" chords: " + aqa.chords +

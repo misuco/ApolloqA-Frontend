@@ -1,6 +1,6 @@
 import { aqa } from "./apolloqa.js"
 import { soundMeshes, randomMesh } from "./worldObjectsMeshes.js"
-import { startSyncTrack } from "./syncTrack.js"
+import { startSyncTrack, syncTrackRunning } from "./syncTrack.js"
 import { sendTrackList, loadingTarget, loadingCount, updateLoadingProgress, resetLoadingProgress, incLoadingTarget } from "./multiuser-ws.js"
 import { initCamera, spaceshipMesh } from "./camera.js"
 
@@ -35,27 +35,37 @@ export function newSoundMesh(t) {
         spatialMaxDistance: 100
     }).then(track => {
 
-        updateLoadingProgress(1);
-
-        if(loadingCount>=loadingTarget) {
-            aqa.htmlGuiDialog.dialog.hidden=true;
-            resetLoadingProgress();
-            startSyncTrack();
+        // sample accurate sync of samples is calculated here
+        const currentTime = track.engine.currentTime; // float, seconds
+        if(syncTrackRunning===false) {
+            aqa.beatSyncTimeOffsetS=currentTime;
         }
+        const loopLen = aqa.beatTimeMs/1000 * aqa.beatsPerChord * aqa.chordsLen;
+        const loopNumber = Math.floor((currentTime-aqa.beatSyncTimeOffsetS) / loopLen);
+        const nextLoopTime = aqa.beatSyncTimeOffsetS + (loopNumber + 1) * loopLen;
+        
+        let waitTime = syncTrackRunning ? nextLoopTime - currentTime : 0;
 
-        const currentTime = track.engine.currentTime; // s
-        const loopLen = aqa.beatTime * aqa.beatsPerChord * aqa.chordsLen;
-        const loopNumber = Math.floor(currentTime / loopLen);
-        const nextLoopTime = (loopNumber + 1) * loopLen;
-        const waitTime = nextLoopTime - currentTime;
-        console.log("track ready "+ t.url + " at " + currentTime + " next loop " + nextLoopTime + " wait " + waitTime );
-
+        console.log("track ready "+ t.url + " at " + currentTime + " loopNr " + loopNumber + " next loop " + nextLoopTime + " wait " + waitTime );
         track.spatial.attach(worldObject.mesh);
         track.play({
             loop: true,
             waitTime: waitTime
         });
         worldObject.track=track;
+
+        // sync track is used to trigger audio recording and update header text
+        if(syncTrackRunning===false) {
+            startSyncTrack();
+        }
+
+        // update the loading status
+        updateLoadingProgress(1);
+
+        if(loadingCount>=loadingTarget) {
+            aqa.htmlGuiDialog.dialog.hidden=true;
+            resetLoadingProgress();
+        }
 
         BABYLON.CreateAudioBusAsync("analyzer_" + t.url, {
             analyzerEnabled: true

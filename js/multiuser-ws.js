@@ -95,7 +95,7 @@ export function initMultiuser() {
             aqa.beatsPerChord=m.beatsPerChord;
             aqa.chordsLen=m.chordsLen;
             aqa.tempo=m.tempo;
-            aqa.beatTime=60/aqa.tempo;
+            aqa.beatTimeMs=60000/aqa.tempo;
             aqa.htmlGui.updateHeader();
             return;
         }
