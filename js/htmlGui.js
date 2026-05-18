@@ -56,7 +56,7 @@ export class aqa_menu {
         this.menu_exit_button = document.querySelector("#menu_exit");
         this.div_session = document.querySelector("#config_session");
         this.menu_exit_button.addEventListener("click", () => {
-            window.location = "menu";
+            window.location = aqa.mainPageUrl;
         });
 
         this.menu_mic_button = document.querySelector("#menu_mic");

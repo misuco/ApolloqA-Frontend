@@ -29,6 +29,8 @@ aqa.getRandomInt = function(max) {
     return Math.floor(Math.random() * max);
 }
 
+aqa.mainPageUrl = (window.location.hostname==="apolloqa.net" ? "https://info.apolloqa.net/" : "menu");
+
 aqa.htmlGui={};
 aqa.htmlGuiStart={};
 
