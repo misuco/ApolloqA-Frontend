@@ -102,7 +102,7 @@ aqa.worldId = window.location.search.substr(1);
 aqa.nickname = getCookie("nickname");
 
 if (!aqa.worldId && !aqa.nickname) {
-    window.location.href = 'menu';
+    window.location = aqa.mainPageUrl;
 }
 
 if (!aqa.nickname) {
