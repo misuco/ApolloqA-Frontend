@@ -10,67 +10,88 @@ class NeumorphismLoginForm {
         this.submitButton = this.form.querySelector('.login-btn');
         this.successMessage = document.getElementById('successMessage');
         //this.socialButtons = document.querySelectorAll('.neu-social');
-        
-        this.init();
+
+        let nickname = this.getCookie("nickname");
+        if(!nickname) {
+            this.init();
+        } else {
+            window.location.href = '..';
+        }
     }
-    
+
+    getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
     init() {
         this.bindEvents();
         //this.setupPasswordToggle();
         //this.setupSocialButtons();
         this.setupNeumorphicEffects();
     }
-    
+
     setCookie(cname, cvalue, exdays) {
       const d = new Date();
       d.setTime(d.getTime() + (exdays*24*60*60*1000));
       let expires = "expires="+ d.toUTCString();
       document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
-        
+
     bindEvents() {
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
         this.nicknameInput.addEventListener('blur', () => this.validatenickname());
         //this.passwordInput.addEventListener('blur', () => this.validatePassword());
         this.nicknameInput.addEventListener('input', () => this.clearError('nickname'));
         //this.passwordInput.addEventListener('input', () => this.clearError('password'));
-        
+
         // Add soft press effects to inputs
         [this.nicknameInput/*, this.passwordInput*/].forEach(input => {
             input.addEventListener('focus', (e) => this.addSoftPress(e));
             input.addEventListener('blur', (e) => this.removeSoftPress(e));
         });
     }
-    
+
     setupPasswordToggle() {
         this.passwordToggle.addEventListener('click', () => {
             const type = this.passwordInput.type === 'password' ? 'text' : 'password';
             this.passwordInput.type = type;
-            
+
             this.passwordToggle.classList.toggle('show-password', type === 'text');
-            
+
             // Add soft click animation
             this.animateSoftPress(this.passwordToggle);
         });
     }
-    
+
     setupSocialButtons() {
         this.socialButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 this.animateSoftPress(button);
-                
+
                 // Determine which social platform based on SVG content
                 const svgPath = button.querySelector('svg path').getAttribute('d');
                 let provider = 'Social';
                 if (svgPath.includes('22.56')) provider = 'Google';
                 else if (svgPath.includes('github')) provider = 'GitHub';
                 else if (svgPath.includes('23.953')) provider = 'Twitter';
-                
+
                 this.handleSocialLogin(provider, button);
             });
         });
     }
-    
+
     setupNeumorphicEffects() {
         // Add hover effects to all neumorphic elements
         const neuElements = document.querySelectorAll('.neu-icon, .neu-checkbox, .neu-social');
@@ -78,99 +99,99 @@ class NeumorphismLoginForm {
             element.addEventListener('mouseenter', () => {
                 element.style.transform = 'scale(1.05)';
             });
-            
+
             element.addEventListener('mouseleave', () => {
                 element.style.transform = 'scale(1)';
             });
         });
-        
+
         // Add ambient light effect on mouse move
         document.addEventListener('mousemove', (e) => {
             this.updateAmbientLight(e);
         });
     }
-    
+
     updateAmbientLight(e) {
         const card = document.querySelector('.login-card');
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
+
         const angleX = (x - centerX) / centerX;
         const angleY = (y - centerY) / centerY;
-        
+
         const shadowX = angleX * 30;
         const shadowY = angleY * 30;
-        
+
         card.style.boxShadow = `
             ${shadowX}px ${shadowY}px 60px #bec3cf,
             ${-shadowX}px ${-shadowY}px 60px #ffffff
         `;
     }
-    
+
     addSoftPress(e) {
         const inputGroup = e.target.closest('.neu-input');
         inputGroup.style.transform = 'scale(0.98)';
     }
-    
+
     removeSoftPress(e) {
         const inputGroup = e.target.closest('.neu-input');
         inputGroup.style.transform = 'scale(1)';
     }
-    
+
     animateSoftPress(element) {
         element.style.transform = 'scale(0.95)';
         setTimeout(() => {
             element.style.transform = 'scale(1)';
         }, 150);
     }
-    
+
     validatenickname() {
         const nickname = this.nicknameInput.value.trim();
         const nicknameRegex = /^[a-zA-Z0-9]+$/;
-        
+
         if (!nickname) {
             this.showError('nickname', 'nickname is required');
             return false;
         }
-        
+
         if (!nicknameRegex.test(nickname)) {
             this.showError('nickname', 'Please enter a valid nickname (valid characters: a-z A-Z 0-9)');
             return false;
         }
-        
+
         this.clearError('nickname');
         return true;
     }
-    
+
     validatePassword() {
         const password = this.passwordInput.value;
-        
+
         if (!password) {
             this.showError('password', 'Password is required');
             return false;
         }
-        
+
         if (password.length < 6) {
             this.showError('password', 'Password must be at least 6 characters');
             return false;
         }
-        
+
         this.clearError('password');
         return true;
     }
-    
+
     showError(field, message) {
         const formGroup = document.getElementById(field).closest('.form-group');
         const errorElement = document.getElementById(`${field}Error`);
-        
+
         formGroup.classList.add('error');
         errorElement.textContent = message;
         errorElement.classList.add('show');
-        
+
         // Add gentle shake animation
         const input = document.getElementById(field);
         input.style.animation = 'gentleShake 0.5s ease-in-out';
@@ -178,38 +199,38 @@ class NeumorphismLoginForm {
             input.style.animation = '';
         }, 500);
     }
-    
+
     clearError(field) {
         const formGroup = document.getElementById(field).closest('.form-group');
         const errorElement = document.getElementById(`${field}Error`);
-        
+
         formGroup.classList.remove('error');
         errorElement.classList.remove('show');
         setTimeout(() => {
             errorElement.textContent = '';
         }, 300);
     }
-    
+
     async handleSubmit(e) {
         e.preventDefault();
-        
+
         const isnicknameValid = this.validatenickname();
         //const isPasswordValid = this.validatePassword();
-        
+
         if (!isnicknameValid /*|| !isPasswordValid*/) {
             this.animateSoftPress(this.submitButton);
             return;
         }
-        
+
         const nickname = this.nicknameInput.value.trim();
-        this.setCookie("nickname", nickname, 10); 
-        
+        this.setCookie("nickname", nickname, 10);
+
         this.setLoading(true);
-        
+
         try {
             // Simulate soft authentication
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             // Show neumorphic success
             this.showNeumorphicSuccess();
         } catch (error) {
@@ -218,14 +239,14 @@ class NeumorphismLoginForm {
             this.setLoading(false);
         }
     }
-    
+
     async handleSocialLogin(provider, button) {
         console.log(`Initiating ${provider} login...`);
-        
+
         // Add loading state to button
         button.style.pointerEvents = 'none';
         button.style.opacity = '0.7';
-        
+
         try {
             await new Promise(resolve => setTimeout(resolve, 1500));
             console.log(`Redirecting to ${provider} authentication...`);
@@ -237,11 +258,11 @@ class NeumorphismLoginForm {
             button.style.opacity = '1';
         }
     }
-    
+
     setLoading(loading) {
         this.submitButton.classList.toggle('loading', loading);
         this.submitButton.disabled = loading;
-        
+
         /*
         // Disable social buttons during login
         this.socialButtons.forEach(button => {
@@ -250,26 +271,26 @@ class NeumorphismLoginForm {
         });
         */
     }
-    
+
     showNeumorphicSuccess() {
         // Soft fade out form
         this.form.style.transform = 'scale(0.95)';
         this.form.style.opacity = '0';
-        
+
         setTimeout(() => {
             this.form.style.display = 'none';
             //document.querySelector('.social-login').style.display = 'none';
             //document.querySelector('.signup-link').style.display = 'none';
-            
+
             // Show success with soft animation
             this.successMessage.classList.add('show');
-            
+
             // Animate success icon
             const successIcon = this.successMessage.querySelector('.neu-icon');
             successIcon.style.animation = 'successPulse 0.6s ease-out';
-            
+
         }, 300);
-        
+
         // Simulate redirect
         setTimeout(() => {
             //console.log('Redirecting to dashboard...');
@@ -288,7 +309,7 @@ if (!document.querySelector('#neu-keyframes')) {
             25% { transform: translateX(-3px); }
             75% { transform: translateX(3px); }
         }
-        
+
         @keyframes successPulse {
             0% { transform: scale(0.8); opacity: 0; }
             50% { transform: scale(1.1); }
