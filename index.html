@@ -17,6 +17,12 @@
 
 <canvas id="apolloqa_canvas"></canvas>
 
+<div id="footer" style="width:100%" >
+    <output id="display_net_status">◐</output>
+    <output id="footer_text" class="blink-element"></output>
+    <button id="menu_navi" style="float:right;" hidden>Navi</button>
+</div>
+
 <div class="wrapper" style="width:100%;background:transparent;">
     <section class="main_controls">
 
@@ -93,6 +99,14 @@
                 <button id="step_0_6">A7</button>
                 <button id="step_0_7">A8</button>
             </div>
+            <div id="step_sequencer" class="buttons">
+                <button id="steps_random">Random</button>
+                <button id="steps_builtin_0">Saw</button>
+                <button id="steps_builtin_1">Humpa</button>
+                <button id="steps_builtin_2">Humpaba</button>
+                <button id="steps_builtin_3">All On</button>
+                <button id="steps_builtin_4">All Off</button>
+            </div>
 
             <h3>2. Run generator</h3>
             <button id="calc_button">Generate New Sound</button>
@@ -140,14 +154,8 @@
             <button id="netSession4" hidden></button>
         </div>
     </section>
-
 </div>
 
-<div id="footer" style="width:100%" >
-    <output id="display_net_status">◐</output>
-    <output id="footer_text" class="blink-element"></output>
-    <button id="menu_navi" style="float:right;" hidden>Navi</button>
-</div>
 
 <div id="config_navi" class="config_div" hidden>
     speed<br/>

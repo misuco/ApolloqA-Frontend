@@ -154,14 +154,21 @@ export class aqa_menu {
             }
         }
 
-        this.toggleStep(0,0);
-        this.toggleStep(1,1);
-        this.toggleStep(2,2);
-        this.toggleStep(3,3);
-        this.toggleStep(0,4);
-        this.toggleStep(1,5);
-        this.toggleStep(2,6);
-        this.toggleStep(3,7);
+        this.loadBuiltInSteps(0);
+
+        this.steps_random_button = document.querySelector("#steps_random");
+        this.steps_random_button.addEventListener("click", () => {this.randomSteps()});
+
+        this.steps_builtin_0_button = document.querySelector("#steps_builtin_0");
+        this.steps_builtin_0_button.addEventListener("click", () => {this.loadBuiltInSteps(0)});
+        this.steps_builtin_1_button = document.querySelector("#steps_builtin_1");
+        this.steps_builtin_1_button.addEventListener("click", () => {this.loadBuiltInSteps(1)});
+        this.steps_builtin_2_button = document.querySelector("#steps_builtin_2");
+        this.steps_builtin_2_button.addEventListener("click", () => {this.loadBuiltInSteps(2)});
+        this.steps_builtin_3_button = document.querySelector("#steps_builtin_3");
+        this.steps_builtin_3_button.addEventListener("click", () => {this.loadBuiltInSteps(3)});
+        this.steps_builtin_4_button = document.querySelector("#steps_builtin_4");
+        this.steps_builtin_4_button.addEventListener("click", () => {this.loadBuiltInSteps(4)});
 
         this.calc_button = [];
         this.calc_button[0] = document.querySelector("#calc_button");
@@ -177,13 +184,70 @@ export class aqa_menu {
         this.netSessionList[4] = document.querySelector("#netSession4");
     }
 
-    toggleStep(i,j) {
-        console.log("toggleStep "+i+" "+j);
-        this.sequencer_step[i][j]=!this.sequencer_step[i][j];
+    setStep(i,j,v) {
+        if(v>0) {
+            this.sequencer_step[i][j]=true;
+        } else {
+            this.sequencer_step[i][j]=false;
+        }
         if(this.sequencer_step[i][j]===true) {
             this.sequencer_button[i][j].style.background="orange";
         } else {
             this.sequencer_button[i][j].style.background="#7c70e0";
+        }
+    }
+
+    toggleStep(i,j) {
+        this.setStep(i,j,!this.sequencer_step[i][j]);
+    }
+
+    randomSteps() {
+        for(let i=0;i<4;i++) {
+            for(let j=0;j<8;j++) {
+                let random_boolean = Math.random() < 0.5;
+                this.setStep(i,j,random_boolean);
+            }
+        }
+    }
+
+    loadBuiltInSteps(n) {
+        const builtInSteps = [
+            [
+                [1,0,0,0,1,0,0,0],
+                [0,1,0,0,0,1,0,0],
+                [0,0,1,0,0,0,1,0],
+                [0,0,0,1,0,0,0,1]
+            ],
+            [
+                [1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1],
+                [0,0,0,0,1,1,1,1],
+                [0,0,0,0,1,1,1,1]
+            ],
+            [
+                [1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,0,1,1],
+                [0,0,0,0,1,0,1,1],
+                [0,0,0,0,1,0,1,1]
+            ],
+            [
+                [1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1]
+            ],
+            [
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0]
+            ]
+        ];
+
+        for(let i=0;i<4;i++) {
+            for(let j=0;j<8;j++) {
+                this.setStep(i,j,builtInSteps[n][i][j]);
+            }
         }
     }
 
