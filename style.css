@@ -84,13 +84,12 @@ progress::-webkit-progress-value { background: #7c70e0; }
     background-color: #FFFFFFCC;
 }
 
-#display_net_status_loading {
+#display_net_status {
     font-size: 3rem;
 }
 
-
-#display_net_status {
-    font-size: 3rem;
+#footer_text {
+    font-size: 2rem;
 }
 
 #footer {
@@ -243,15 +242,14 @@ button.narrow {
     width: 10%;
 }
 
-/* Toggled State of information box */
-input[type="checkbox"]:checked ~ aside {
-    transform: translateX(0);
+/* Blinking text */
+@keyframes blinking {
+    0%, 100% { color: #ffffff00; }
+    40%, 60% { color: #ffffffff; }
 }
 
-/* Cursor when clip name is clicked over */
-
-.clip p {
-    cursor: pointer;
+.blink-element {
+    animation: blinking 1s infinite;
 }
 
 /* Adjustments for wider screens */

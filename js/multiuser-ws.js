@@ -16,13 +16,8 @@ export let loadingCount = 0;
 
 export function updateLoadingProgress(inc) {
     loadingCount+=inc;
-    aqa.htmlGuiDialog.setText("Loading " + loadingCount + " / " + loadingTarget);
+    aqa.htmlGui.footer_text.innerHTML="Loading " + loadingCount + " / " + loadingTarget;
     console.log("Loading " + loadingCount + " / " + loadingTarget);
-    if(loadingTarget>0) {
-        aqa.htmlGuiDialog.setProgress((loadingCount+0.5) / loadingTarget);
-    } else {
-        console.log("Division by zero!!!");
-    }
 }
 
 export function incLoadingTarget() {
@@ -65,7 +60,6 @@ export function initMultiuser() {
                 loadingTarget=m.trackList.length;
                 loadingCount=0;
 
-                aqa.htmlGuiDialog.dialog.hidden=false;
                 updateLoadingProgress(0);
 
                 let list = m.trackList;

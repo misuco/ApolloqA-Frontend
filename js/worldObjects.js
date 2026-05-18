@@ -63,8 +63,7 @@ export function newSoundMesh(t) {
         updateLoadingProgress(1);
 
         if(loadingCount>=loadingTarget) {
-            aqa.htmlGuiDialog.dialog.hidden=true;
-            aqa.htmlGuiDialog.setText("");
+            aqa.htmlGui.footer_text.innerHTML="";
             resetLoadingProgress();
         }
 
@@ -215,8 +214,6 @@ export function generateNewSound() {
     oReq.send();
 
     incLoadingTarget();
-    aqa.htmlGuiDialog.dialog.hidden=false;
-
 };
 
 export function initWorldObjectAnimation() {

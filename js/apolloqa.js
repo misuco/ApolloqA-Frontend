@@ -31,7 +31,6 @@ aqa.getRandomInt = function(max) {
 
 aqa.htmlGui={};
 aqa.htmlGuiStart={};
-aqa.htmlGuiDialog={};
 
 aqa.sessionId = uuidv4();
 

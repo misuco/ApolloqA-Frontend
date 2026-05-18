@@ -143,14 +143,9 @@
 
 </div>
 
-<div id="aqa_dialog_loading" hidden>
-    <output id="display_net_status_loading">◐</output>
-    <progress id="loading_progress" max="1" value="0"></progress>
-</div>
-
 <div id="footer" style="width:100%" >
     <output id="display_net_status">◐</output>
-    <output id="loading_text"></output>
+    <output id="footer_text" class="blink-element"></output>
     <button id="menu_navi" style="float:right;" hidden>Navi</button>
 </div>
 
@@ -162,7 +157,7 @@
 </div>
 
 <div id="start_overlay">
-    <button id="startAudioButton">Loading</button>
+    <button id="startAudioButton" class="blink-element">Loading</button>
 </div>
 
 <script src="js/lib/babylon.js"></script>

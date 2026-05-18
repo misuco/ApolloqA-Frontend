@@ -11,8 +11,9 @@ export class aqa_menu {
         this.display_header = document.querySelector("#display_header");
         this.display_chords = document.querySelector("#display_chords");
         this.display_net_status = document.querySelector("#display_net_status");
-        this.display_net_status_loading = document.querySelector("#display_net_status_loading");
         this.display_progress = document.querySelector("#display_progress");
+
+        this.footer_text = document.querySelector("#footer_text");
 
         this.range_speed = document.querySelector("#range_speed");
         this.range_speed.addEventListener("input", () => { setSpeed(event.target.value); });
@@ -311,7 +312,6 @@ export class aqa_menu {
                 status="◐";
         }
         this.display_net_status.innerHTML = status;
-        this.display_net_status_loading.innerHTML = status;
     }
 
     setNetSessionEntry(key,name) {
