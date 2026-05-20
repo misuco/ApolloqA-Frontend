@@ -97,12 +97,12 @@ export function initMultiuser() {
         allUsers = new Map(m);
         let iOtherUser=0;
 
-        allUsers.forEach((value, key) => {
-            if(key==aqa.sessionId) {
+        allUsers.forEach((value, sessionId) => {
+            if(sessionId==aqa.sessionId) {
                 return;
             }
 
-            let otherUser=otherUsers.get(key);
+            let otherUser=otherUsers.get(sessionId);
 
             if(otherUser) {
                 if(otherUser.position) {
@@ -115,7 +115,7 @@ export function initMultiuser() {
                 }
             } else {
                 if(value.worldId==aqa.worldId) {
-                    otherUsers.set(key,{});
+                    otherUsers.set(sessionId,{});
 
                     let spaceshipUrl=aqa.avatarUrl(value.avatarId);
 
@@ -125,7 +125,7 @@ export function initMultiuser() {
                       null,
                       aqa.scene
                     ).then(({ meshes }) => {
-                      console.log("New user created "+value.nickname+" "+key);
+                      console.log("New user created "+value.nickname+" "+sessionId);
                       aqa.scene.stopAllAnimations();
                       const newUser = meshes[0];
                       newUser.position.x = value.x;
@@ -133,8 +133,8 @@ export function initMultiuser() {
                       newUser.position.z = value.z;
                       newUser.rotation = new BABYLON.Vector3(value.rx,value.ry,value.rz);
 
-                      otherUsers.set(key,newUser);
-                      aqa.htmlGui.setNetSessionEntry(key,value.nickname);
+                      otherUsers.set(sessionId,newUser);
+                      aqa.htmlGui.setNetSessionEntry(sessionId,value.nickname);
                     });
                 } else {
                     //console.log("ship from another world "+value.worldId);
@@ -189,14 +189,14 @@ export function sendWorldConfig(obj) {
 
 function removeInactiveClients() {
     //console.log("removeInactiveClients")
-    otherUsers.forEach((value, key) => {
-        //console.log("- "+key);
-        let otherUser=allUsers.get(key);
+    otherUsers.forEach((value, sessionId) => {
+        //console.log("- "+sessionId);
+        let otherUser=allUsers.get(sessionId);
         if(!otherUser) {
-            console.log("-> removeInactiveClient "+key);
+            console.log("-> removeInactiveClient "+sessionId);
             value.dispose();
-            otherUsers.delete(key);
-            aqa.htmlGui.deleteNetSessionEntry(key);
+            otherUsers.delete(sessionId);
+            aqa.htmlGui.deleteNetSessionEntry(sessionId);
         }
     });
     setTimeout(removeInactiveClients, 1000);
