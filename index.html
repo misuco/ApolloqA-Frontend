@@ -168,6 +168,49 @@
     <button id="startAudioButton" class="blink-element">Loading</button>
 </div>
 
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-center">
+        <div class="login-container" id="loginContainer" hidden>
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="neu-icon">
+                        <div class="icon-inner">
+                            <img width="40" height="40" src="../favicon.svg" />
+                        </div>
+                    </div>
+                </div>
+
+                <form class="login-form" id="loginForm" novalidate>
+                    <div class="form-group">
+                        <div class="input-group neu-input">
+                            <input type="nickname" id="nickname" name="nickname" required autocomplete="nickname" placeholder=" ">
+                            <label for="nickname">Nickname</label>
+                        </div>
+                        <span class="error-message" id="nicknameError"></span>
+                    </div>
+
+                    <button type="submit" class="neu-button login-btn">
+                        <span class="btn-text">Check-in</span>
+                        <div class="btn-loader">
+                            <div class="neu-spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon neu-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h3>Success!</h3>
+                    <p>Redirecting to scene...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="js/lib/babylon.js"></script>
 <script src="js/lib/babylonjs.loaders.min.js"></script>
 <script src="js/lib/babylon.gridMaterial.min.js"></script>

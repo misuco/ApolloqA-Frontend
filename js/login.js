@@ -1,6 +1,9 @@
 // Neumorphism Login Form JavaScript
-class NeumorphismLoginForm {
+import { getCookie, setCookie } from "./cookies.js"
+export class NeumorphismLoginForm {
     constructor() {
+        this.overlay = document.getElementById('loginOverlay');
+        this.container = document.getElementById('loginContainer');
         this.form = document.getElementById('loginForm');
         this.nicknameInput = document.getElementById('nickname');
         /*
@@ -11,42 +14,20 @@ class NeumorphismLoginForm {
         this.successMessage = document.getElementById('successMessage');
         //this.socialButtons = document.querySelectorAll('.neu-social');
 
-        let nickname = this.getCookie("nickname");
-        if(!nickname) {
+        let nickname = getCookie("nickname");
+        if(nickname==="-") {
             this.init();
         } else {
-            window.location.href = '..';
+            this.overlay.hidden=true;
         }
-    }
-
-    getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
     }
 
     init() {
+        this.container.hidden=false;
         this.bindEvents();
         //this.setupPasswordToggle();
         //this.setupSocialButtons();
         this.setupNeumorphicEffects();
-    }
-
-    setCookie(cname, cvalue, exdays) {
-      const d = new Date();
-      d.setTime(d.getTime() + (exdays*24*60*60*1000));
-      let expires = "expires="+ d.toUTCString();
-      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
     bindEvents() {
@@ -223,7 +204,7 @@ class NeumorphismLoginForm {
         }
 
         const nickname = this.nicknameInput.value.trim();
-        this.setCookie("nickname", nickname, 10);
+        setCookie("nickname", nickname, 10);
 
         this.setLoading(true);
 
@@ -294,7 +275,8 @@ class NeumorphismLoginForm {
         // Simulate redirect
         setTimeout(() => {
             //console.log('Redirecting to dashboard...');
-            window.location.href = '..';
+            //window.location.href = '..';
+            this.overlay.hidden=true;
         }, 2500);
     }
 }
@@ -320,6 +302,8 @@ if (!document.querySelector('#neu-keyframes')) {
 }
 
 // Initialize the form when DOM is loaded
+/*
 document.addEventListener('DOMContentLoaded', () => {
     new NeumorphismLoginForm();
 });
+*/

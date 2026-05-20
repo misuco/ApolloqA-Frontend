@@ -1,5 +1,5 @@
 import { aqa } from "./apolloqa.js"
-import { getCookie } from "./cookies.js"
+import { getCookie, setCookie } from "./cookies.js"
 import { initStarfield } from "./starfield.js"
 import { initGround } from "./ground.js"
 import { initCamera, spaceshipMesh } from "./camera.js"
@@ -7,6 +7,7 @@ import { aqa_menu } from "./htmlGui.js"
 import { aqa_menu_start } from "./htmlGuiStart.js"
 import { initMultiuser } from "./multiuser-ws.js"
 import { initWorldObjectAnimation } from "./worldObjects.js"
+import { NeumorphismLoginForm } from "./login.js"
 
 export async function initAudio() {
     aqa.audioEngine = await BABYLON.CreateAudioEngineAsync({
@@ -65,6 +66,7 @@ async function boot() {
 
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGuiStart=new aqa_menu_start();
+    aqa.login=new NeumorphismLoginForm();
 
     if(aqa.worldId==="") {
         initMultiuser();
@@ -102,6 +104,7 @@ aqa.worldId = window.location.search.substr(1);
 aqa.nickname = getCookie("nickname");
 
 if (!aqa.worldId && !aqa.nickname) {
+    setCookie("nickname", "-", 10);
     window.location = aqa.mainPageUrl;
 }
 
@@ -109,4 +112,6 @@ if (!aqa.nickname) {
     aqa.nickname = "GUEST";
 }
 
-boot();
+document.addEventListener('DOMContentLoaded', () => {
+    boot();
+});
