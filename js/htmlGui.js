@@ -328,7 +328,7 @@ export class aqa_menu {
         if(this.close_after_calc.checked===true) {
             this.div_gen.hidden=true;
             this.div_step_sequencer.hidden=true;
-            this.menu_gen_button.style.background = "#7c70e0";            
+            this.menu_gen_button.style.background = "#7c70e0";
         }
     }
 
@@ -396,7 +396,7 @@ export class aqa_menu {
     updateNetSessionList() {
         let i=0;
         this.netSessionMap.forEach((name, key) => {
-            this.netSessionList[i].innerHTML=name;
+            this.netSessionList[i].innerHTML="<img src=\"img/user.svg\"/ style=\"width:1rem;height:1rem;\">"+name+" ";
             this.netSessionList[i].hidden=false;
             i++;
         });
