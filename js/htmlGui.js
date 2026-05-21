@@ -170,10 +170,10 @@ export class aqa_menu {
         this.steps_builtin_4_button = document.querySelector("#steps_builtin_4");
         this.steps_builtin_4_button.addEventListener("click", () => {this.loadBuiltInSteps(4)});
 
-        this.calc_button = [];
-        this.calc_button[0] = document.querySelector("#calc_button");
+        this.calc_button = document.querySelector("#calc_button");
+        this.calc_button.addEventListener("click", () => this.triggerCalc());
 
-        this.calc_button[0].addEventListener("click", () => this.triggerCalc());
+        this.close_after_calc = document.querySelector("#close_after_calc");
 
         this.netSessionMap = new Map();
         this.netSessionList = [];
@@ -325,6 +325,11 @@ export class aqa_menu {
 
     triggerCalc() {
         generateNewSound();
+        if(this.close_after_calc.checked===true) {
+            this.div_gen.hidden=true;
+            this.div_step_sequencer.hidden=true;
+            this.menu_gen_button.style.background = "#7c70e0";            
+        }
     }
 
     instrument() {

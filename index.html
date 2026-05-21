@@ -109,7 +109,13 @@
                 <button id="steps_builtin_3">All On</button>
                 <button id="steps_builtin_4">All Off</button>
             </div>
-            <button id="calc_button" style="width:100%; margin: 1rem 0 0 0;" class="blink-element">Generate New Sound</button>
+            <div style="margin: 1rem 0 0 0;">
+                <table style="width:100%;"><tr><td style="width:70%;">
+                    <button id="calc_button" class="blink-element" style="width:100%;">Generate New Sound</button>
+                </td><td>
+                    <input id="close_after_calc" type="checkbox" style="width:3rem; height: 3rem;" checked>Close after</checkbox>
+                </td></tr></table>
+            </div>
         </div>
 
         <div id="config_session" class="config_div" hidden>
