@@ -11,26 +11,65 @@ let labels = null;
 let objSelect=1;
 let objectCount=0;
 
-export function newSoundMesh(t) {
-    console.log("newSoundMesh "+t.url+" "+t.name);
+let soundMeshQueue=[];
 
-    let worldObject = t;
+export async function initAudio() {
+    if (navigator.userActivation.hasBeenActive) {
+        aqa.audioEngine = await BABYLON.CreateAudioEngineAsync({
+            volume: 0.9,
+            listenerAutoUpdate: true,
+            listenerEnabled: true,
+            resumeOnInteraction: true
+        });
+
+        aqa.audioEngine.listener.attach(spaceshipMesh);
+        console.log("wo: audioEngine ready")
+        initNextInQueue();
+
+    } else {
+        aqa.htmlGuiStart.start_overlay.hidden=false;
+        aqa.htmlGuiStart.start_audio_button.disabled=false;
+        aqa.htmlGuiStart.start_audio_button.innerHTML="Press to start audio";
+    }
+}
+
+export function newSoundMesh(t) {
+    console.log("wo: newSoundMesh "+t.url+" "+t.name);
+    soundMeshQueue.push(t);
+    initNextInQueue();
+}
+
+function initNextInQueue() {
+    console.log("wo: initNextInQueue length "+soundMeshQueue.length);
+
+    if(soundMeshQueue.length<=0) {
+        return;
+    }
+
+    if(!aqa.audioEngine) {
+        initAudio();
+        return;
+    }
+
+    let worldObject = soundMeshQueue.pop();
 
     let rootMesh = new BABYLON.TransformNode();
     let mesh = new BABYLON.TransformNode();
     mesh.parent = rootMesh;
 
-    let soundMesh = new soundMeshes[t.mesh]("mesh_"+t.url,mesh);
+    let soundMesh = new soundMeshes[worldObject.mesh]("mesh_"+worldObject.url,mesh);
 
-    rootMesh.position.x=t.x;
-    rootMesh.position.y=t.y;
-    rootMesh.position.z=t.z;
+    rootMesh.position.x=worldObject.x;
+    rootMesh.position.y=worldObject.y;
+    rootMesh.position.z=worldObject.z;
 
     worldObject.mesh = mesh;
     worldObject.rootMesh = rootMesh;
     worldObject.soundMesh = soundMesh;
 
-    BABYLON.CreateSoundAsync("sound_"+t.url, t.url, {
+    if(!aqa.audioEngine) { initAudio(); }
+
+    BABYLON.CreateSoundAsync("sound_"+worldObject.url, worldObject.url, {
         spatialEnabled: true,
         spatialMaxDistance: 100
     }).then(track => {
@@ -46,7 +85,7 @@ export function newSoundMesh(t) {
 
         let waitTime = syncTrackRunning ? nextLoopTime - currentTime : 0;
 
-        console.log("track ready "+ t.url + " at " + currentTime + " loopNr " + loopNumber + " next loop " + nextLoopTime + " wait " + waitTime );
+        console.log("wo: track ready "+ worldObject.url + " at " + currentTime + " loopNr " + loopNumber + " next loop " + nextLoopTime + " wait " + waitTime );
         track.spatial.attach(worldObject.mesh);
         track.play({
             loop: true,
@@ -67,21 +106,21 @@ export function newSoundMesh(t) {
             resetLoadingProgress();
         }
 
-        BABYLON.CreateAudioBusAsync("analyzer_" + t.url, {
+        BABYLON.CreateAudioBusAsync("analyzer_" + worldObject.url, {
             analyzerEnabled: true
         }).then(bus => {
             bus.analyzer.fftSize=64;
             worldObject.bus = bus;
             worldObject.track.outBus=worldObject.bus;
-            console.log("analyzer bus ready: " + t.url);
+            console.log("wo: analyzer bus ready: " + worldObject.url);
 
-            worldObjects.set(t.url,worldObject);
+            worldObjects.set(worldObject.url,worldObject);
         }).catch(err => {
-            console.error("cannot analyze sound:" + t.url + " " + err);
+            console.error("wo: cannot analyze sound:" + worldObject.url + " " + err);
         });
 
     }).catch(err => {
-        console.error("cannot play sound:" + t.url + " " + err);
+        console.error("wo: cannot play sound:" + worldObject.url + " " + err);
     });
 
     if(!labels) {
@@ -107,7 +146,7 @@ export function newSoundMesh(t) {
 
     let text1 = new BABYLON.GUI.TextBlock();
         objectCount++
-        worldObject.labelBaseText = objectCount + " : " + t.name;
+        worldObject.labelBaseText = objectCount + " : " + worldObject.name;
         text1.text = worldObject.labelBaseText;
         text1.color = "White";
         text1.fontSize = 14;
@@ -124,6 +163,12 @@ export function newSoundMesh(t) {
         worldObject.button = rect1;
         worldObject.label = text1;
 
+    if(soundMeshQueue.length>0) {
+        console.log("wo: reschedule initNextInQueue");
+        setTimeout(initNextInQueue,1000);
+    }
+
+    console.log("wo: initNextInQueue done");
 }
 
 export function generateNewSound() {
@@ -137,22 +182,22 @@ export function generateNewSound() {
     const sf2File = sf2Json.soundfont;
     const instrumentPresCount = sf2Json.presets.length;
     if(instrumentPresCount<=0) {
-        console.log("Instrument preset count <=0");
+        console.log("wo: Instrument preset count <=0");
         return;
     }
 
     const presetJson = sf2Json.presets[aqa.getRandomInt(instrumentPresCount-1)];
     const presetName = presetJson.name;
 
-    console.log("presetJson.name " + presetJson.name + " presetJson.nr " + presetJson.nr + " presetJson.bank " + presetJson.bank);
-    console.log("trigger new sound trackId " + trackId + " quantize " + quantize_selected + " " + quantize_real );
+    console.log("wo: presetJson.name " + presetJson.name + " presetJson.nr " + presetJson.nr + " presetJson.bank " + presetJson.bank);
+    console.log("wo: trigger new sound trackId " + trackId + " quantize " + quantize_selected + " " + quantize_real );
 
     var queryId = trackId + "_" + aqa.tempo + "_" + Date.now();
 
     var oReq = new XMLHttpRequest();
     oReq.addEventListener("load", function() {
         if (this.response.includes("Error")) {
-            console.log("server error!!!");
+            console.log("wo: server error!!!");
         } else {
             const trackUrl=this.response + ".ogg";
             let randX = spaceshipMesh.position.x + Math.random() * 20 - 10;

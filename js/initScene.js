@@ -9,24 +9,6 @@ import { initMultiuser } from "./multiuser-ws.js"
 import { initWorldObjectAnimation } from "./worldObjects.js"
 import { NeumorphismLoginForm } from "./login.js"
 
-export async function initAudio() {
-    aqa.audioEngine = await BABYLON.CreateAudioEngineAsync({
-        volume: 0.9,
-        listenerAutoUpdate: true,
-        listenerEnabled: true,
-        resumeOnInteraction: true
-    });
-
-    aqa.audioEngine.listener.attach(spaceshipMesh);
-
-    console.log("boot: initMultiuser");
-    initMultiuser();
-
-    console.log("boot: initWorldObjectAnimation");
-    initWorldObjectAnimation()
-
-    console.log("audioEngine ready")
-}
 
 // Bind to the window's resize DOM event, so that we can update the <canvas> dimensions to match;
 // this is needed because the <canvas> render context doesn't automaticaly update itself
@@ -62,30 +44,30 @@ async function createScene() {
 }
 
 async function boot() {
-    let display_boot_status = document.querySelector("#startAudioButton");
-
     aqa.htmlGui=new aqa_menu();
     aqa.htmlGuiStart=new aqa_menu_start();
     aqa.login=new NeumorphismLoginForm();
+
+    let display_boot_status = aqa.htmlGuiStart.start_audio_button.innerHTML;
 
     if(aqa.worldId==="") {
         initMultiuser();
         aqa.htmlGuiStart.start_overlay.hidden=true;
         aqa.htmlGui.div_session.hidden=false;
     } else {
-        display_boot_status.innerHTML="Loading scene";
+        display_boot_status="Loading scene";
         aqa.scene = await createScene();
 
-        display_boot_status.innerHTML="Loading starfield";
+        display_boot_status="Loading starfield";
         initStarfield();
 
-        display_boot_status.innerHTML="Loading ground";
+        display_boot_status="Loading ground";
         initGround();
 
-        display_boot_status.innerHTML="Loading camera";
+        display_boot_status="Loading camera";
         await initCamera();
 
-        display_boot_status.innerHTML="Start render Loop";
+        display_boot_status="Start render Loop";
 
         aqa.htmlGui.updateHeader();
         aqa.htmlGui.menu_main_button.hidden = false;
@@ -96,7 +78,13 @@ async function boot() {
             aqa.scene.render();
         });
 
-        display_boot_status.innerHTML="System ready:<br/>click to connect";
+        console.log("boot: initMultiuser");
+        initMultiuser();
+
+        console.log("boot: initWorldObjectAnimation");
+        initWorldObjectAnimation()
+
+        aqa.htmlGuiStart.start_overlay.hidden=true;
     }
 }
 

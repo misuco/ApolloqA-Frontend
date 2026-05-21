@@ -17,7 +17,7 @@ export let loadingCount = 0;
 export function updateLoadingProgress(inc) {
     loadingCount+=inc;
     aqa.htmlGui.footer_text.innerHTML="Loading " + loadingCount + " / " + loadingTarget;
-    console.log("Loading " + loadingCount + " / " + loadingTarget);
+    console.log("mu-ws: Loading " + loadingCount + " / " + loadingTarget);
 }
 
 export function incLoadingTarget() {
@@ -31,17 +31,17 @@ export function resetLoadingProgress() {
 }
 
 export function initMultiuser() {
-    console.log("Connecting ws to "+wsUrl)
+    console.log("mu-ws: Connecting ws to "+wsUrl)
     ws = new WebSocket(wsUrl);
 
     // Handle errors
     ws.onerror = (error) => {
-        console.log("WS Error "+error);
+        console.log("mu-ws: WS Error "+error);
     };
 
     // Connection opened
     ws.onopen = () => {
-        console.log("Connected to server");
+        console.log("mu-ws: Connected to server");
     };
 
     // Listen for messages
@@ -54,7 +54,7 @@ export function initMultiuser() {
         const m=JSON.parse(event.data);
 
         if(m.trackList) {
-            console.log("onmessage: tracklist "+m.trackList);
+            console.log("mu-ws: onmessage: tracklist "+m.trackList);
             if( m.worldId===aqa.worldId ) {
 
                 loadingTarget=m.trackList.length;
@@ -63,19 +63,19 @@ export function initMultiuser() {
                 updateLoadingProgress(0);
 
                 let list = m.trackList;
-                console.log("get other user tracklist "+list);
+                console.log("mu-ws: get other user tracklist "+list);
                 list.forEach((track, i) => {
                     if(track) {
                         let trackUrl=track.url;
                         if(worldObjects.has(trackUrl)) {
-                            console.log("existing trackUrl "+trackUrl);
+                            console.log("mu-ws: existing trackUrl "+trackUrl);
                         } else {
-                            console.log("new trackUrl "+trackUrl);
+                            console.log("mu-ws: new trackUrl "+trackUrl);
                             let t=track;
                             let soundMesh = newSoundMesh(t);
                         }
                     } else {
-                        console.log("NULL track in list");
+                        console.log("mu-ws: NULL track in list");
                     }
                 });
             }
@@ -83,7 +83,7 @@ export function initMultiuser() {
         }
 
         if(m.chords) {
-            console.log("onmessage: chords "+m.chords);
+            console.log("mu-ws: onmessage: chords "+m.chords);
             aqa.chords=m.chords;
             aqa.chordsDisplay=m.chords.replaceAll("_"," ")+" :";;
             aqa.beatsPerChord=m.beatsPerChord;
@@ -125,7 +125,7 @@ export function initMultiuser() {
                       null,
                       aqa.scene
                     ).then(({ meshes }) => {
-                      console.log("New user created "+value.nickname+" "+sessionId);
+                      console.log("mu-ws: New user created "+value.nickname+" "+sessionId);
                       aqa.scene.stopAllAnimations();
                       const newUser = meshes[0];
                       newUser.position.x = value.x;
@@ -146,7 +146,7 @@ export function initMultiuser() {
 
     // Handle connection close
     ws.onclose = () => {
-        console.log("DISConnected from server");
+        console.log("mu-ws: DISConnected from server");
     };
 
     setTimeout(removeInactiveClients, 1000);
@@ -193,7 +193,7 @@ function removeInactiveClients() {
         //console.log("- "+sessionId);
         let otherUser=allUsers.get(sessionId);
         if(!otherUser) {
-            console.log("-> removeInactiveClient "+sessionId);
+            console.log("mu-ws: removeInactiveClient "+sessionId);
             value.dispose();
             otherUsers.delete(sessionId);
             aqa.htmlGui.deleteNetSessionEntry(sessionId);
